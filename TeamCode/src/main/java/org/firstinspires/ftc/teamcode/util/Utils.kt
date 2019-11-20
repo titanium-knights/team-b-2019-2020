@@ -1,9 +1,9 @@
+@file:JvmName("Utils")
+
 package org.firstinspires.ftc.teamcode.util
 
 import kotlin.math.pow
 import kotlin.math.sqrt
-
-@JvmName("Utils")
 
 /**
  * @param x The x value of the stick.

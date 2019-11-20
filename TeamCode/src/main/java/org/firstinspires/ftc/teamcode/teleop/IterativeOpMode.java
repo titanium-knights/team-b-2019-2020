@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 
-import org.firstinspires.ftc.teamcode.util.Utils;
 import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 
 @TeleOp(name = "Test Mode")
