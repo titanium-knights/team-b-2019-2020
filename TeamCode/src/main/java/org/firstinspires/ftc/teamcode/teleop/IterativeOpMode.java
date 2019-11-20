@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.util.Utils;
 import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 
+@TeleOp(name = "Test Mode")
 public class IterativeOpMode extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
