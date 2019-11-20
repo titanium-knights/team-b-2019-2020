@@ -12,6 +12,6 @@ public class Utils {
      * @return Returns if the stick is NOT drifting.
      */
     public static boolean accountDrift (double x, double y) {
-        return Math.pow((x * x) + (y * y), 2) < 0.2;
+        return Math.sqrt((x * x) + (y * y)) < 0.2;
     }
 }
