@@ -10,6 +10,7 @@ bin/
 gen/
 
 # Local configuration file (sdk path, etc)
+TeamCode/local.properties
 local.properties
 
 # Windows thumbnail db
