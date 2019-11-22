@@ -5,6 +5,11 @@ public class ButtonTracker {
     private boolean on;
     private boolean mode;
 
+    public ButtonTracker () {
+        on = false;
+        mode = false;
+    }
+
     public void ifPress (boolean current) {
         if (!on && current) {
             mode = !mode;
