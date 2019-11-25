@@ -12,15 +12,20 @@ public class Intake {
         String name = null;
         DcMotor motor;
 
-        public Motor(DcMotor motor) {
+        public Motor(DcMotor motor, String name) {
             this.motor = motor;
+            this.name = name;
         }
     }
 
     public Intake (Motor[] motors) {
         this.motors = motors;
         for (Motor m : motors) {
-            m.motor.setDirection(DcMotor.Direction.FORWARD);
+            if (m.name.equals("flywheel_l")) {
+                m.motor.setDirection(DcMotor.Direction.FORWARD);
+            } else if (m.name.equals("flywheel_r")) {
+                m.motor.setDirection(DcMotor.Direction.REVERSE);
+            }
         }
     }
 
@@ -42,7 +47,7 @@ public class Intake {
         Motor[] motors = new Motor[standardMotorNames.length];
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = hardwareMap.get(DcMotor.class, standardMotorNames[i]);
-            motors[i] = new Motor(motor);
+            motors[i] = new Motor(motor, standardMotorNames[i]);
         }
         return new Intake(motors);
     }
