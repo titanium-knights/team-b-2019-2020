@@ -29,12 +29,18 @@ public class Intake {
         }
     }
 
+    /**
+     * Sets the pivot flywheels' speeds to 1.
+     */
     public void spin () {
         for (Motor m : motors) {
             m.motor.setPower(1);
         }
     }
 
+    /**
+     * Sets the pivot flywheels' speeds to 0.
+     */
     public void stopSpinning () {
         for (Motor m : motors) {
             m.motor.setPower(0);
