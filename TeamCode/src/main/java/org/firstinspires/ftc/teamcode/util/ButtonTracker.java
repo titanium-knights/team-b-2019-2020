@@ -19,20 +19,26 @@ public class ButtonTracker {
      * Toggles the mode if the button was just pressed.
      * @param current The current value of the toggling button.
      */
-    public void ifPress (boolean current) {
+    public boolean ifPress (boolean current) {
         if (!on && current) {
             mode = !mode;
+            return true;
         }
+
+        return false;
     }
 
     /**
      * Toggles the mode if the button was just released.
      * @param current The current value of the toggling button.
      */
-    public void ifRelease (boolean current) {
+    public boolean ifRelease (boolean current) {
         if (on && !current) {
             mode = !mode;
+            return true;
         }
+
+        return false;
     }
 
     /**
