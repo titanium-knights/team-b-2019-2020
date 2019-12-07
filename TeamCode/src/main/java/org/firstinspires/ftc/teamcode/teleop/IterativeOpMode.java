@@ -12,15 +12,16 @@ import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 
 @TeleOp(name = "Test Mode")
 public class IterativeOpMode extends OpMode {
-    //private MecanumDrive drive;
+    private MecanumDrive drive;
     private Intake intake;
+
     private Outtake outtake;
 
     private ButtonTracker flywheelBT;
 
     @Override
     public void init() {
-        //drive = MecanumDrive.standard(hardwareMap);
+        drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
         outtake = Outtake.standard(hardwareMap);
 
@@ -29,7 +30,7 @@ public class IterativeOpMode extends OpMode {
 
     @Override
     public void loop() {
-        /*
+
         double speed = gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
         double turn = gamepad1.right_stick_x;
@@ -45,8 +46,8 @@ public class IterativeOpMode extends OpMode {
         // Drive in the inputted direction.
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
         drive.move(1, vector, turn, MecanumDrive.TurnBehavior.ADDSUBTRACT);
-         */
 
+        
         // Activate and deactivate pivot flywheels (toggles)
         flywheelBT.ifPress(gamepad1.y);
 
@@ -57,8 +58,12 @@ public class IterativeOpMode extends OpMode {
             intake.stopSpinning();
         }
 
+        // move the intake pusher
+        intake.pushStone(gamepad2.a);
+
         // Update BTs
         flywheelBT.update(gamepad1.y);
+
 
         // Update outtake deltaTime
         outtake.updateTime();

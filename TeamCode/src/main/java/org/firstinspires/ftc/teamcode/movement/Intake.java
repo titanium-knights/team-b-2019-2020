@@ -6,7 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake {
 
-    Motor[] motors;
+    Motor[] flywheels;
+    Motor pusher;
 
     public static class Motor {
         String name = null;
@@ -18,22 +19,25 @@ public class Intake {
         }
     }
 
-    public Intake (Motor[] motors) {
-        this.motors = motors;
-        for (Motor m : motors) {
+    public Intake (Motor[] flywheels, Motor pusher) {
+        this.flywheels = flywheels;
+        for (Motor m : flywheels) {
             if (m.name.equals("flywheel_l")) {
                 m.motor.setDirection(DcMotor.Direction.FORWARD);
             } else if (m.name.equals("flywheel_r")) {
                 m.motor.setDirection(DcMotor.Direction.REVERSE);
             }
         }
+
+        this.pusher = pusher;
+        pusher.motor.setDirection(DcMotor.Direction.FORWARD);
     }
 
     /**
      * Sets the pivot flywheels' speeds to 1.
      */
     public void spin () {
-        for (Motor m : motors) {
+        for (Motor m : flywheels) {
             m.motor.setPower(1);
         }
     }
@@ -42,12 +46,30 @@ public class Intake {
      * Sets the pivot flywheels' speeds to 0.
      */
     public void stopSpinning () {
-        for (Motor m : motors) {
+        for (Motor m : flywheels) {
             m.motor.setPower(0);
         }
     }
 
-    static String[] standardMotorNames = {"flywheel_l", "flywheel_r"};
+    public void pushStone (boolean thwacking) {
+        if (thwacking) {
+            if (pusher.motor.getCurrentPosition() < 300) {
+                pusher.motor.setDirection(DcMotor.Direction.FORWARD);
+                pusher.motor.setPower(1);
+            } else {
+                pusher.motor.setPower(0);
+            }
+        } else {
+            if (pusher.motor.getCurrentPosition() > 0) {
+                pusher.motor.setDirection(DcMotor.Direction.REVERSE);
+                pusher.motor.setPower(1);
+            } else {
+                pusher.motor.setPower(0);
+            }
+        }
+    }
+
+    static String[] standardMotorNames = {"flywheel_l", "flywheel_r", "intake_pusher"};
 
     public static Intake standard(HardwareMap hardwareMap) {
         Motor[] motors = new Motor[standardMotorNames.length];
@@ -55,7 +77,11 @@ public class Intake {
             DcMotor motor = hardwareMap.get(DcMotor.class, standardMotorNames[i]);
             motors[i] = new Motor(motor, standardMotorNames[i]);
         }
-        return new Intake(motors);
+
+        DcMotor motor = hardwareMap.get(DcMotor.class, standardMotorNames[2]);
+        Motor pusher = new Motor(motor, standardMotorNames[2]);
+
+        return new Intake(motors, pusher);
     }
 
 }
