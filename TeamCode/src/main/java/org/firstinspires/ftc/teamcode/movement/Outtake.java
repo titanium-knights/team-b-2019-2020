@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Outtake {
-    ElapsedTime deltaTime;
+    ElapsedTime deltaTime = new ElapsedTime();
 
     CRServo claw;
     double clawPos;
@@ -21,6 +21,8 @@ public class Outtake {
         this.arm = arm;
         this.wrist = wrist;
         this.claw = claw;
+
+        this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         clawPos = 0;
         wristPos = 0;
@@ -35,19 +37,30 @@ public class Outtake {
     }
 
     /**
+     * Moves the arm at the given power.
+     * @param power power at which to move the arm
+     * @param limited Whether or not the motor limits should be activated.
+     */
+    public void moveArm (double power, boolean limited) {
+        int currpos = arm.getCurrentPosition();
+
+        // up = true, down = false
+        if (power > 0 && (!limited || currpos < 300)) {
+            arm.setPower(power);
+        } else if (power < 0 && (!limited || currpos > 0)) {
+            arm.setPower(power);
+        } else {
+            arm.setPower(0);
+        }
+    }
+
+    /**
      * Moves the arm in the given direction.
      * @param direction up = true, down = false
      * @param limited Whether or not the motor limits should be activated.
      */
     public void moveArm (boolean direction, boolean limited) {
-        int currpos = arm.getCurrentPosition();
-
-        // up = true, down = false
-        if (direction && (!limited || currpos < 300)) {
-            arm.setDirection(DcMotor.Direction.FORWARD);
-        } else if (!direction && (!limited || currpos > 0)) {
-            arm.setDirection(DcMotor.Direction.REVERSE);
-        }
+        moveArm(direction ? 1 : -1, limited);
     }
 
     /**
@@ -63,12 +76,10 @@ public class Outtake {
      * @param power Double (0 <= power <= 1) for the motor's power.
      */
     public void moveClaw (boolean clamping, double power) {
-        if (clamping && wristPos > 0) {
-            claw.setDirection(DcMotorSimple.Direction.FORWARD);
+        if (clamping) {
             claw.setPower(power);
-        } else if (!clamping && wristPos < 1) {
-            claw.setDirection(DcMotorSimple.Direction.REVERSE);
-            claw.setPower(power);
+        } else if (!clamping) {
+            claw.setPower(-power);
         } else {
             claw.setPower(0);
         }
@@ -100,11 +111,9 @@ public class Outtake {
      */
     public void rotateWrist (boolean left, double power) {
         if (left && wristPos > -1) {
-            wrist.setDirection(DcMotorSimple.Direction.FORWARD);
             wrist.setPower(power);
         } else if (!left && wristPos < 1) {
-            wrist.setDirection(DcMotorSimple.Direction.REVERSE);
-            wrist.setPower(power);
+            wrist.setPower(-power);
         } else {
             wrist.setPower(0);
         }

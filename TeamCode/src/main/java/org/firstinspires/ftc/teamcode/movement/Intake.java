@@ -43,6 +43,15 @@ public class Intake {
     }
 
     /**
+     * Sets the pivot flywheels' speeds to -1, driving them in reverse.
+     */
+    public void spinReverse () {
+        for (Motor m : flywheels) {
+            m.motor.setPower(-1);
+        }
+    }
+
+    /**
      * Sets the pivot flywheels' speeds to 0.
      */
     public void stopSpinning () {
@@ -51,22 +60,24 @@ public class Intake {
         }
     }
 
-    public void pushStone (boolean thwacking) {
+    public void pushStone (boolean thwacking, boolean enforceLimits) {
         if (thwacking) {
-            if (pusher.motor.getCurrentPosition() < 300) {
-                pusher.motor.setDirection(DcMotor.Direction.FORWARD);
+            if (!enforceLimits || pusher.motor.getCurrentPosition() < 300) {
                 pusher.motor.setPower(1);
             } else {
                 pusher.motor.setPower(0);
             }
         } else {
-            if (pusher.motor.getCurrentPosition() > 0) {
-                pusher.motor.setDirection(DcMotor.Direction.REVERSE);
-                pusher.motor.setPower(1);
+            if (!enforceLimits || pusher.motor.getCurrentPosition() > 0) {
+                pusher.motor.setPower(-1);
             } else {
                 pusher.motor.setPower(0);
             }
         }
+    }
+
+    public void stopPusher() {
+        pusher.motor.setPower(0);
     }
 
     static String[] standardMotorNames = {"flywheel_l", "flywheel_r", "intake_pusher"};

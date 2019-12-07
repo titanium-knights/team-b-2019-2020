@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 
 import org.firstinspires.ftc.teamcode.movement.Outtake;
+import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.util.Utils;
 import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 
@@ -17,13 +18,20 @@ public class IterativeOpMode extends OpMode {
 
     private Outtake outtake;
 
+    private PlateClamp plateClamp;
+
     private ButtonTracker flywheelBT;
+    private ButtonTracker overrideBT = new ButtonTracker();
+    private ButtonTracker downBT = new ButtonTracker();
+    private ButtonTracker midBT = new ButtonTracker();
+    private ButtonTracker upBT = new ButtonTracker();
 
     @Override
     public void init() {
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
         outtake = Outtake.standard(hardwareMap);
+        plateClamp = PlateClamp.standard(hardwareMap);
 
         flywheelBT = new ButtonTracker();
     }
@@ -44,45 +52,49 @@ public class IterativeOpMode extends OpMode {
         }
 
         // Drive in the inputted direction.
-        MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-        drive.move(1, vector, turn, MecanumDrive.TurnBehavior.ADDSUBTRACT);
+        MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, -speed);
+        drive.move(1, vector, turn);
 
-        
+
         // Activate and deactivate pivot flywheels (toggles)
-        flywheelBT.ifPress(gamepad1.y);
+        flywheelBT.ifRelease(gamepad1.y);
+        flywheelBT.update(gamepad1.y);
 
         // Either spins or doesn't depending on mode
         if (flywheelBT.getMode()) {
             intake.spin();
+        } else if (gamepad1.b) {
+            intake.spinReverse();
         } else {
             intake.stopSpinning();
         }
 
+        overrideBT.ifRelease(gamepad2.back);
+        overrideBT.update(gamepad2.back);
+        boolean enforceLimits = false; // Super secret escape button
+
         // move the intake pusher
-        intake.pushStone(gamepad2.a);
-
-        // Update BTs
-        flywheelBT.update(gamepad1.y);
-
+        if (gamepad2.x) {
+            intake.pushStone(true, enforceLimits);
+        } else if (gamepad2.b) {
+            intake.pushStone(false, enforceLimits);
+        } else {
+            intake.stopPusher();
+        }
 
         // Update outtake deltaTime
         outtake.updateTime();
 
         // Raise and lower arm
-        if (gamepad1.dpad_down) {
-            outtake.moveArm(false, true);
-        }
-        else if (gamepad1.dpad_up) {
-            outtake.moveArm(true, true);
-        } else {
-            outtake.stopArm();
-        }
+        double armPower = gamepad2.left_stick_y;
+        armPower = Utils.accountDrift(armPower, 0) ? 0 : armPower;
+        outtake.moveArm(armPower, enforceLimits);
 
         // Rotate wrist
-        if (gamepad1.dpad_left) {
+        if (gamepad2.left_bumper) {
             outtake.rotateWrist(true, 1);
             outtake.updateWristTime(true);
-        } else if (gamepad1.dpad_right) {
+        } else if (gamepad2.right_bumper) {
             outtake.rotateWrist(false, 1);
             outtake.updateWristTime(false);
         } else {
@@ -90,22 +102,36 @@ public class IterativeOpMode extends OpMode {
         }
 
         // Clamp claw
-        if (gamepad1.left_bumper) {
+        if (gamepad2.y) {
             outtake.moveClaw(true, 1);
             outtake.updateClawTime(true);
-        } else if (gamepad1.right_bumper) {
+        } else if (gamepad2.a) {
             outtake.moveClaw(false,1);
             outtake.updateClawTime(false);
         } else {
             outtake.stopClaw();
         }
 
+        boolean down = downBT.ifRelease(gamepad2.dpad_down);
+        boolean mid = midBT.ifRelease(gamepad2.dpad_left);
+        boolean up = upBT.ifRelease(gamepad2.dpad_up);
+
+        downBT.update(gamepad2.dpad_down);
+        midBT.update(gamepad2.dpad_left);
+        upBT.update(gamepad2.dpad_up);
+
+        if (down) {
+            plateClamp.setDown();
+        } else if (mid) {
+            plateClamp.setMid();
+        } else if (up) {
+            plateClamp.setUp();
+        }
+
         // Telemetry data
-        /*
         telemetry.addData("Speed", speed);
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
-         */
-
+        telemetry.addData("Enforcing Limits", enforceLimits ? "Yes" : "No");
     }
 }
