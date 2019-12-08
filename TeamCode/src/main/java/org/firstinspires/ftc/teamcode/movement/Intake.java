@@ -47,7 +47,7 @@ public class Intake {
      */
     public void spinReverse () {
         for (Motor m : flywheels) {
-            m.motor.setPower(-1);
+            m.motor.setPower(-0.7);
         }
     }
 

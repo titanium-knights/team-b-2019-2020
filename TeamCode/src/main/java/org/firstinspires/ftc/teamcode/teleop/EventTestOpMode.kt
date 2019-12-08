@@ -1,23 +1,59 @@
 package org.firstinspires.ftc.teamcode.teleop
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.DcMotor
-import org.firstinspires.ftc.teamcode.events.EventOpMode
-import org.firstinspires.ftc.teamcode.events.doCond
-import org.firstinspires.ftc.teamcode.events.doWhen
-import org.firstinspires.ftc.teamcode.events.isPressed
-import org.firstinspires.ftc.teamcode.infix.at
-import org.firstinspires.ftc.teamcode.infix.move
-import org.firstinspires.ftc.teamcode.infix.power
-import org.firstinspires.ftc.teamcode.infix.the
+import org.firstinspires.ftc.teamcode.events.*
+import org.firstinspires.ftc.teamcode.movement.Intake
+import org.firstinspires.ftc.teamcode.movement.MecanumDrive
+import org.firstinspires.ftc.teamcode.movement.Outtake
+import org.firstinspires.ftc.teamcode.movement.PlateClamp
 
-@TeleOp(name = "Event Infix Test Op Mode", group = "Tests")
-class EventInfixTestOpMode: EventOpMode({
-    val pusher = hardwareMap[DcMotor::class.java, "intake_pusher"]
+@TeleOp(name = "Event Test Op Mode", group = "Tests")
+class EventTestOpMode: EventOpMode({
+    arrayOf(gamepad1, gamepad2).forEach { it.setJoystickDeadzone(0.2F) }
+
+    val mecanumDrive = MecanumDrive.standard(hardwareMap)
+    val intake = Intake.standard(hardwareMap)
+    val outtake = Outtake.standard(hardwareMap)
+    val plateClamp = PlateClamp.standard(hardwareMap)
+
+    registerLoopHook {
+        val vector = MecanumDrive.Motor.Vector2D(gamepad1.left_stick_x.toDouble(), -gamepad1.left_stick_y.toDouble())
+        mecanumDrive.move(1.0, vector, gamepad1.right_stick_x.toDouble())
+    }
+
+    val enforceLimits = false
 
     doCond(
-            gamepad1::x.isPressed to {move the pusher at power(0.5)},
-            gamepad1::a.isPressed to {move the pusher at power(-0.5)},
-            null to {move the pusher at power(0.0)}
+            gamepad2::x.isPressed to {intake.pushStone(true, enforceLimits)},
+            gamepad2::b.isPressed to {intake.pushStone(false, enforceLimits)},
+            null to {intake.stopPusher()}
     )
+
+    doCond(
+            makeToggleButton(gamepad1::y).on to intake::spin,
+            gamepad1::b.isPressed to intake::spinReverse,
+            null to intake::stopSpinning
+    )
+
+    registerLoopHook {
+        val stick = gamepad2.left_stick_y.toDouble()
+        val armPower = stick * (if (stick > 0) 0.8 else 0.3)
+        outtake.moveArm(armPower, enforceLimits)
+    }
+
+    doCond(
+            gamepad2::left_bumper.isPressed to {outtake.rotateWrist(true, 1.0)},
+            gamepad2::right_bumper.isPressed to {outtake.rotateWrist(false, 1.0)},
+            null to {outtake.stopWrist()}
+    )
+
+    doCond(
+            gamepad2::y.isPressed to {outtake.moveClaw(true, 1.0)},
+            gamepad2::a.isPressed to {outtake.moveClaw(false, 1.0)},
+            null to outtake::stopClaw
+    )
+
+    doWhen(makeButton(gamepad2::dpad_down).pushed) { plateClamp.setDown() }
+    doWhen(makeButton(gamepad2::dpad_left).pushed) { plateClamp.setMid() }
+    doWhen(makeButton(gamepad2::dpad_up).pushed) { plateClamp.setUp() }
 })

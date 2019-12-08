@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 
@@ -26,6 +27,10 @@ public class IterativeOpMode extends OpMode {
     private ButtonTracker midBT = new ButtonTracker();
     private ButtonTracker upBT = new ButtonTracker();
 
+    private ElapsedTime elapsedTime;
+
+    private double lastLoop = -1;
+
     @Override
     public void init() {
         drive = MecanumDrive.standard(hardwareMap);
@@ -34,10 +39,14 @@ public class IterativeOpMode extends OpMode {
         plateClamp = PlateClamp.standard(hardwareMap);
 
         flywheelBT = new ButtonTracker();
+        elapsedTime = new ElapsedTime();
     }
 
     @Override
     public void loop() {
+        double seconds = elapsedTime.seconds();
+        double delta = (lastLoop < 0) ? 0 : (seconds - lastLoop);
+        lastLoop = seconds;
 
         double speed = gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
@@ -89,7 +98,7 @@ public class IterativeOpMode extends OpMode {
         double armPower = gamepad2.left_stick_y;
         armPower = Utils.accountDrift(armPower, 0) ? 0 : armPower;
         if (armPower > 0) {
-            armPower *= 0.8                                                                                                                                                                                                                                     ;
+            armPower *= 0.8;                                                                                                                                                                                                                                    ;
         } else {
             armPower *= 0.3;
         }
@@ -138,5 +147,7 @@ public class IterativeOpMode extends OpMode {
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
         telemetry.addData("Enforcing Limits", enforceLimits ? "Yes" : "No");
+        telemetry.addData("Delta Time", delta);
+        // telemetry.addData("Wrist Pos", outtake.getWristPosition());
     }
 }
