@@ -3,7 +3,7 @@
 
 `events` - New, experimental framework for designing event-based tele-op modes. This will further shorten op modes to just a few lines of code.
 
-`infix` - Experimental functions that make FTC code more readable. Written in [https://kotlinlang.org](https://kotlinlang.org).
+`infix` - Experimental functions that make FTC code more readable. Written in [Kotlin](https://kotlinlang.org).
 
 `movement` - Helper classes to control the motors.
 
