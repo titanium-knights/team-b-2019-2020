@@ -1,3 +1,6 @@
+## Need to access our team's code?
+[Browse to the teamcode package](https://github.com/titanium-knights/team-b-2019-2020/tree/master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode) to get started.
+
 ## NOTICE
 
 This repository contains the public FTC SDK for the SKYSTONE (2019-2020) competition season.  

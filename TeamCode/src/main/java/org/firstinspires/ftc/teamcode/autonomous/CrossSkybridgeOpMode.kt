@@ -7,14 +7,16 @@ import org.firstinspires.ftc.teamcode.util.FunctionOpMode
 
 private const val NAME = "Cross Skybridge"
 
-open class CrossSkybridgeOpMode(vararg directions: MecanumDrive.Motor.Vector2D): FunctionOpMode({
+open class CrossSkybridgeOpMode(delayBetweenMovements: Long, vararg directions: MecanumDrive.Motor.Vector2D): FunctionOpMode({
     val drive = MecanumDrive.standard(hardwareMap)
     waitForStart()
 
     directions.forEach { properDirection ->
-        move the drive with MecanumMovementModifier(1.0, properDirection)
-        wait(1.second)
-        stop the drive
+        move the drive with mecanumPower(-1.0, properDirection, 0.0)
+        wait(1250L)
+        move the drive with mecanumPower(0.0, properDirection, 0.0)
+
+        wait(delayBetweenMovements)
     }
 
     requestOpModeStop()
@@ -22,15 +24,21 @@ open class CrossSkybridgeOpMode(vararg directions: MecanumDrive.Motor.Vector2D):
 
 val straight = MecanumDrive.Motor.Vector2D(0.0, 1.0)
 val left = MecanumDrive.Motor.Vector2D(-1.0, 0.0)
+val right = MecanumDrive.Motor.Vector2D(1.0, 0.0)
 
 @Autonomous(name = "$NAME (straight)", group = NAME)
-class CrossSkybridgeOpModeStraight: CrossSkybridgeOpMode(straight)
-
-@Autonomous(name = "$NAME (left)", group = NAME)
-class CrossSkybridgeOpModeLeft: CrossSkybridgeOpMode(left)
-
-@Autonomous(name = "$NAME (straight then left)", group = NAME)
-class CrossSkybridgeOpModeStraightThenLeft: CrossSkybridgeOpMode(straight, left)
+class CrossSkybridgeOpModeStraight: CrossSkybridgeOpMode(0, straight)
 
 @Autonomous(name = "$NAME (left then straight)", group = NAME)
-class CrossSkybridgeOpModeLeftThenStraight: CrossSkybridgeOpMode(left, straight)
+class CrossSkybridgeOpModeLeftThenStraight: CrossSkybridgeOpMode(0, left, straight)
+
+@Autonomous(name = "$NAME (right then straight)", group = NAME)
+class CrossSkybridgeOpModeRightThenStraight: CrossSkybridgeOpMode(0, right, straight)
+
+val delayMs = 1500L
+
+@Autonomous(name = "$NAME (left, straight, then right)", group = NAME)
+class CrossSkybridgeOpModeLeftThenStraightDelayed: CrossSkybridgeOpMode(delayMs, left, straight, right)
+
+@Autonomous(name = "$NAME (right, straight, then left)", group = NAME)
+class CrossSkybridgeOpModeRightThenStraightDelayed: CrossSkybridgeOpMode(delayMs, right, straight, left)

@@ -18,7 +18,6 @@ class DcMotorMovementRequest(val motor: DcMotor): MovementRequest<SimpleMovement
     }
 }
 infix fun move.the(motor: DcMotor): DcMotorMovementRequest = DcMotorMovementRequest(motor)
-infix fun stop.the(motor: DcMotor) = move the motor at power(0.0)
 
 data class MecanumMovementModifier(
         val power: Double,
@@ -32,7 +31,6 @@ class MecanumMovementRequest(val drive: MecanumDrive): MovementRequest<MecanumMo
     }
 }
 infix fun move.the(drive: MecanumDrive): MecanumMovementRequest = MecanumMovementRequest(drive)
-infix fun stop.the(drive: MecanumDrive) = move the drive with MecanumMovementModifier(0.0)
 
 infix fun <Modifier> MovementRequest<Modifier>.at(modifier: Modifier) = fulfill(modifier)
 infix fun <Modifier> MovementRequest<Modifier>.using(modifier: Modifier) = fulfill(modifier)
