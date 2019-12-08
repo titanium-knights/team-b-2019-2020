@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.util.Utils;
 import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 
-@TeleOp(name = "Test Mode")
+@TeleOp(name = "Tele Op Mode")
 public class IterativeOpMode extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
@@ -88,6 +88,11 @@ public class IterativeOpMode extends OpMode {
         // Raise and lower arm
         double armPower = gamepad2.left_stick_y;
         armPower = Utils.accountDrift(armPower, 0) ? 0 : armPower;
+        if (armPower > 0) {
+            armPower *= 0.8                                                                                                                                                                                                                                     ;
+        } else {
+            armPower *= 0.3;
+        }
         outtake.moveArm(armPower, enforceLimits);
 
         // Rotate wrist
