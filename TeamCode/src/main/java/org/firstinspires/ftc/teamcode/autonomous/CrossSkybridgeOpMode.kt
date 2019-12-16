@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.firstinspires.ftc.teamcode.infix.*
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive
 import org.firstinspires.ftc.teamcode.util.FunctionOpMode
 
@@ -11,12 +10,12 @@ open class CrossSkybridgeOpMode(delayBetweenMovements: Long, vararg directions: 
     val drive = MecanumDrive.standard(hardwareMap)
     waitForStart()
 
-    directions.forEach { properDirection ->
-        move the drive with mecanumPower(-1.0, properDirection, 0.0)
-        wait(1250L)
-        move the drive with mecanumPower(0.0, properDirection, 0.0)
+    directions.forEach { direction ->
+        drive.move(-1.0, direction, 0.0)
+        sleep(1250)
+        drive.move(0.0, direction, 0.0)
 
-        wait(delayBetweenMovements)
+        sleep(delayBetweenMovements)
     }
 
     requestOpModeStop()
