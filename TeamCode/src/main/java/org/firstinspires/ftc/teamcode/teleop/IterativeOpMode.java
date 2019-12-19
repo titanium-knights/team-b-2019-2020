@@ -83,6 +83,8 @@ public class IterativeOpMode extends OpMode {
         boolean enforceLimits = false; // Super secret escape button
 
         // move the intake pusher
+        // "DEPRECATED"
+        /*
         if (gamepad2.x) {
             intake.pushStone(true, enforceLimits);
         } else if (gamepad2.b) {
@@ -90,6 +92,7 @@ public class IterativeOpMode extends OpMode {
         } else {
             intake.stopPusher();
         }
+         */
 
         // Update outtake deltaTime
         outtake.updateTime();
