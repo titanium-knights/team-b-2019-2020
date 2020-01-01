@@ -8,9 +8,6 @@ public class Intake {
 
     Motor[] flywheels;
 
-    // "DEPRECATED"
-    // Motor pusher;
-
     public static class Motor {
         String name = null;
         DcMotor motor;
@@ -24,16 +21,12 @@ public class Intake {
     public Intake (Motor[] flywheels) {
         this.flywheels = flywheels;
         for (Motor m : flywheels) {
-            if (m.name.equals("flywheel_lf") || m.name.equals("flywheel_lb")) {
+            if (m.name.equals("flywheel_l")) {
                 m.motor.setDirection(DcMotor.Direction.FORWARD);
-            } else if (m.name.equals("flywheel_rf") || m.name.equals("flywheel_rb")) {
+            } else if (m.name.equals("flywheel_r")) {
                 m.motor.setDirection(DcMotor.Direction.REVERSE);
             }
         }
-
-        // "DEPRECATED"
-        // this.pusher = pusher;
-        // pusher.motor.setDirection(DcMotor.Direction.FORWARD);
     }
 
     /**
@@ -63,33 +56,7 @@ public class Intake {
         }
     }
 
-    // "DEPRECATED"
-    /*
-    public void pushStone (boolean thwacking, boolean enforceLimits) {
-        if (thwacking) {
-            if (!enforceLimits || pusher.motor.getCurrentPosition() < 300) {
-                pusher.motor.setPower(1);
-            } else {
-                pusher.motor.setPower(0);
-            }
-        } else {
-            if (!enforceLimits || pusher.motor.getCurrentPosition() > 0) {
-                pusher.motor.setPower(-1);
-            } else {
-                pusher.motor.setPower(0);
-            }
-        }
-    }
-     */
-
-    // "DEPRECATED"
-    /*
-    public void stopPusher() {
-        pusher.motor.setPower(0);
-    }
-     */
-
-    static String[] standardMotorNames = {"flywheel_lf", "flywheel_rf", "flywheel_lb", "flywheel_rb"};
+    static String[] standardMotorNames = {"flywheel_l", "flywheel_r"};
 
     public static Intake standard(HardwareMap hardwareMap) {
         Motor[] motors = new Motor[standardMotorNames.length];
@@ -97,9 +64,6 @@ public class Intake {
             DcMotor motor = hardwareMap.get(DcMotor.class, standardMotorNames[i]);
             motors[i] = new Motor(motor, standardMotorNames[i]);
         }
-
-        DcMotor motor = hardwareMap.get(DcMotor.class, standardMotorNames[2]);
-        //Motor pusher = new Motor(motor, standardMotorNames[2]);
 
         return new Intake(motors);
     }

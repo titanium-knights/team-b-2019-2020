@@ -2,10 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.events.*
-import org.firstinspires.ftc.teamcode.movement.Intake
-import org.firstinspires.ftc.teamcode.movement.MecanumDrive
-import org.firstinspires.ftc.teamcode.movement.Outtake
-import org.firstinspires.ftc.teamcode.movement.PlateClamp
+import org.firstinspires.ftc.teamcode.movement.*
 
 @TeleOp(name = "Event Test Op Mode", group = "Tests")
 class EventTestOpMode: EventOpMode({
@@ -13,6 +10,7 @@ class EventTestOpMode: EventOpMode({
 
     val mecanumDrive = MecanumDrive.standard(hardwareMap)
     val intake = Intake.standard(hardwareMap)
+    val stonePusher = StonePusher.standard(hardwareMap)
     val outtake = Outtake.standard(hardwareMap)
     val plateClamp = PlateClamp.standard(hardwareMap)
 
@@ -24,9 +22,9 @@ class EventTestOpMode: EventOpMode({
     val enforceLimits = false
 
     doCond(
-            gamepad2::x.isPressed to {intake.pushStone(true, enforceLimits)},
-            gamepad2::b.isPressed to {intake.pushStone(false, enforceLimits)},
-            null to {intake.stopPusher()}
+            gamepad2::x.isPressed to {stonePusher.pushStone(true, enforceLimits)},
+            gamepad2::b.isPressed to {stonePusher.pushStone(false, enforceLimits)},
+            null to {stonePusher.stopPusher()}
     )
 
     doCond(

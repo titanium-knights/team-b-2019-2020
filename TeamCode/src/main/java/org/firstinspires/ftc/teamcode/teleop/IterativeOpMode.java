@@ -4,11 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.movement.Intake;
-import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
+import org.firstinspires.ftc.teamcode.movement.*;
 
-import org.firstinspires.ftc.teamcode.movement.Outtake;
-import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.util.Utils;
 import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 
@@ -16,6 +13,7 @@ import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 public class IterativeOpMode extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
+    private StonePusher stonePusher;
 
     private Outtake outtake;
 
@@ -35,6 +33,7 @@ public class IterativeOpMode extends OpMode {
     public void init() {
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
+        stonePusher = StonePusher.standard(hardwareMap);
         outtake = Outtake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
 
@@ -86,11 +85,11 @@ public class IterativeOpMode extends OpMode {
         // "DEPRECATED"
         /*
         if (gamepad2.x) {
-            intake.pushStone(true, enforceLimits);
+            stonePusher.pushStone(true, enforceLimits);
         } else if (gamepad2.b) {
-            intake.pushStone(false, enforceLimits);
+            stonePusher.pushStone(false, enforceLimits);
         } else {
-            intake.stopPusher();
+            stonePusher.stopPusher();
         }
          */
 
