@@ -22,8 +22,8 @@ class ElevatorTestOpMode: EventOpMode({
     }
 
     doCond(
-            gamepad2::x.isPressed to { outtake.moveClamp(1) },
-            gamepad2::b.isPressed to { outtake.moveClamp(-1) },
+            gamepad2::x.isPressed to { outtake.moveClamp(1.0) },
+            gamepad2::b.isPressed to { outtake.moveClamp(-1.0) },
             null to { outtake.stopClamp() }
     )
 })
