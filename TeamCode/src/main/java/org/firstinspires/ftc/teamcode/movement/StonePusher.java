@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class StonePusher {
+@Deprecated public class StonePusher {
     DcMotor pusher;
 
     public StonePusher(DcMotor pusher) {

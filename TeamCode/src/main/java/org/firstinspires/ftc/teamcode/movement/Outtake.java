@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Outtake {
+@Deprecated public class Outtake {
     ElapsedTime deltaTime = new ElapsedTime();
 
     CRServo claw;
