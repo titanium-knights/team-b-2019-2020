@@ -9,16 +9,20 @@ class ElevatorOuttake(
         val horizontal: DcMotor,
         val clamp: CRServo
 ) {
+
     fun moveVertical(power: Double) {
         vertical.power = power
     }
 
+    /** Stops the vertical movement of the elevator */
     fun stopVertical() = moveVertical(0.0)
 
+    /** Moves the claw forwards or backwards at the given speed */
     fun moveHorizontal(power: Double) {
         horizontal.power = power
     }
 
+    /** Stops the horizontal movement of the claw */
     fun stopHorizontal() = moveHorizontal(0.0)
 
     fun moveElevators(verticalPower: Double, horizontalPower: Double) {
@@ -26,6 +30,7 @@ class ElevatorOuttake(
         moveHorizontal(horizontalPower)
     }
 
+    /** Stops the movement of the elevator and claw */
     fun stopElevators() = moveElevators(0.0, 0.0)
 
     fun moveClamp(power: Double) {

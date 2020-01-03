@@ -8,5 +8,10 @@
 <manifest
     package="org.firstinspires.ftc.teamcode"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature
+        android:name="android.hardware.Camera"
+        android:required="true" />
+
     <application/>
 </manifest>
