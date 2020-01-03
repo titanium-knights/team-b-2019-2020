@@ -13,34 +13,26 @@ class ElevatorOuttake(
         vertical.power = power
     }
 
-    fun moveVertical(power: Int) = moveVertical(power.toDouble())
-    fun stopVertical() = moveVertical(0)
+    fun stopVertical() = moveVertical(0.0)
 
     fun moveHorizontal(power: Double) {
         horizontal.power = power
     }
 
-    fun moveHorizontal(power: Int) = moveHorizontal(power.toDouble())
-    fun stopHorizontal() = moveHorizontal(0)
+    fun stopHorizontal() = moveHorizontal(0.0)
 
     fun moveElevators(verticalPower: Double, horizontalPower: Double) {
         moveVertical(verticalPower)
         moveHorizontal(horizontalPower)
     }
 
-    fun moveElevators(verticalPower: Int, horizontalPower: Int) = moveElevators(verticalPower.toDouble(), horizontalPower.toDouble())
-    fun stopElevators() = moveElevators(0, 0)
+    fun stopElevators() = moveElevators(0.0, 0.0)
 
     fun moveClamp(power: Double) {
         clamp.power = power
     }
 
-    fun moveClamp(power: Int) = moveClamp(power.toDouble())
-    fun stopClamp() = moveClamp(0)
-
-    fun moveClaw(power: Double) = moveClamp(power)
-    fun moveClaw(power: Int) = moveClamp(power)
-    fun stopClaw() = stopClamp()
+    fun stopClamp() = moveClamp(0.0)
 
     fun stopAll() {
         stopElevators()

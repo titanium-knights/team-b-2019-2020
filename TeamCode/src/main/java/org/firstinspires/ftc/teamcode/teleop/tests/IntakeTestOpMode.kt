@@ -6,13 +6,17 @@ import org.firstinspires.ftc.teamcode.events.doCond
 import org.firstinspires.ftc.teamcode.events.isPressed
 import org.firstinspires.ftc.teamcode.movement.Intake
 
-@TeleOp(name = "Intake Test Op Mode", group = "Tests")
-class IntakeTestOpMode: EventOpMode({
+fun EventOpMode.registerIntakeHooks() {
     val intake = Intake.standard(hardwareMap)
 
     doCond(
-            gamepad2::x.isPressed to { intake.spinReverse() },
-            gamepad2::b.isPressed to { intake.spin() },
+            gamepad2::a.isPressed to { intake.spinReverse() },
+            gamepad2::y.isPressed to { intake.spin() },
             null to { intake.stopSpinning() }
     )
+}
+
+@TeleOp(name = "Intake Test Op Mode", group = "Tests")
+class IntakeTestOpMode: EventOpMode({
+    registerIntakeHooks()
 })
