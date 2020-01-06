@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.teamcode.movement.BrickHook;
 import org.firstinspires.ftc.teamcode.movement.ElevatorOuttake;
@@ -43,6 +44,8 @@ public class AutoRelayOpMode extends LinearOpMode {
     private Intake intake;
     //private ElevatorOuttake outtake;
     private BrickHook hook;
+
+    private ColorSensor colorSensor;
 
     private int formation = 2;
 
@@ -181,5 +184,29 @@ public class AutoRelayOpMode extends LinearOpMode {
         }
 
     }
+    private int color (){
+        return colorSensor.alpha();
 
+
+
+
+
+    }
+    // create function that traces path
+    private void findSkystone(){
+        drive.strafeLeftWithPower(1);
+        int first_color=color();
+        drive.forwardWithPower(1);
+        int second_color=color();
+        drive.forwardWithPower(1);
+        int third_color=color();
+        double leastColor=color();
+        if (first_color <= second_color && first_color <= third_color) {
+            leastColor = first_color;
+        } else if (second_color <= third_color && second_color <= first_color) {
+            leastColor = second_color;
+        } else {
+            leastColor = third_color;
+        }
+    }
 }
