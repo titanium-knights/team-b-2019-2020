@@ -13,9 +13,10 @@ import org.firstinspires.ftc.teamcode.util.ButtonTracker;
 public class IterativeOpMode extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
-    private StonePusher stonePusher;
+    //private StonePusher stonePusher;
 
-    private Outtake outtake;
+    //private Outtake outtake;
+    //private ElevatorOuttake elevatorOuttake;
 
     private PlateClamp plateClamp;
 
@@ -33,8 +34,9 @@ public class IterativeOpMode extends OpMode {
     public void init() {
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
-        stonePusher = StonePusher.standard(hardwareMap);
-        outtake = Outtake.standard(hardwareMap);
+        //stonePusher = StonePusher.standard(hardwareMap);
+        //outtake = Outtake.standard(hardwareMap);
+        //elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
 
         flywheelBT = new ButtonTracker();
@@ -93,6 +95,7 @@ public class IterativeOpMode extends OpMode {
         }
          */
 
+        /*
         // Update outtake deltaTime
         outtake.updateTime();
 
@@ -126,7 +129,7 @@ public class IterativeOpMode extends OpMode {
             outtake.updateClawTime(false);
         } else {
             outtake.stopClaw();
-        }
+        } */
 
         boolean down = downBT.ifRelease(gamepad2.dpad_down);
         boolean mid = midBT.ifRelease(gamepad2.dpad_left);
@@ -144,10 +147,23 @@ public class IterativeOpMode extends OpMode {
             plateClamp.setUp();
         }
 
+        double elevatorHeight = gamepad2.left_stick_y;
+        double clawDistance = gamepad2.right_stick_y;
+
+        if (Utils.accountDrift(0, elevatorHeight)) {
+            elevatorHeight = 0;
+        } if (Utils.accountDrift(0, clawDistance)) {
+            clawDistance = 0;
+        }
+
+        //elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
+
         // Telemetry data
         telemetry.addData("Speed", speed);
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
+        telemetry.addData("Elevator Height", elevatorHeight);
+        telemetry.addData("Claw Distance", clawDistance);
         telemetry.addData("Enforcing Limits", enforceLimits ? "Yes" : "No");
         telemetry.addData("Delta Time", delta);
         // telemetry.addData("Wrist Pos", outtake.getWristPosition());

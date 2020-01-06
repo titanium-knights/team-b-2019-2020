@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.util.ButtonTracker
 
 @TeleOp(name = "Motor Test Op Mode", group = "Tests")
 class MotorTestOpMode: EventOpMode({
-    val names = arrayOf("mecanum_bl", "mecanum_fl", "flywheel_l", "outtake_arm", "intake_pusher", "mecanum_br", "mecanum_fr", "flywheel_r")
+    val names = arrayOf("mecanum_bl", "mecanum_fl", "mecanum_br", "mecanum_fr")
     val motors = names.map { hardwareMap[DcMotor::class.java, it] }
     var currentIndex = 0
 

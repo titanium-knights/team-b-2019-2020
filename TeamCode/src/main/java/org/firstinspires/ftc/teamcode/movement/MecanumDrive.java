@@ -245,6 +245,16 @@ public class MecanumDrive {
         move(speed, new Motor.Vector2D(0, 1), turn);
     }
 
+    public void turnInPlace(double turn, boolean clockwise) {
+        for (Motor motor : motors) {
+            if (motor.name.endsWith("r")) {
+                motor.motor.setPower(Range.clip((clockwise ? turn : -turn), -1.0, 1.0));
+            } else {
+                motor.motor.setPower(Range.clip((clockwise ? -turn : turn), -1.0, 1.0));
+            }
+        }
+    }
+
     public void stop() {
         for (DcMotor motor: getMotors()) {
             motor.setPower(0);

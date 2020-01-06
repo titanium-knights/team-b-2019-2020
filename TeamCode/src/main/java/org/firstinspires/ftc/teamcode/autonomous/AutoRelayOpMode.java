@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.movement.BrickHook;
 import org.firstinspires.ftc.teamcode.movement.ElevatorOuttake;
 import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
@@ -32,15 +33,23 @@ public class AutoRelayOpMode extends LinearOpMode {
     /** seconds to strafe to face the 2-block gap*/
     private final int[] GAP_STRAFE_DISTS = {0, 0, 0};
 
+    // MOVEMENT CONSTANTS
+    /** average velocity of the robot at full power (inches per millisecond) */
+    private final double VELOCITY = 0.027;
+    /** average angular velocity of the robot at full power (degrees per millisecond) */
+    private final double ANGULAR_VELOCITY = 1;
+
     private MecanumDrive drive;
     private Intake intake;
-    private ElevatorOuttake outtake;
+    //private ElevatorOuttake outtake;
+    private BrickHook hook;
 
-    private int formation;
+    private int formation = 2;
 
     private ImageView imageView;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
 
+    /*
     private Camera.PictureCallback camPC = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] bytes, Camera camera) {
@@ -65,14 +74,15 @@ public class AutoRelayOpMode extends LinearOpMode {
             camera.stopPreview();
 
         }
-    };
+    }; */
 
     @Override
     public void runOpMode() {
 
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
-        outtake = ElevatorOuttake.standard(hardwareMap);
+        //outtake = ElevatorOuttake.standard(hardwareMap);
+        hook = BrickHook.standard(hardwareMap);
 
         /*
         [ KOOL-AID METHOD ]
@@ -91,7 +101,8 @@ public class AutoRelayOpMode extends LinearOpMode {
          */
 
         // because takePicture() is asynchronous, we have to call the rest of the code after the callback
-        getSkystoneSetup();
+        // getSkystoneSetup();
+        drivePath();
 
     }
 
@@ -103,38 +114,67 @@ public class AutoRelayOpMode extends LinearOpMode {
 
         try {
             if (formation == 1) {
+                drive.forwardWithPower(1);
+                Thread.sleep((int)(30 / VELOCITY));
+                drive.turnInPlace(1, true);
+                Thread.sleep(100);
                 drive.strafeLeftWithPower(1);
-                Thread.sleep(1);
+                Thread.sleep(20);
+
                 drive.forwardWithPower(1);
-                Thread.sleep(1);
-                drive.steerWithPower(0.1, 1);
-                Thread.sleep(1);
-                drive.steerWithPower(1, 1); // drive forward while slightly turning towards the brick
                 intake.spin();
-                Thread.sleep(1);
-                drive.steerWithPower(1, 1);
+                Thread.sleep(30);
+                drive.forwardWithPower(1);
                 intake.stopSpinning();
-                Thread.sleep(1);
+                Thread.sleep(50);
+                drive.turnInPlace(1, true);
+                Thread.sleep(50);
+                drive.forwardWithPower(1);
+                Thread.sleep(50);
+
                 intake.spinReverse();
-                Thread.sleep(1);
-                drive.steerWithPower(-1, -1);
+                Thread.sleep(50);
+                drive.forwardWithPower(-1);
                 intake.stopSpinning();
-                Thread.sleep(1);
-                drive.steerWithPower(1, -1);
-                intake.spin();
-                Thread.sleep(1);
-                drive.steerWithPower(1, 1);
-                Thread.sleep(1);
-                intake.spinReverse();
-                drive.stop();
+                Thread.sleep(50);
+                drive.turnInPlace(1, false);
+                Thread.sleep(50);
+                drive.forwardWithPower(-1);
+                Thread.sleep(80);
             } else if (formation == 2) {
-                drive.forwardWithPower(1);
-                Thread.sleep(1);
-            } else if (formation == 3) {
+                drive.forwardWithPower(-1);
+                Thread.sleep((int)(4.5 / VELOCITY));
+                drive.strafeLeftWithPower(1);
+                Thread.sleep((int)(15 / VELOCITY));
+                drive.stop();
+                hook.clamp();
+                Thread.sleep(300);
+                hook.stop();
                 drive.strafeRightWithPower(1);
-                Thread.sleep(1);
+                Thread.sleep((int)(5 / VELOCITY));
                 drive.forwardWithPower(1);
-                Thread.sleep(1);
+                Thread.sleep((int)(34.5 / VELOCITY));
+                hook.release();
+                drive.stop();
+                Thread.sleep(300);
+                drive.forwardWithPower(-1);
+                Thread.sleep((int)(7.5 / VELOCITY));
+                drive.strafeLeftWithPower(1);
+                Thread.sleep((int)(5 / VELOCITY));
+                drive.stop();
+                hook.clamp();
+                Thread.sleep(300);
+                hook.stop();
+                drive.strafeRightWithPower(1);
+                Thread.sleep((int)(5 / VELOCITY));
+                drive.forwardWithPower(1);
+                Thread.sleep((int)(7.5 / VELOCITY));
+                hook.release();
+                drive.stop();
+                Thread.sleep(300);
+                hook.stop();
+            } else if (formation == 3) {
+
             }
         } catch (Exception e) {
 
