@@ -12,12 +12,12 @@ public class BrickHook {
     public BrickHook (CRServo hook) { this.hook = hook; }
 
     public void clamp () {
-        hook.setDirection(CRServo.Direction.FORWARD);
+        hook.setDirection(CRServo.Direction.REVERSE);
         hook.setPower(1);
     }
 
     public void release () {
-        hook.setDirection(CRServo.Direction.REVERSE);
+        hook.setDirection(CRServo.Direction.FORWARD);
         hook.setPower(1);
     }
 

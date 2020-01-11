@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -19,6 +20,9 @@ import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 
 public class AutoRelayOpMode extends LinearOpMode {
+
+    private double deltaTime;
+    private int sideModifier;
 
     // CAMERA CONSTANTS (unknown as of yet)
     /** percentage of way up the screen the stones are (0.00 to 1.00)*/
@@ -34,9 +38,6 @@ public class AutoRelayOpMode extends LinearOpMode {
     /** seconds to strafe to face the 2-block gap*/
     private final int[] GAP_STRAFE_DISTS = {0, 0, 0};
 
-    // MOVEMENT CONSTANTS
-    /** average velocity of the robot at full power (inches per millisecond) */
-    private final double VELOCITY = 0.027;
     /** average angular velocity of the robot at full power (degrees per millisecond) */
     private final double ANGULAR_VELOCITY = 1;
 
@@ -48,9 +49,18 @@ public class AutoRelayOpMode extends LinearOpMode {
     private ColorSensor colorSensor;
 
     private int formation = 2;
+    private double speed = 0.75;
 
     private ImageView imageView;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
+
+    private double FORWARD_VEL;
+    private double STRAFE_VEL;
+
+    public AutoRelayOpMode(int side, double deltaTime) {
+        sideModifier = side;
+        this.deltaTime = deltaTime;
+    }
 
     /*
     private Camera.PictureCallback camPC = new Camera.PictureCallback() {
@@ -81,6 +91,12 @@ public class AutoRelayOpMode extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        // MOVEMENT CONSTANTS
+        /** average forward velocity of the robot at full power (inches per millisecond) */
+        FORWARD_VEL = 0.0347 / deltaTime;
+        /** average strafing velocity of the robot at full power (inches per millisecond) */
+        STRAFE_VEL = 0.0257 / deltaTime;
 
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
@@ -118,63 +134,61 @@ public class AutoRelayOpMode extends LinearOpMode {
         try {
             if (formation == 1) {
                 drive.forwardWithPower(1);
-                Thread.sleep((int)(30 / VELOCITY));
+                sleep((int)(30 / FORWARD_VEL));
                 drive.turnInPlace(1, true);
-                Thread.sleep(100);
+                sleep(100);
                 drive.strafeLeftWithPower(1);
-                Thread.sleep(20);
+                sleep(20);
 
                 drive.forwardWithPower(1);
                 intake.spin();
-                Thread.sleep(30);
+                sleep(30);
                 drive.forwardWithPower(1);
                 intake.stopSpinning();
-                Thread.sleep(50);
+                sleep(50);
                 drive.turnInPlace(1, true);
-                Thread.sleep(50);
+                sleep(50);
                 drive.forwardWithPower(1);
-                Thread.sleep(50);
+                sleep(50);
 
                 intake.spinReverse();
-                Thread.sleep(50);
+                sleep(50);
                 drive.forwardWithPower(-1);
                 intake.stopSpinning();
-                Thread.sleep(50);
+                sleep(50);
                 drive.turnInPlace(1, false);
-                Thread.sleep(50);
+                sleep(50);
                 drive.forwardWithPower(-1);
-                Thread.sleep(80);
+                sleep(80);
             } else if (formation == 2) {
-                drive.forwardWithPower(-1);
-                Thread.sleep((int)(4.5 / VELOCITY));
-                drive.strafeLeftWithPower(1);
-                Thread.sleep((int)(15 / VELOCITY));
+                drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(4.5 / FORWARD_VEL));
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(15 / STRAFE_VEL));
                 drive.stop();
                 hook.clamp();
-                Thread.sleep(300);
-                hook.stop();
-                drive.strafeRightWithPower(1);
-                Thread.sleep((int)(5 / VELOCITY));
-                drive.forwardWithPower(1);
-                Thread.sleep((int)(34.5 / VELOCITY));
+                sleep(1000);
+                drive.strafeRightWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(-speed * sideModifier);
+                sleep((int)(34.5 / FORWARD_VEL));
                 hook.release();
                 drive.stop();
-                Thread.sleep(300);
-                drive.forwardWithPower(-1);
-                Thread.sleep((int)(7.5 / VELOCITY));
-                drive.strafeLeftWithPower(1);
-                Thread.sleep((int)(5 / VELOCITY));
+                sleep(1000);
+                drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(46.5 / FORWARD_VEL));
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
                 drive.stop();
                 hook.clamp();
-                Thread.sleep(300);
-                hook.stop();
-                drive.strafeRightWithPower(1);
-                Thread.sleep((int)(5 / VELOCITY));
-                drive.forwardWithPower(1);
-                Thread.sleep((int)(7.5 / VELOCITY));
+                sleep(1000);
+                drive.strafeRightWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(46.5 / FORWARD_VEL));
                 hook.release();
                 drive.stop();
-                Thread.sleep(300);
+                sleep(1000);
                 hook.stop();
             } else if (formation == 3) {
 
@@ -209,4 +223,6 @@ public class AutoRelayOpMode extends LinearOpMode {
             leastColor = third_color;
         }
     }
+
+
 }

@@ -22,9 +22,9 @@ public class Intake {
         this.flywheels = flywheels;
         for (Motor m : flywheels) {
             if (m.name.equals("flywheel_l")) {
-                m.motor.setDirection(DcMotor.Direction.FORWARD);
-            } else if (m.name.equals("flywheel_r")) {
                 m.motor.setDirection(DcMotor.Direction.REVERSE);
+            } else if (m.name.equals("flywheel_r")) {
+                m.motor.setDirection(DcMotor.Direction.FORWARD);
             }
         }
     }

@@ -191,12 +191,12 @@ public class MecanumDrive {
 
     public void forwardWithPower(double power) {
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        move(power, new Motor.Vector2D(0, 1), 0);
+        move(power, new Motor.Vector2D(0, -1), 0);
     }
 
     public void forwardWithSpeed(double power) {
         setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        move(power, new Motor.Vector2D(0, 1), 0);
+        move(power, new Motor.Vector2D(0, -1), 0);
     }
 
     /**
@@ -205,7 +205,7 @@ public class MecanumDrive {
      */
     public void strafeLeftWithPower(double power) {
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        move(power, new Motor.Vector2D(-1, 0), 0);
+        move(power, new Motor.Vector2D(1, 0), 0);
     }
 
     /**
@@ -214,7 +214,7 @@ public class MecanumDrive {
      */
     public void strafeLeftWithSpeed(double speed) {
         setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        move(speed, new Motor.Vector2D(-1, 0), 0);
+        move(speed, new Motor.Vector2D(1, 0), 0);
     }
 
     /**
@@ -223,7 +223,7 @@ public class MecanumDrive {
      */
     public void strafeRightWithPower(double power) {
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        move(power, new Motor.Vector2D(1, 0), 0);
+        move(power, new Motor.Vector2D(-1, 0), 0);
     }
 
     /**
@@ -232,7 +232,7 @@ public class MecanumDrive {
      */
     public void strafeRightWithSpeed(double speed) {
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        move(speed, new Motor.Vector2D(1, 0), 0);
+        move(speed, new Motor.Vector2D(-1, 0), 0);
     }
 
     public void steerWithPower(double power, double turn) {

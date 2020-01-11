@@ -16,7 +16,7 @@ public class IterativeOpMode extends OpMode {
     //private StonePusher stonePusher;
 
     //private Outtake outtake;
-    //private ElevatorOuttake elevatorOuttake;
+    private ElevatorOuttake elevatorOuttake;
 
     private PlateClamp plateClamp;
 
@@ -36,7 +36,7 @@ public class IterativeOpMode extends OpMode {
         intake = Intake.standard(hardwareMap);
         //stonePusher = StonePusher.standard(hardwareMap);
         //outtake = Outtake.standard(hardwareMap);
-        //elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
+        elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
 
         flywheelBT = new ButtonTracker();
@@ -54,15 +54,26 @@ public class IterativeOpMode extends OpMode {
         double turn = gamepad1.right_stick_x;
 
         // Account for stick drifting
+        /*
         if (Utils.accountDrift(strafe, speed)) {
             strafe = 0;
             speed = 0;
         } if (Utils.accountDrift(turn, 0)) {
             turn = 0;
+        } */
+
+        if (Math.abs(turn) < 0.2) {
+            turn = 0;
+        }
+        if (Math.abs(strafe) < 0.2) {
+            strafe = 0;
+        }
+        if (Math.abs(speed) < 0.2) {
+            speed = 0;
         }
 
         // Drive in the inputted direction.
-        MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, -speed);
+        MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
         drive.move(1, vector, turn);
 
 
@@ -150,11 +161,23 @@ public class IterativeOpMode extends OpMode {
         double elevatorHeight = gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
 
-        if (Utils.accountDrift(0, elevatorHeight)) {
+        if (Math.abs(elevatorHeight) < 0.2) {
             elevatorHeight = 0;
-        } if (Utils.accountDrift(0, clawDistance)) {
+        }
+        if (Math.abs(clawDistance) < 0.2) {
             clawDistance = 0;
         }
+
+        elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
+
+        if (gamepad2.dpad_up) {
+            elevatorOuttake.moveClamp(1);
+        } else if (gamepad2.dpad_down) {
+            elevatorOuttake.moveClamp(-1);
+        } else {
+            elevatorOuttake.stopClamp();
+        }
+
 
         //elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
 
