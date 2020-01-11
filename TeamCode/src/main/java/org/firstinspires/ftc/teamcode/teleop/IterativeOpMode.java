@@ -49,7 +49,7 @@ public class IterativeOpMode extends OpMode {
         lastLoop = seconds;
 
         double speed = gamepad1.left_stick_y;
-        double strafe = gamepad1.left_stick_x;
+        double strafe = -gamepad1.left_stick_x;
         double turn = gamepad1.right_stick_x;
 
         // Account for stick drifting
@@ -73,7 +73,7 @@ public class IterativeOpMode extends OpMode {
 
         // Drive in the inputted direction.
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-        drive.move(1, vector, turn);
+        drive.move(1, vector, turn, MecanumDrive.TurnBehavior.ADDSUBTRACT);
 
 
         // Activate and deactivate pivot flywheels (toggles)
