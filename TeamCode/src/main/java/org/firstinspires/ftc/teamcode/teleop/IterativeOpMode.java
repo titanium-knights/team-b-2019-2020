@@ -25,7 +25,6 @@ public class IterativeOpMode extends OpMode {
     private ButtonTracker downBT = new ButtonTracker();
     private ButtonTracker midBT = new ButtonTracker();
     private ButtonTracker upBT = new ButtonTracker();
-
     private ElapsedTime elapsedTime;
 
     private double lastLoop = -1;
@@ -83,9 +82,9 @@ public class IterativeOpMode extends OpMode {
 
         // Either spins or doesn't depending on mode
         if (flywheelBT.getMode()) {
-            intake.spin();
-        } else if (gamepad1.b) {
             intake.spinReverse();
+        } else if (gamepad1.b) {
+            intake.spin();
         } else {
             intake.stopSpinning();
         }
@@ -177,7 +176,6 @@ public class IterativeOpMode extends OpMode {
         } else {
             elevatorOuttake.stopClamp();
         }
-
 
         //elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
 

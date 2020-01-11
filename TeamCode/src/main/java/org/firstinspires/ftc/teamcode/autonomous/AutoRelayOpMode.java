@@ -164,14 +164,14 @@ public class AutoRelayOpMode extends LinearOpMode {
                 drive.forwardWithPower(speed * sideModifier);
                 sleep((int)(4.5 / FORWARD_VEL));
                 drive.strafeLeftWithPower(speed);
-                sleep((int)(15 / STRAFE_VEL));
+                sleep((int)(16 / STRAFE_VEL));
                 drive.stop();
                 hook.clamp();
                 sleep(1000);
                 drive.strafeRightWithPower(speed);
                 sleep((int)(5 / STRAFE_VEL));
-                drive.forwardWithPower(-speed * sideModifier);
-                sleep((int)(34.5 / FORWARD_VEL));
+                drive.forwardWithPower(-speed * sideModifier*0.5);
+                sleep((int)(34.5 / FORWARD_VEL*2));
                 hook.release();
                 drive.stop();
                 sleep(1000);
