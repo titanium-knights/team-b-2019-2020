@@ -48,7 +48,7 @@ public class AutoRelayOpMode extends LinearOpMode {
 
     private ColorSensor colorSensor;
 
-    private int formation = 2;
+    private int formation = 3;
     private double speed = 0.75;
 
     private ImageView imageView;
@@ -133,38 +133,10 @@ public class AutoRelayOpMode extends LinearOpMode {
 
         try {
             if (formation == 1) {
-                drive.forwardWithPower(1);
-                sleep((int)(30 / FORWARD_VEL));
-                drive.turnInPlace(1, true);
-                sleep(100);
-                drive.strafeLeftWithPower(1);
-                sleep(20);
-
-                drive.forwardWithPower(1);
-                intake.spin();
-                sleep(30);
-                drive.forwardWithPower(1);
-                intake.stopSpinning();
-                sleep(50);
-                drive.turnInPlace(1, true);
-                sleep(50);
-                drive.forwardWithPower(1);
-                sleep(50);
-
-                intake.spinReverse();
-                sleep(50);
-                drive.forwardWithPower(-1);
-                intake.stopSpinning();
-                sleep(50);
-                drive.turnInPlace(1, false);
-                sleep(50);
-                drive.forwardWithPower(-1);
-                sleep(80);
-            } else if (formation == 2) {
                 drive.forwardWithPower(speed * sideModifier);
                 sleep((int)(4.5 / FORWARD_VEL));
                 drive.strafeLeftWithPower(speed);
-                sleep((int)(15 / STRAFE_VEL));
+                sleep((int)(16 / STRAFE_VEL));
                 drive.stop();
                 hook.clamp();
                 sleep(1000);
@@ -184,14 +156,72 @@ public class AutoRelayOpMode extends LinearOpMode {
                 sleep(1000);
                 drive.strafeRightWithPower(speed);
                 sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(-speed * sideModifier);
+                sleep((int)(46.5 / FORWARD_VEL));
+                hook.release();
+                drive.stop();
+                sleep(1000);
+                hook.stop();
+            } else if (formation == 2) {
                 drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(4.5 / FORWARD_VEL));
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(16 / STRAFE_VEL));
+                drive.stop();
+                hook.clamp();
+                sleep(1000);
+                drive.strafeRightWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(-speed * sideModifier);
+                sleep((int)(34.5 / FORWARD_VEL));
+                hook.release();
+                drive.stop();
+                sleep(1000);
+                drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(46.5 / FORWARD_VEL));
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.stop();
+                hook.clamp();
+                sleep(1000);
+                drive.strafeRightWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(-speed * sideModifier);
                 sleep((int)(46.5 / FORWARD_VEL));
                 hook.release();
                 drive.stop();
                 sleep(1000);
                 hook.stop();
             } else if (formation == 3) {
-
+                drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(4.5 / FORWARD_VEL));
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(16 / STRAFE_VEL));
+                drive.stop();
+                hook.clamp();
+                sleep(1000);
+                drive.strafeRightWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(-speed * sideModifier);
+                sleep((int)(34.5 / FORWARD_VEL));
+                hook.release();
+                drive.stop();
+                sleep(1000);
+                drive.forwardWithPower(speed * sideModifier);
+                sleep((int)(46.5 / FORWARD_VEL));
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.stop();
+                hook.clamp();
+                sleep(1000);
+                drive.strafeRightWithPower(speed);
+                sleep((int)(5 / STRAFE_VEL));
+                drive.forwardWithPower(-speed * sideModifier);
+                sleep((int)(46.5 / FORWARD_VEL));
+                hook.release();
+                drive.stop();
+                sleep(1000);
+                hook.stop();
             }
         } catch (Exception e) {
 
@@ -224,5 +254,34 @@ public class AutoRelayOpMode extends LinearOpMode {
         }
     }
 
+    private void checkBricks () {
+
+        drive.strafeLeftWithPower(speed);
+        sleep((int)(16 / STRAFE_VEL));
+        int f1 = 0; // check color
+        sleep(800);
+
+        drive.forwardWithPower(-speed * FORWARD_VEL);
+        sleep((int)(8 / FORWARD_VEL));
+        drive.stop();
+        int f2 = 0; // check color
+        sleep(800);
+
+        drive.forwardWithPower(-speed * FORWARD_VEL);
+        sleep((int)(8 / FORWARD_VEL));
+        drive.stop();
+        int f3 = 0; // check color
+        sleep(800);
+
+        if ((f1 > f2) && (f1 > f3)) {
+            formation = 1;
+        }
+        if ((f2 > f1) && (f2 > f3)) {
+            formation = 2;
+        }
+        if ((f3 > f1) && (f3 > f2)) {
+            formation = 3;
+        }
+    }
 
 }
