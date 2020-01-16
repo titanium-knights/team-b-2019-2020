@@ -6,6 +6,8 @@ import org.firstinspires.ftc.teamcode.movement.*
 
 @TeleOp(name = "Event Test Op Mode", group = "Tests")
 class EventTestOpMode: EventOpMode({
+
+    /*
     arrayOf(gamepad1, gamepad2).forEach { it.setJoystickDeadzone(0.2F) }
 
     val mecanumDrive = MecanumDrive.standard(hardwareMap)
@@ -54,4 +56,6 @@ class EventTestOpMode: EventOpMode({
     doWhen(makeButton(gamepad2::dpad_down).pushed) { plateClamp.setDown() }
     doWhen(makeButton(gamepad2::dpad_left).pushed) { plateClamp.setMid() }
     doWhen(makeButton(gamepad2::dpad_up).pushed) { plateClamp.setUp() }
+    (
+     */
 })

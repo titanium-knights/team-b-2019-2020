@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop.tests
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.events.EventOpMode
-import org.firstinspires.ftc.teamcode.util.ButtonTracker
+import org.firstinspires.ftc.teamcode.util.ButtonToggler
 
 @TeleOp(name = "Motor Test Op Mode", group = "Tests")
 class MotorTestOpMode: EventOpMode({
@@ -11,8 +11,8 @@ class MotorTestOpMode: EventOpMode({
     val motors = names.map { hardwareMap[DcMotor::class.java, it] }
     var currentIndex = 0
 
-    val prevMotor = ButtonTracker()
-    val nextMotor = ButtonTracker()
+    val prevMotor = ButtonToggler()
+    val nextMotor = ButtonToggler()
 
     gamepad1.setJoystickDeadzone(0.2F)
 

@@ -6,25 +6,24 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.movement.*;
 
-import org.firstinspires.ftc.teamcode.util.Utils;
-import org.firstinspires.ftc.teamcode.util.ButtonTracker;
+import org.firstinspires.ftc.teamcode.util.ButtonToggler;
 
 @TeleOp(name = "Tele Op Mode")
 public class IterativeOpMode extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
-    //private StonePusher stonePusher;
 
-    //private Outtake outtake;
     private ElevatorOuttake elevatorOuttake;
 
     private PlateClamp plateClamp;
+    private BrickHook brickHook;
 
-    private ButtonTracker flywheelBT;
-    private ButtonTracker overrideBT = new ButtonTracker();
-    private ButtonTracker downBT = new ButtonTracker();
-    private ButtonTracker midBT = new ButtonTracker();
-    private ButtonTracker upBT = new ButtonTracker();
+    private ButtonToggler flywheelBT;
+    private ButtonToggler overrideBT = new ButtonToggler();
+    private ButtonToggler downBT = new ButtonToggler();
+    private ButtonToggler midBT = new ButtonToggler();
+    private ButtonToggler upBT = new ButtonToggler();
+
     private ElapsedTime elapsedTime;
 
     private double lastLoop = -1;
@@ -37,8 +36,9 @@ public class IterativeOpMode extends OpMode {
         //outtake = Outtake.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
+        brickHook = BrickHook.standard(hardwareMap);
 
-        flywheelBT = new ButtonTracker();
+        flywheelBT = new ButtonToggler();
         elapsedTime = new ElapsedTime();
     }
 
@@ -73,7 +73,7 @@ public class IterativeOpMode extends OpMode {
 
         // Drive in the inputted direction.
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-        drive.move(1, vector, turn, MecanumDrive.TurnBehavior.ADDSUBTRACT);
+        drive.move(1, vector, turn);
 
 
         // Activate and deactivate pivot flywheels (toggles)
@@ -82,9 +82,9 @@ public class IterativeOpMode extends OpMode {
 
         // Either spins or doesn't depending on mode
         if (flywheelBT.getMode()) {
-            intake.spinReverse();
-        } else if (gamepad1.b) {
             intake.spin();
+        } else if (gamepad1.b) {
+            intake.spinReverse();
         } else {
             intake.stopSpinning();
         }
@@ -92,54 +92,6 @@ public class IterativeOpMode extends OpMode {
         overrideBT.ifRelease(gamepad2.back);
         overrideBT.update(gamepad2.back);
         boolean enforceLimits = false; // Super secret escape button
-
-        // move the intake pusher
-        // "DEPRECATED"
-        /*
-        if (gamepad2.x) {
-            stonePusher.pushStone(true, enforceLimits);
-        } else if (gamepad2.b) {
-            stonePusher.pushStone(false, enforceLimits);
-        } else {
-            stonePusher.stopPusher();
-        }
-         */
-
-        /*
-        // Update outtake deltaTime
-        outtake.updateTime();
-
-        // Raise and lower arm
-        double armPower = gamepad2.left_stick_y;
-        armPower = Utils.accountDrift(armPower, 0) ? 0 : armPower;
-        if (armPower > 0) {
-            armPower *= 0.8;                                                                                                                                                                                                                                    ;
-        } else {
-            armPower *= 0.3;
-        }
-        outtake.moveArm(armPower, enforceLimits);
-
-        // Rotate wrist
-        if (gamepad2.left_bumper) {
-            outtake.rotateWrist(true, 1);
-            outtake.updateWristTime(true);
-        } else if (gamepad2.right_bumper) {
-            outtake.rotateWrist(false, 1);
-            outtake.updateWristTime(false);
-        } else {
-            outtake.stopWrist();
-        }
-
-        // Clamp claw
-        if (gamepad2.y) {
-            outtake.moveClaw(true, 1);
-            outtake.updateClawTime(true);
-        } else if (gamepad2.a) {
-            outtake.moveClaw(false,1);
-            outtake.updateClawTime(false);
-        } else {
-            outtake.stopClaw();
-        } */
 
         boolean down = downBT.ifRelease(gamepad2.dpad_down);
         boolean mid = midBT.ifRelease(gamepad2.dpad_left);
@@ -177,6 +129,14 @@ public class IterativeOpMode extends OpMode {
             elevatorOuttake.stopClamp();
         }
 
+        if (gamepad2.dpad_left) {
+            brickHook.release();
+        } else if (gamepad2.dpad_right) {
+            brickHook.clamp();
+        } else {
+            brickHook.stop();
+        }
+
         //elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
 
         // Telemetry data
@@ -187,6 +147,5 @@ public class IterativeOpMode extends OpMode {
         telemetry.addData("Claw Distance", clawDistance);
         telemetry.addData("Enforcing Limits", enforceLimits ? "Yes" : "No");
         telemetry.addData("Delta Time", delta);
-        // telemetry.addData("Wrist Pos", outtake.getWristPosition());
     }
 }

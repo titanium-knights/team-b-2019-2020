@@ -8,8 +8,7 @@ import org.firstinspires.ftc.teamcode.movement.BrickHook;
 import org.firstinspires.ftc.teamcode.movement.Intake;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.movement.PlateClamp;
-import org.firstinspires.ftc.teamcode.util.ButtonTracker;
-import org.firstinspires.ftc.teamcode.util.Utils;
+import org.firstinspires.ftc.teamcode.util.ButtonToggler;
 
 @TeleOp(name = "Auto Funct Test Mode")
 public class ManualAutoTestOpMode extends OpMode {
@@ -23,11 +22,11 @@ public class ManualAutoTestOpMode extends OpMode {
 
     private PlateClamp plateClamp;
 
-    private ButtonTracker flywheelBT;
-    private ButtonTracker overrideBT = new ButtonTracker();
-    private ButtonTracker downBT = new ButtonTracker();
-    private ButtonTracker midBT = new ButtonTracker();
-    private ButtonTracker upBT = new ButtonTracker();
+    private ButtonToggler flywheelBT;
+    private ButtonToggler overrideBT = new ButtonToggler();
+    private ButtonToggler downBT = new ButtonToggler();
+    private ButtonToggler midBT = new ButtonToggler();
+    private ButtonToggler upBT = new ButtonToggler();
 
     /** average forward velocity of the robot at full power (inches per millisecond) */
     private final double FORWARD_VEL = 0.0347;
@@ -48,7 +47,7 @@ public class ManualAutoTestOpMode extends OpMode {
         plateClamp = PlateClamp.standard(hardwareMap);
         brickHook = BrickHook.standard(hardwareMap);
 
-        flywheelBT = new ButtonTracker();
+        flywheelBT = new ButtonToggler();
         elapsedTime = new ElapsedTime();
     }
 

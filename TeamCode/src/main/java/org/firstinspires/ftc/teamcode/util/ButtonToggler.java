@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.util;
 /**
  * A class used for tracking advanced button values.
  */
-public class ButtonTracker {
+public class ButtonToggler {
 
     private boolean on;
     private boolean mode;
     private double duration;
 
-    public ButtonTracker () {
+    public ButtonToggler() {
         on = false;
         mode = false;
         duration = 0;
@@ -51,8 +51,8 @@ public class ButtonTracker {
     }
 
     /**
-     * Returns the current mode of the ButtonTracker.
-     * @return The current mode of the ButtonTracker.
+     * Returns the current mode of the ButtonToggler.
+     * @return The current mode of the ButtonToggler.
      */
     public boolean getMode () {
         return mode;

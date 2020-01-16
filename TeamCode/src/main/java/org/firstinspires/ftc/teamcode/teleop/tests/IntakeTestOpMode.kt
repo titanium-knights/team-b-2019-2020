@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.events.isPressed
 import org.firstinspires.ftc.teamcode.movement.Intake
 
 fun EventOpMode.registerIntakeHooks() {
+    /*
     val intake = Intake.standard(hardwareMap)
 
     doCond(
@@ -14,6 +15,7 @@ fun EventOpMode.registerIntakeHooks() {
             gamepad2::y.isPressed to { intake.spin() },
             null to { intake.stopSpinning() }
     )
+     */
 }
 
 @TeleOp(name = "Intake Test Op Mode", group = "Tests")
