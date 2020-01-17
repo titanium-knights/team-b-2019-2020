@@ -10,4 +10,15 @@ public class ButtonBoolean extends InputRegister {
         super(gamepad, inputName);
     }
 
+    public boolean get () {
+        return on;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        if (ifPress()) {
+            on = !on;
+        }
+    }
 }
