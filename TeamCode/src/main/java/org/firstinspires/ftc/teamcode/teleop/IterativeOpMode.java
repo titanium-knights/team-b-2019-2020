@@ -26,8 +26,12 @@ public class IterativeOpMode extends OpMode {
     private ButtonToggler midBT = new ButtonToggler();
     private ButtonToggler upBT = new ButtonToggler();
 
-    private ButtonBoolean intakePower = new ButtonBoolean(gamepad2, "dpad_up");
-    private ButtonBoolean intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
+    private ButtonBoolean intakePower = new ButtonBoolean(gamepad2, "back");
+    private ButtonBoolean intakeUp = new ButtonBoolean(gamepad2, "dpad_up");
+    private ButtonBoolean intakeDown = new ButtonBoolean(gamepad2, "dpad_down");
+    private boolean isUpPressed = true;
+    private boolean isDownPressed = true;
+    private boolean intakeDirection = true;
     /*
         intakePower.get() --> gives you the state (true or false) of the toggler
      */
@@ -87,6 +91,41 @@ public class IterativeOpMode extends OpMode {
         }
 
          */
+
+        if(intakeUp.get() == isUpPressed)
+        {
+            if(!intakeDirection)
+            {
+                intakeDirection = true;
+            }
+            isUpPressed = !isUpPressed;
+        }
+        if(intakeDown.get() == isDownPressed)
+        {
+            if(intakeDirection)
+            {
+                intakeDirection = false;
+            }
+            isDownPressed = !isDownPressed;
+        }
+
+        if(intakeDirection && intakePower.get())
+        {
+            intake.spin();
+        }
+        if(!intakeDirection && intakePower.get())
+        {
+            intake.spinReverse();
+        }
+        if(intakeDirection && !intakePower.get())
+        {
+            intake.stopSpinning();
+        }
+        if(!intakeDirection && !intakePower.get())
+        {
+            intake.stopSpinning();
+        }
+
 
         double elevatorHeight = gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
