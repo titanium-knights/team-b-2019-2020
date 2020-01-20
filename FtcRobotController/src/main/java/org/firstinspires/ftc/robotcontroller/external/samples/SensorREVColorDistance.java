@@ -121,6 +121,30 @@ public class SensorREVColorDistance extends LinearOpMode {
             // convert the RGB values to HSV values.
             // multiply by the SCALE_FACTOR.
             // then cast it back to int (SCALE_FACTOR is a double)
+            /*
+
+            * Go Forward and all the way left
+            * Scan the first stone.
+            * Strafe Right
+            * Scan the second stone.
+            * Strafe Right
+            * Scan the third stone
+            * Store them in an array. Which ever one has lowest V value is the skystone.
+            * Store either skystone 1, 2, or 3 in a variable called skystonePos.
+            * Go to skystone located at skystonePos.
+            * Drive into it with intake on.
+            * Drive towards the building depot
+            * Drive until back color sensor senses the tray.
+            * Lift vertical elevator a little
+            * Extend horizontal elevator
+            * Drop skystone
+            * Drive to either skystone pos 1 ,2, or 3
+            * repeat process.
+            * Use tray clamp to back up all the way.
+            * Lower all elevators
+            * Drive backward until the red tape on the floor is seen.
+            *
+             */
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
