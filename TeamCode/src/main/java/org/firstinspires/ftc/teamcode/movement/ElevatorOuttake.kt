@@ -26,15 +26,16 @@ class ElevatorOuttake(
         horizontal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    fun moveToEncoder(horizontalVal:Int, verticalVal:Int){
+    /*fun moveToEncoder(horizontalVal:Int, verticalVal:Int){
         horizontal.setMode(DcMotor.RunMode.RUN_TO_POSITION)
         vertical.setMode(DcMotor.RunMode.RUN_TO_POSITION)
         vertical.setTargetPosition(verticalVal)
         horizontal.setTargetPosition(horizontalVal)
         horizontal.setPower(0.75)
         vertical.setPower(0.75)
-
-    }
+        horizontal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+        vertical.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+    }*/
     fun getHorizontalEncoder(): Int{
         return horizontal.getCurrentPosition()
 
@@ -42,10 +43,9 @@ class ElevatorOuttake(
     fun getVerticalEncoder(): Int{
         return vertical.getCurrentPosition()
     }
-    /*fun moveToEncoder(horizontalVal:Double, verticalVal:Double){
+    fun moveToEncoder(horizontalVal:Double, verticalVal:Double){
         if(vertical.getCurrentPosition()<verticalVal){
-            while(vertical.getCurrentPosit
-            ion()<verticalVal){
+            while(vertical.getCurrentPosition()<verticalVal){
                 moveVertical(0.75)
             }
             stopElevators()
@@ -66,7 +66,7 @@ class ElevatorOuttake(
                 moveHorizontal(-0.75)
             }
         }
-    }*/
+    }
     /** Stops the horizontal movement of the claw */
     fun stopHorizontal() = moveHorizontal(0.0)
 

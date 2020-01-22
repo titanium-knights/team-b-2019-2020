@@ -122,7 +122,7 @@ public class VuforiaStuff {
                 cropHeight = (int) ((125.0 / 720.0) * bitmap.getHeight());
             }
 
-            DbgLog.msg("10435 vuforiascan"
+            DbgLog.msg("15891 vuforiascan"
                     + " cropStartX: " + cropStartX
                     + " cropStartY: " + cropStartY
                     + " cropWidth: " + cropWidth

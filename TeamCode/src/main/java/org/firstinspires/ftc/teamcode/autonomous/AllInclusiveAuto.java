@@ -2,11 +2,18 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+<<<<<<< HEAD
+import com.qualcomm.robotcore.hardware.ColorSensor;
+=======
+import com.qualcomm.robotcore.hardware.HardwareMap;
+>>>>>>> 1e6feef892cfd3d49f522352eaf17c54a1d7c034
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.autonomous.VuforiaStuff;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
+import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
+import org.firstinspires.ftc.teamcode.sensors.Gyro;
 import org.firstinspires.ftc.teamcode.util.DbgLog;
 
 
@@ -14,6 +21,7 @@ import org.firstinspires.ftc.teamcode.util.DbgLog;
 public class AllInclusiveAuto extends LinearOpMode {
     public VuforiaStuff vuforiaStuff;
     private VuforiaLocalizer vuforia;
+    private Gyro gyro;
     private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
     VuforiaStuff.skystonePos pos;
     double stoneDiff;
@@ -27,6 +35,7 @@ public class AllInclusiveAuto extends LinearOpMode {
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private MecanumDrive drive;
+    private ColorSensor colorSensor;
 
     public AllInclusiveAuto(int side, double deltaTime) {
         sideModifier = side;
@@ -36,6 +45,8 @@ public class AllInclusiveAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         roboInit();
+        gyro = BNO055IMUGyro.standard(hardwareMap);
+        gyro.initialize();
         pos = vuforiaStuff.vuforiascan(false, false);
         switch (pos) {
             case LEFT:
@@ -57,12 +68,50 @@ public class AllInclusiveAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 //drive forward to the building zone
-                drive.forwardWithPower(120/FORWARD_VEL);
+                drive.forwardWithPower(speed);
+                sleep((int)(120/FORWARD_VEL));
                 //strafe a little left
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(2/STRAFE_VEL));
                 //servo 2 up
-                //servo3 and servo 4 down
-                //strafe right all the way
-                //slowly back up
+                //servo 1 up
+                //strafe right 2 inches
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(2/STRAFE_VEL));
+                //drive backwards to next set of three skystones
+                drive.forwardWithPower(-speed);
+                sleep((int)(96/FORWARD_VEL));
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                //servo 1 up
+                //strafe right a little bit
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                //drive forward to the building zone
+                drive.forwardWithSpeed(speed);
+                sleep((int)(120/FORWARD_VEL));
+                //strafe a little left
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5/FORWARD_VEL));
+                //servo 1 down
+                //servo 2 up
+                //strafe right 16 inches
+                drive.strafeLeftWithPower(-speed);
+                //turn right 90 degrees
+                while(gyro.getAngle()<0){
+                    drive.turnInPlace(speed,true);
+                }
+                //back up 6 inches
+              //servo 3 down
+                //servo 4 down
+
+                //strafe right as much as possible
+                drive.forwardWithSpeed(speed);
+                sleep((int)(24/STRAFE_VEL));
+                //slowly strafe right
+                speed = 0.25;
+
                 break;
             case CENTER:
                 //insert code here
@@ -121,11 +170,11 @@ public class AllInclusiveAuto extends LinearOpMode {
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
-
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         drive = MecanumDrive.standard(hardwareMap);
+        colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
         FORWARD_VEL = 0.0347 / deltaTime;
@@ -135,4 +184,8 @@ public class AllInclusiveAuto extends LinearOpMode {
         waitForStart();
     }
 
+    public void checkStone () {
+
     }
+
+}
