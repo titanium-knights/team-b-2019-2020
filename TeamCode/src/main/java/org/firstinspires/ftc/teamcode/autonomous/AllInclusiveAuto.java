@@ -2,11 +2,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-<<<<<<< HEAD
-import com.qualcomm.robotcore.hardware.ColorSensor;
-=======
 import com.qualcomm.robotcore.hardware.HardwareMap;
->>>>>>> 1e6feef892cfd3d49f522352eaf17c54a1d7c034
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.autonomous.VuforiaStuff;
@@ -35,7 +31,6 @@ public class AllInclusiveAuto extends LinearOpMode {
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private MecanumDrive drive;
-    private ColorSensor colorSensor;
 
     public AllInclusiveAuto(int side, double deltaTime) {
         sideModifier = side;
@@ -170,11 +165,11 @@ public class AllInclusiveAuto extends LinearOpMode {
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
+
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         drive = MecanumDrive.standard(hardwareMap);
-        colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
         FORWARD_VEL = 0.0347 / deltaTime;
@@ -184,8 +179,4 @@ public class AllInclusiveAuto extends LinearOpMode {
         waitForStart();
     }
 
-    public void checkStone () {
-
     }
-
-}
