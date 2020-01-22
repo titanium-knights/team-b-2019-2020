@@ -28,8 +28,8 @@ public class Preset extends OpMode {
     private ButtonToggler midBT = new ButtonToggler();
     private ButtonToggler upBT = new ButtonToggler();
 
-    private ButtonBoolean intakePower = new ButtonBoolean(gamepad2, "dpad_up");
-    private ButtonBoolean intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
+    private ButtonBoolean intakePower;
+    private ButtonBoolean intakeDirection;
     /*
         intakePower.get() --> gives you the state (true or false) of the toggler
      */
@@ -48,6 +48,9 @@ public class Preset extends OpMode {
         elevatorOuttake.setEncoders();
         flywheelBT = new ButtonToggler();
         elapsedTime = new ElapsedTime();
+
+        intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
+        intakePower = new ButtonBoolean(gamepad2, "dpad_up");
     }
 
     @Override
@@ -79,7 +82,6 @@ public class Preset extends OpMode {
         flywheelBT.update(gamepad1.y);
 
         // Either spins or doesn't depending on mode
-        /* fix this code jason!
         if (flywheelBT.getMode()) {
             intake.spin();
         } else if (gamepad1.b) {
@@ -87,8 +89,6 @@ public class Preset extends OpMode {
         } else {
             intake.stopSpinning();
         }
-
-         */
 
         double elevatorHeight = gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;

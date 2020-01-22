@@ -26,8 +26,8 @@ public class IterativeOpMode extends OpMode {
     private ButtonToggler midBT = new ButtonToggler();
     private ButtonToggler upBT = new ButtonToggler();
 
-    private ButtonBoolean intakePower = new ButtonBoolean(gamepad2, "dpad_up");
-    private ButtonBoolean intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
+    private ButtonBoolean intakePower ;
+    private ButtonBoolean intakeDirection;
     /*
         intakePower.get() --> gives you the state (true or false) of the toggler
      */
@@ -46,6 +46,8 @@ public class IterativeOpMode extends OpMode {
 
         flywheelBT = new ButtonToggler();
         elapsedTime = new ElapsedTime();
+        intakePower = new ButtonBoolean(gamepad2, "dpad_down");
+        intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
     }
 
     @Override
@@ -77,7 +79,7 @@ public class IterativeOpMode extends OpMode {
         flywheelBT.update(gamepad1.y);
 
         // Either spins or doesn't depending on mode
-        /* fix this code jason!
+
         if (flywheelBT.getMode()) {
             intake.spin();
         } else if (gamepad1.b) {
@@ -86,7 +88,7 @@ public class IterativeOpMode extends OpMode {
             intake.stopSpinning();
         }
 
-         */
+
 
         double elevatorHeight = gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
@@ -100,12 +102,15 @@ public class IterativeOpMode extends OpMode {
 
         elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
 
-        if (gamepad2.dpad_up) {
+        if (gamepad1.dpad_up) {
             elevatorOuttake.moveClamp(1);
-        } else if (gamepad2.dpad_down) {
+        } else if (gamepad1.dpad_down) {
             elevatorOuttake.moveClamp(-1);
         } else {
             elevatorOuttake.stopClamp();
+        }
+        if(gamepad2.dpad_down){
+            elevatorOuttake.moveToEncoder(0,100);
         }
 
         if (gamepad2.dpad_left) {
@@ -123,5 +128,7 @@ public class IterativeOpMode extends OpMode {
         telemetry.addData("Elevator Height", elevatorHeight);
         telemetry.addData("Claw Distance", clawDistance);
         telemetry.addData("Delta Time", delta);
+        telemetry.addData("Vertical Elevator Encoder", elevatorOuttake.getVerticalEncoder());
+        telemetry.addData("Horizontal Elevator Encoder", elevatorOuttake.getHorizontalEncoder());
     }
 }

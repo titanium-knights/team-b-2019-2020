@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.autonomous.VuforiaStuff;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
+import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
+import org.firstinspires.ftc.teamcode.sensors.Gyro;
 import org.firstinspires.ftc.teamcode.util.DbgLog;
 
 
@@ -14,6 +17,7 @@ import org.firstinspires.ftc.teamcode.util.DbgLog;
 public class AllInclusiveAuto extends LinearOpMode {
     public VuforiaStuff vuforiaStuff;
     private VuforiaLocalizer vuforia;
+    private Gyro gyro;
     private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
     VuforiaStuff.skystonePos pos;
     double stoneDiff;
@@ -36,6 +40,8 @@ public class AllInclusiveAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         roboInit();
+        gyro = BNO055IMUGyro.standard(hardwareMap);
+        gyro.initialize();
         pos = vuforiaStuff.vuforiascan(false, false);
         switch (pos) {
             case LEFT:
@@ -85,12 +91,22 @@ public class AllInclusiveAuto extends LinearOpMode {
                 sleep((int)(5/FORWARD_VEL));
                 //servo 1 down
                 //servo 2 up
-                //servo 3 down
-                //servo 4 down
-                //strafe right as much as possible
+                //strafe right 16 inches
                 drive.strafeLeftWithPower(-speed);
+                //turn right 90 degrees
+                while(gyro.getAngle()<0){
+                    drive.turnInPlace(speed,true);
+                }
+                //back up 6 inches
+              //servo 3 down
+                //servo 4 down
+
+                //strafe right as much as possible
+                drive.forwardWithSpeed(speed);
                 sleep((int)(24/STRAFE_VEL));
-                //slowly back up
+                //slowly strafe right
+                speed = 0.25;
+
                 break;
             case CENTER:
                 //insert code here
