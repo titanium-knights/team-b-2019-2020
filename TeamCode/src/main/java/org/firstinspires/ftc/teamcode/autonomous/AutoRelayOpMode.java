@@ -11,7 +11,7 @@ public class AutoRelayOpMode extends LinearOpMode {
     private double deltaTime;
     private int sideModifier;
 
-    private MecanumDrive drive;
+        private MecanumDrive drive;
     private BrickHook hook;
 
     private ColorSensor colorSensor;

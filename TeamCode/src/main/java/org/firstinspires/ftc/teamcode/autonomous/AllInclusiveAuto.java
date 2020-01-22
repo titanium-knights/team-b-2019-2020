@@ -22,6 +22,7 @@ public class AllInclusiveAuto extends LinearOpMode {
     double driftAdjustment = -3;
 
     private int sideModifier;
+    private double speed =0.75;
     private double deltaTime;
     private double FORWARD_VEL;
     private double STRAFE_VEL;
@@ -40,14 +41,23 @@ public class AllInclusiveAuto extends LinearOpMode {
             case LEFT:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-                //back up all the way
-
                 //strafe to block
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(29 / STRAFE_VEL));
+                //back up all the way
+                drive.forwardWithPower(-speed*sideModifier);
+                sleep((int)(25/FORWARD_VEL));
                 //servo 1 down
+
                 //servo 2 down
+
                 //servo 1 up
+
                 //strafe right a little bit
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
                 //drive forward to the building zone
+                drive.forwardWithPower(120/FORWARD_VEL);
                 //strafe a little left
                 //servo 2 up
                 //servo3 and servo 4 down
@@ -57,7 +67,7 @@ public class AllInclusiveAuto extends LinearOpMode {
             case CENTER:
                 //insert code here
                 drive.strafeLeftWithPower(1);
-                sleep((int)(15 / ));
+                sleep((int)(15 /STRAFE_VEL));
                 break;
             case RIGHT:
                 //insert code here
