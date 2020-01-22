@@ -78,6 +78,10 @@ public class AutoRelayOpMode extends LinearOpMode {
                 sleep(1000);
                 hook.stop();
             } else if (formation == 2) {
+                //drive forward a little bit so that the hook thing is aligned to be in the right spot
+                //Strafe left while distance sensor
+                //Hook grabs
+                //----------------------------------------------
                 drive.forwardWithPower(speed * sideModifier);
                 sleep((int)(4.5 / FORWARD_VEL));
                 drive.strafeLeftWithPower(speed);
