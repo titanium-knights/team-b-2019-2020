@@ -148,19 +148,19 @@ public class AutoRelayOpMode extends LinearOpMode {
 
         drive.strafeLeftWithPower(speed);
         sleep((int)(16 / STRAFE_VEL));
-        int f1 = 0; // check color
+        double f1 = checkYellowBalance();
         sleep(800);
 
         drive.forwardWithPower(-speed * FORWARD_VEL);
         sleep((int)(8 / FORWARD_VEL));
         drive.stop();
-        int f2 = 0; // check color
+        double f2 = checkYellowBalance();
         sleep(800);
 
         drive.forwardWithPower(-speed * FORWARD_VEL);
         sleep((int)(8 / FORWARD_VEL));
         drive.stop();
-        int f3 = 0; // check color
+        double f3 = checkYellowBalance();
         sleep(800);
 
         if ((f1 > f2) && (f1 > f3)) {
@@ -172,6 +172,10 @@ public class AutoRelayOpMode extends LinearOpMode {
         if ((f3 > f1) && (f3 > f2)) {
             formation = 3;
         }
+    }
+
+    private double checkYellowBalance () {
+        return ((double)colorSensor.red()) / colorSensor.green();
     }
 
 }

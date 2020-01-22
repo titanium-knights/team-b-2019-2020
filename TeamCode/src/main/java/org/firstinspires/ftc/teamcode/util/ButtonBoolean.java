@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class ButtonBoolean extends InputRegister {
 
-    public boolean on = false;
+    private boolean on = false;
 
     public ButtonBoolean (Gamepad gamepad, String inputName) {
         super(gamepad, inputName);
@@ -22,3 +22,4 @@ public class ButtonBoolean extends InputRegister {
         }
     }
 }
+
