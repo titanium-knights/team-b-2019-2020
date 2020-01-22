@@ -58,34 +58,34 @@ public class AllInclusiveAuto extends LinearOpMode {
                 //insert code here
 
                 drive.strafeLeftWithPower(1);
-                sleep((int)(15 / STRAFE_VEL));
+                sleep((int)(30 / STRAFE_VEL));
 
                 // grab brick
                 sleep(1000);
 
                 drive.strafeLeftWithPower(-1);
-                sleep((int)(5 / STRAFE_VEL));
+                sleep((int)(10 / STRAFE_VEL));
 
                 drive.forwardWithPower(sideModifier);
-                sleep((int)(24 / FORWARD_VEL));
+                sleep((int)(48 / FORWARD_VEL));
 
                 drive.forwardWithPower(-sideModifier);
-                sleep((int)(36 / FORWARD_VEL));
+                sleep((int)(72 / FORWARD_VEL));
 
                 drive.strafeLeftWithPower(1);
-                sleep((int)(5 / STRAFE_VEL));
+                sleep((int)(10 / STRAFE_VEL));
 
                 // grab brick
                 sleep(1000);
 
                 drive.strafeLeftWithPower(-1);
-                sleep((int)(5 / STRAFE_VEL));
+                sleep((int)(10 / STRAFE_VEL));
 
                 drive.forwardWithPower(sideModifier);
-                sleep((int)(36 / FORWARD_VEL));
+                sleep((int)(72 / FORWARD_VEL));
 
                 drive.forwardWithPower(-sideModifier);
-                sleep((int)(6 / FORWARD_VEL));
+                sleep((int)(12 / FORWARD_VEL));
 
                 drive.stop();
 
