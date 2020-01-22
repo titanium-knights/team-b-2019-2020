@@ -57,11 +57,39 @@ public class AllInclusiveAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 //drive forward to the building zone
-                drive.forwardWithPower(120/FORWARD_VEL);
+                drive.forwardWithPower(speed);
+                sleep((int)(120/FORWARD_VEL));
                 //strafe a little left
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(2/STRAFE_VEL));
                 //servo 2 up
-                //servo3 and servo 4 down
-                //strafe right all the way
+                //servo 1 up
+                //strafe right 2 inches
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(2/STRAFE_VEL));
+                //drive backwards to next set of three skystones
+                drive.forwardWithPower(-speed);
+                sleep((int)(96/FORWARD_VEL));
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                //servo 1 up
+                //strafe right a little bit
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                //drive forward to the building zone
+                drive.forwardWithSpeed(speed);
+                sleep((int)(120/FORWARD_VEL));
+                //strafe a little left
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5/FORWARD_VEL));
+                //servo 1 down
+                //servo 2 up
+                //servo 3 down
+                //servo 4 down
+                //strafe right as much as possible
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(24/STRAFE_VEL));
                 //slowly back up
                 break;
             case CENTER:
