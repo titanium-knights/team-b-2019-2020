@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.autonomous.VuforiaStuff;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.util.DbgLog;
 
 
@@ -19,6 +20,17 @@ public class AllInclusiveAuto extends LinearOpMode {
     double stoneDiff2;
 
     double driftAdjustment = -3;
+
+    private int sideModifier;
+    private double deltaTime;
+    private double FORWARD_VEL;
+    private double STRAFE_VEL;
+    private MecanumDrive drive;
+
+    public AllInclusiveAuto(int side, double deltaTime) {
+        sideModifier = side;
+        this.deltaTime = deltaTime;
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,6 +56,8 @@ public class AllInclusiveAuto extends LinearOpMode {
                 break;
             case CENTER:
                 //insert code here
+                drive.strafeLeftWithPower(1);
+                sleep((int)(15 / ));
                 break;
             case RIGHT:
                 //insert code here
@@ -69,6 +83,13 @@ public class AllInclusiveAuto extends LinearOpMode {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        drive = MecanumDrive.standard(hardwareMap);
+        // MOVEMENT CONSTANTS
+        /** average forward velocity of the robot at full power (inches per millisecond) */
+        FORWARD_VEL = 0.0347 / deltaTime;
+        /** average strafing velocity of the robot at full power (inches per millisecond) */
+        STRAFE_VEL = 0.0257 / deltaTime;
 
         waitForStart();
     }
