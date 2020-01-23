@@ -55,16 +55,16 @@ public class AllInclusiveAuto extends LinearOpMode {
         SCALE_FACTOR = 255;
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color");
         //pos = vuforiaStuff.vuforiascan(false, false);
-
+        speed = 0.25;
         float satLeft;
         float satCenter;
         float satRight;
+        drive.forwardWithPower(-1*speed);
+        sleep((int)(24/FORWARD_VEL));
         while(getDistance()>6) {
             drive.strafeLeftWithPower(speed);
         }
         drive.stop();
-        drive.forwardWithPower(-1*speed);
-        sleep((int)(24/FORWARD_VEL));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -87,14 +87,14 @@ public class AllInclusiveAuto extends LinearOpMode {
         satRight = hsvValues[1];
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         switch (pos) {
-            case 0:
+            case 0: // Stone is at Left pos
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
 
 
-                //back up all the way
-                drive.forwardWithPower(-speed*sideModifier);
-                sleep((int)(25/FORWARD_VEL));
+                //back up to the first stone from the third stone
+                drive.forwardWithPower(-speed);
+                sleep((int)(-8/FORWARD_VEL));
                 //servo 1 down
 
                 //servo 2 down
@@ -123,9 +123,15 @@ public class AllInclusiveAuto extends LinearOpMode {
                 //servo 2 down
                 //servo 1 up
 
-                drive.strafeLeftWithPower(-speed);//strafe right a little bit
+
+                drive.strafeLeftWithPower(speed);//strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
 
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
                 sleep((int)(120/FORWARD_VEL));
 
@@ -136,58 +142,116 @@ public class AllInclusiveAuto extends LinearOpMode {
                 //servo 2 up
 
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
-
-                while(gyro.getAngle()<0){        //turn right 90 degrees
+                sleep((int)(16/STRAFE_VEL));
+                while(gyro.getAngle()>-90){        //turn right -90 degrees
                     drive.turnInPlace(speed,true);
                 }
+                drive.stop();
                 //back up 6 inches
-              //servo 3 down
+                drive.forwardWithPower(-speed);
+                sleep((int)(6/FORWARD_VEL));
+                //servo 3 down
                 //servo 4 down
 
-                //strafe right as much as possible
+                //drive forward as much as possible
                 drive.forwardWithPower(speed);
                 sleep((int)(24/STRAFE_VEL));
+                //servo 3 up
+                //servo 4 up
                 //slowly strafe right
                 speed = 0.25;
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //back up to stay in line
+                drive.forwardWithPower(-speed);
+                sleep((int)(18/FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //park in our lane
 
                 break;
-            case 1:
-                //insert code here
+            case 1: // Stone is at Left pos
+                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
+                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
 
-                drive.strafeLeftWithPower(1);
-                sleep((int)(15 / STRAFE_VEL));
 
-                // grab brick
-                sleep(1000);
+                //back up to the first stone from the rhird stone
+                drive.forwardWithPower(-speed);
+                sleep((int)(4/FORWARD_VEL));
+                //servo 1 down
 
-                drive.strafeLeftWithPower(-1);
-                sleep((int)(5 / STRAFE_VEL));
+                //servo 2 down
 
-                drive.forwardWithPower(sideModifier);
-                sleep((int)(24 / FORWARD_VEL));
+                //servo 1 up
 
-                drive.forwardWithPower(-sideModifier);
-                sleep((int)(36 / FORWARD_VEL));
 
-                drive.strafeLeftWithPower(1);
-                sleep((int)(5 / STRAFE_VEL));
+                drive.strafeLeftWithPower(-speed); //strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
 
-                // grab brick
-                sleep(1000);
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
 
-                drive.strafeLeftWithPower(-1);
-                sleep((int)(5 / STRAFE_VEL));
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(2/STRAFE_VEL));
+                //servo 2 up
+                //servo 1 up
 
-                drive.forwardWithPower(sideModifier);
-                sleep((int)(36 / FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
+                sleep((int)(2/STRAFE_VEL));
 
-                drive.forwardWithPower(-sideModifier);
-                sleep((int)(6 / FORWARD_VEL));
+                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
+                sleep((int)(96/FORWARD_VEL));
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                //servo 1 up
 
+
+                drive.strafeLeftWithPower(speed);//strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(5/FORWARD_VEL));
+
+                //servo 1 down
+                //servo 2 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
+                sleep((int)(16/STRAFE_VEL));
+                while(gyro.getAngle()>-90){        //turn right -90 degrees
+                    drive.turnInPlace(speed,true);
+                }
                 drive.stop();
+                //back up 6 inches
+                drive.forwardWithPower(-speed);
+                sleep((int)(6/FORWARD_VEL));
+                //servo 3 down
+                //servo 4 down
+
+                //drive forward as much as possible
+                drive.forwardWithPower(speed);
+                sleep((int)(24/STRAFE_VEL));
+                //servo 3 up
+                //servo 4 up
+                //slowly strafe right
+                speed = 0.25;
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //back up to stay in line
+                drive.forwardWithPower(-speed);
+
+                //park in our lane
 
                 break;
-            case 2:
+            case 2: //sotne is at right pos
                 //insert code here
                 break;
         }
@@ -202,7 +266,7 @@ public class AllInclusiveAuto extends LinearOpMode {
         sleep(300);
     }
     public void roboInit() {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        /*int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
@@ -210,7 +274,7 @@ public class AllInclusiveAuto extends LinearOpMode {
 
 
         //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);*/
 
         drive = MecanumDrive.standard(hardwareMap);
         // MOVEMENT CONSTANTS
