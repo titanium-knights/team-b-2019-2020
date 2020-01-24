@@ -72,8 +72,10 @@ class ElevatorOuttake(
         horizontal.setTargetPosition(horizontalVal.toInt())
         vertical.setPower(0.75)
         horizontal.setPower(0.75)
-        vertical.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        horizontal.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        vertical.setMode(DcMotor.RunMode.RUN_TO_POSITION)
+        horizontal.setMode(DcMotor.RunMode.RUN_TO_POSITION)
+        vertical.setPower(0.0)
+        horizontal.setPower(0.0)
     }
     /** Stops the horizontal movement of the claw */
     fun stopHorizontal() = moveHorizontal(0.0)

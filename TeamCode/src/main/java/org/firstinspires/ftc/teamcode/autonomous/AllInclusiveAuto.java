@@ -6,25 +6,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.autonomous.VuforiaStuff;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
 import org.firstinspires.ftc.teamcode.sensors.Gyro;
-import org.firstinspires.ftc.teamcode.util.DbgLog;
 
 
 @Autonomous(name = "Auto", group = "Autonomous")
 public class AllInclusiveAuto extends LinearOpMode {
-    public VuforiaStuff vuforiaStuff;
     private VuforiaLocalizer vuforia;
     private Gyro gyro;
     private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
-    VuforiaStuff.skystonePos pos; //No longer used
     double stoneDiff;
     double stoneDiff2;
     private static ColorSensor sensorColor;
@@ -89,7 +83,7 @@ public class AllInclusiveAuto extends LinearOpMode {
                 hsvValues);
         satRight = hsvValues[1];
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
-        speed=0.75;
+        speed=1;
         switch (pos) {
             case 0: // Stone is at Left pos
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
