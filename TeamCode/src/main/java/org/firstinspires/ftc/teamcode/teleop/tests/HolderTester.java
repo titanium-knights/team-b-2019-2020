@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.movement.BrickHolder;
 public class HolderTester extends OpMode {
 
     private BrickHolder holder;
+    private int speed = 0;
 
     @Override
     public void init () {
@@ -20,16 +21,23 @@ public class HolderTester extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.dpad_up) {
-            holder.moveArm(1);
+            holder.moveArm(speed);
         }
         if (gamepad1.dpad_down) {
-            holder.moveArm(-1);
+            holder.moveArm(-speed);
         }
         if (gamepad1.dpad_left) {
-            holder.moveClaw(1);
+            holder.moveClaw(speed);
         }
         if (gamepad1.dpad_right) {
-            holder.moveClaw(-1);
+            holder.moveClaw(-speed);
+        }
+
+        if (gamepad1.a) {
+            speed += 1;
+        }
+        if (gamepad1.b && speed > 0) {
+            speed -= 1;
         }
 
         telemetry.addData("Arm Pos: ", holder.arm.getPosition());

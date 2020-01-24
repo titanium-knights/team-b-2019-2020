@@ -41,6 +41,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.movement.BrickHolder;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
+import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
 import org.firstinspires.ftc.teamcode.sensors.Gyro;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
@@ -105,6 +107,8 @@ public class VuforiaAuto extends LinearOpMode {
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private MecanumDrive drive;
+    private PlateClamp clamp;
+    private BrickHolder holder;
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
 
@@ -160,6 +164,9 @@ public class VuforiaAuto extends LinearOpMode {
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
         drive = MecanumDrive.standard(hardwareMap);
+        clamp = PlateClamp.standard(hardwareMap);
+        holder = BrickHolder.standard(hardwareMap);
+
         // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
         FORWARD_VEL = 0.0347 / deltaTime;
@@ -411,12 +418,14 @@ public class VuforiaAuto extends LinearOpMode {
                 sleep((int)(-25/STRAFE_VEL));
                 drive.forwardWithPower((-20/FORWARD_VEL));
                 sleep((int)(-20/FORWARD_VEL));
-                //servo 1 down
 
-                //servo 2 down
-
-                //servo 1 up
-
+                // lower holder's arm, clamp, and raise back up
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed); //strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
@@ -425,8 +434,10 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
+
                 //servo 2 up
                 //servo 1 up
+
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
@@ -465,14 +476,21 @@ public class VuforiaAuto extends LinearOpMode {
                 //back up 6 inches
                 drive.forwardWithPower(-speed);
                 sleep((int)(6/FORWARD_VEL));
-                //servo 3 down
-                //servo 4 down
+
+                // clamp the foundation
+                drive.stop();
+                clamp.setDown();
+                sleep(1000);
 
                 //drive forward as much as possible
                 drive.forwardWithPower(speed);
                 sleep((int)(24/STRAFE_VEL));
-                //servo 3 up
-                //servo 4 up
+
+                // release the foundation
+                drive.stop();
+                clamp.setUp();
+                sleep(1000);
+
                 //slowly strafe right
                 speed = 0.25;
                 drive.strafeLeftWithPower(-speed);
@@ -544,14 +562,21 @@ public class VuforiaAuto extends LinearOpMode {
                 //back up 6 inches
                 drive.forwardWithPower(-speed);
                 sleep((int)(6/FORWARD_VEL));
-                //servo 3 down
-                //servo 4 down
+
+                // clamp the foundation
+                drive.stop();
+                clamp.setDown();
+                sleep(1000);
 
                 //drive forward as much as possible
                 drive.forwardWithPower(speed);
                 sleep((int)(24/STRAFE_VEL));
-                //servo 3 up
-                //servo 4 up
+
+                // release the foundation
+                drive.stop();
+                clamp.setUp();
+                sleep(1000);
+
                 //slowly strafe right
                 speed = 0.25;
                 drive.strafeLeftWithPower(-speed);
@@ -623,14 +648,21 @@ public class VuforiaAuto extends LinearOpMode {
                 //back up 6 inches
                 drive.forwardWithPower(-speed);
                 sleep((int)(6/FORWARD_VEL));
-                //servo 3 down
-                //servo 4 down
+
+                // clamp the foundation
+                drive.stop();
+                clamp.setDown();
+                sleep(1000);
 
                 //drive forward as much as possible
                 drive.forwardWithPower(speed);
                 sleep((int)(24/STRAFE_VEL));
-                //servo 3 up
-                //servo 4 up
+
+                // release the foundation
+                drive.stop();
+                clamp.setUp();
+                sleep(1000);
+
                 //slowly strafe right
                 speed = 0.25;
                 drive.strafeLeftWithPower(-speed);

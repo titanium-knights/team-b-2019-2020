@@ -21,6 +21,22 @@ public class BrickHolder {
         claw.setPosition(claw.getPosition() + pos);
     }
 
+    public void clamp () {
+
+    }
+
+    public void release () {
+
+    }
+
+    public void raise () {
+
+    }
+
+    public void lower () {
+
+    }
+
     static String[] standardMotorNames = {"holder_arm", "holder_claw"};
 
     public static BrickHolder standard(HardwareMap hardwareMap) {
