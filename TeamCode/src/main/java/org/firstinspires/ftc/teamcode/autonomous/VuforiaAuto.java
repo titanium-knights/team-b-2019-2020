@@ -41,16 +41,25 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
+import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
+import org.firstinspires.ftc.teamcode.sensors.Gyro;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-
 /**
  * This 2019-2020 OpMode illustrates the basics of using the Vuforia localizer to determine
  * positioning and orientation of robot on the SKYSTONE FTC field.
@@ -62,7 +71,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  *
  * From the Audience perspective, the Red Alliance station is on the right and the
  * Blue Alliance Station is on the left.
-
  * Eight perimeter targets are distributed evenly around the four perimeter walls
  * Four Bridge targets are located on the bridge uprights.
  * Refer to the Field Setup manual for more specific location details
@@ -76,14 +84,13 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
+ *`
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
 
 
-@TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
-@Disabled
+@Autonomous(name="SKYSTONE Vuforia Nav", group ="Autonomous")
 public class VuforiaAuto extends LinearOpMode {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
@@ -92,6 +99,12 @@ public class VuforiaAuto extends LinearOpMode {
     //
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
+    private Gyro gyro;
+    private double speed =0.75;
+    private double deltaTime;
+    private double FORWARD_VEL;
+    private double STRAFE_VEL;
+    private MecanumDrive drive;
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
 
@@ -108,8 +121,7 @@ public class VuforiaAuto extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
-
+"AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
     private static final float mmPerInch        = 25.4f;
@@ -128,38 +140,31 @@ public class VuforiaAuto extends LinearOpMode {
     // Constants for perimeter targets
     private static final float halfField = 72 * mmPerInch;
     private static final float quadField  = 36 * mmPerInch;
-    private static int skystonePos;
-    // Class Members
+
+    private int sideModifier;    // Class Members
     private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia = null;
     private boolean targetVisible = false;
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
-
-    @Override public void runOpMode() {
-        skystonePos = -5;
-        while(skystonePos <0 || skystonePos >2 ){
-            getSkystonePos();
-        }
-        switch(skystonePos){
-            case 0:
-                //Type code for case Left
-                break;
-            case 1:
-                //Type code for case center
-                break;
-            case 2:
-                //Type code for case Right
-                break;
-        }
+    private static double SCALE_FACTOR;
+    public VuforiaAuto(int side, double deltaTime) {
+        sideModifier = side;
+        this.deltaTime = deltaTime;
     }
-    public void getSkystonePos(){
+    @Override public void runOpMode() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
+        drive = MecanumDrive.standard(hardwareMap);
+        // MOVEMENT CONSTANTS
+        /** average forward velocity of the robot at full power (inches per millisecond) */
+        FORWARD_VEL = 0.0347 / deltaTime;
+        /** average strafing velocity of the robot at full power (inches per millisecond) */
+        STRAFE_VEL = 0.0257 / deltaTime;
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -314,8 +319,8 @@ public class VuforiaAuto extends LinearOpMode {
         final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
-                    .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
+                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
         /**  Let all the trackable listeners know where the phone is.  */
         for (VuforiaTrackable trackable : allTrackables) {
@@ -328,27 +333,37 @@ public class VuforiaAuto extends LinearOpMode {
         // CONSEQUENTLY do not put any driving commands in this loop.
         // To restore the normal opmode structure, just un-comment the following line:
 
-        // waitForStart();
+
 
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
-        while (!isStopRequested()) {
 
+        //Turn the flash on
+        com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);
+
+        //Set zoom of the camera
+        com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
+        com.vuforia.CameraDevice.getInstance().setField("zoom", "30");
+        int positionSkystone = 0;
+        while(positionSkystone <1 || positionSkystone >3) {
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
-                    if(trackable.getName().equals("Stone Target")){
+
+                    if (trackable.getName().equals("Stone Target")) {
                         telemetry.addLine("Stone Target Is Visible");
                     }
+
                     targetVisible = true;
+
                     // getUpdatedRobotLocation() will return null if no new information is available since
                     // the last time that call was made, or if the trackable is not currently visible.
-                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
                     if (robotLocationTransform != null) {
                         lastLocation = robotLocationTransform;
                     }
@@ -357,32 +372,276 @@ public class VuforiaAuto extends LinearOpMode {
             }
 
             // Provide feedback as to where the robot is located (if we know).
+
             if (targetVisible) {
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-                double x = translation.get(0);
-                //change these vals
-                if(x<-8){
-                    skystonePos = 0;
+
+                double xPosition = translation.get(0);
+                if (xPosition > -19.75) {
+                    positionSkystone = 1;
+                } else if (xPosition <= -19.75 && xPosition > 20.6) {
+                    positionSkystone = 2;
+                } else {
+                    positionSkystone = 3;
                 }
-                else if(x<-4){
-                    skystonePos=1;
-                }
-                else{
-                    skystonePos=2;
-                }
+
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-            }
-            else {
+            } else {
                 telemetry.addData("Visible Target", "none");
             }
+            telemetry.addData("Skystone Position", positionSkystone);
             telemetry.update();
+            // Disable Tracking when we are done;
         }
-        // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
+        waitForStart();
+        switch(positionSkystone){
+            case 1:
+                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
+                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
+
+
+                //back up to the first stone from the third stone
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(-25/STRAFE_VEL));
+                drive.forwardWithPower((-20/FORWARD_VEL));
+                sleep((int)(-20/FORWARD_VEL));
+                //servo 1 down
+
+                //servo 2 down
+
+                //servo 1 up
+
+
+                drive.strafeLeftWithPower(-speed); //strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(2/STRAFE_VEL));
+                //servo 2 up
+                //servo 1 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
+                sleep((int)(2/STRAFE_VEL));
+
+                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
+                sleep((int)(96/FORWARD_VEL));
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                //servo 1 up
+
+
+                drive.strafeLeftWithPower(speed);//strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(5/FORWARD_VEL));
+
+                //servo 1 down
+                //servo 2 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
+                sleep((int)(16/STRAFE_VEL));
+                while(gyro.getAngle()>-90){        //turn right -90 degrees
+                    drive.turnInPlace(speed,true);
+                }
+                drive.stop();
+                //back up 6 inches
+                drive.forwardWithPower(-speed);
+                sleep((int)(6/FORWARD_VEL));
+                //servo 3 down
+                //servo 4 down
+
+                //drive forward as much as possible
+                drive.forwardWithPower(speed);
+                sleep((int)(24/STRAFE_VEL));
+                //servo 3 up
+                //servo 4 up
+                //slowly strafe right
+                speed = 0.25;
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //back up to stay in line
+                drive.forwardWithPower(-speed);
+                sleep((int)(18/FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //park in our lane
+                break;
+            case 2:
+                //back up to the first stone from the third stone
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(-25/STRAFE_VEL));
+                drive.forwardWithPower(-speed);
+                sleep((int)(16/FORWARD_VEL));
+                //servo 1 down
+
+                //servo 2 down
+
+                //servo 1 up
+
+
+                drive.strafeLeftWithPower(-speed); //strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(2/STRAFE_VEL));
+                //servo 2 up
+                //servo 1 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
+                sleep((int)(2/STRAFE_VEL));
+
+                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
+                sleep((int)(96/FORWARD_VEL));
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                //servo 1 up
+
+
+                drive.strafeLeftWithPower(speed);//strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(5/FORWARD_VEL));
+
+                //servo 1 down
+                //servo 2 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
+                sleep((int)(16/STRAFE_VEL));
+                while(gyro.getAngle()>-90){        //turn right -90 degrees
+                    drive.turnInPlace(speed,true);
+                }
+                drive.stop();
+                //back up 6 inches
+                drive.forwardWithPower(-speed);
+                sleep((int)(6/FORWARD_VEL));
+                //servo 3 down
+                //servo 4 down
+
+                //drive forward as much as possible
+                drive.forwardWithPower(speed);
+                sleep((int)(24/STRAFE_VEL));
+                //servo 3 up
+                //servo 4 up
+                //slowly strafe right
+                speed = 0.25;
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //back up to stay in line
+                drive.forwardWithPower(-speed);
+                sleep((int)(18/FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //park in our lane
+                break;
+            case 3:
+                //back up to the first stone from the third stone
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(-25/STRAFE_VEL));
+                drive.forwardWithPower((-20/FORWARD_VEL));
+                sleep((int)(-20/FORWARD_VEL));
+                //servo 1 down
+
+                //servo 2 down
+
+                //servo 1 up
+
+
+                drive.strafeLeftWithPower(-speed); //strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(2/STRAFE_VEL));
+                //servo 2 up
+                //servo 1 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
+                sleep((int)(2/STRAFE_VEL));
+
+                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
+                sleep((int)(96/FORWARD_VEL));
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                //servo 1 up
+
+
+                drive.strafeLeftWithPower(speed);//strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+
+                //servo 2 up
+                //servo 1 down
+                //servo 2 down
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(5/FORWARD_VEL));
+
+                //servo 1 down
+                //servo 2 up
+
+                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
+                sleep((int)(16/STRAFE_VEL));
+                while(gyro.getAngle()>-90){        //turn right -90 degrees
+                    drive.turnInPlace(speed,true);
+                }
+                drive.stop();
+                //back up 6 inches
+                drive.forwardWithPower(-speed);
+                sleep((int)(6/FORWARD_VEL));
+                //servo 3 down
+                //servo 4 down
+
+                //drive forward as much as possible
+                drive.forwardWithPower(speed);
+                sleep((int)(24/STRAFE_VEL));
+                //servo 3 up
+                //servo 4 up
+                //slowly strafe right
+                speed = 0.25;
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //back up to stay in line
+                drive.forwardWithPower(-speed);
+                sleep((int)(18/FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //park in our lane
+                break;
+        }
     }
 }
