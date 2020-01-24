@@ -48,7 +48,6 @@ public class AllInclusiveAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        roboInit();
         gyro = BNO055IMUGyro.standard(hardwareMap);
         gyro.initialize();
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color");
@@ -59,6 +58,10 @@ public class AllInclusiveAuto extends LinearOpMode {
         float satLeft;
         float satCenter;
         float satRight;
+
+        roboInit();
+
+
         drive.forwardWithPower(-1*speed);
         sleep((int)(24/FORWARD_VEL));
         while(getDistance()>6) {
@@ -86,6 +89,7 @@ public class AllInclusiveAuto extends LinearOpMode {
                 hsvValues);
         satRight = hsvValues[1];
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
+        speed=0.75;
         switch (pos) {
             case 0: // Stone is at Left pos
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
@@ -104,7 +108,6 @@ public class AllInclusiveAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(-speed); //strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
-
                 drive.forwardWithPower(speed);//drive forward to the building zone
                 sleep((int)(120/FORWARD_VEL));
 
@@ -170,12 +173,12 @@ public class AllInclusiveAuto extends LinearOpMode {
                 //park in our lane
 
                 break;
-            case 1: // Stone is at Left pos
+            case 1: // Stone is at Center pos
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
 
 
-                //back up to the first stone from the rhird stone
+                //back up to the first stone from the third stone
                 drive.forwardWithPower(-speed);
                 sleep((int)(4/FORWARD_VEL));
                 //servo 1 down

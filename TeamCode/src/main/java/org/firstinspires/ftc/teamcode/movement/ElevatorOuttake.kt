@@ -43,7 +43,7 @@ class ElevatorOuttake(
     fun getVerticalEncoder(): Int{
         return vertical.getCurrentPosition()
     }
-    fun moveToEncoder(horizontalVal:Double, verticalVal:Double){
+    /*fun moveToEncoder(horizontalVal:Double, verticalVal:Double){
         if(vertical.getCurrentPosition()<verticalVal){
             while(vertical.getCurrentPosition()<verticalVal){
                 moveVertical(0.75)
@@ -66,6 +66,14 @@ class ElevatorOuttake(
                 moveHorizontal(-0.75)
             }
         }
+    }*/
+    fun moveToEncoder(horizontalVal: Double, verticalVal: Double){
+        vertical.setTargetPosition(verticalVal.toInt())
+        horizontal.setTargetPosition(horizontalVal.toInt())
+        vertical.setPower(0.75)
+        horizontal.setPower(0.75)
+        vertical.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        horizontal.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     /** Stops the horizontal movement of the claw */
     fun stopHorizontal() = moveHorizontal(0.0)
