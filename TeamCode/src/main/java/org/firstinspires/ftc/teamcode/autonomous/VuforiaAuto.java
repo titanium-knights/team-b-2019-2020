@@ -416,7 +416,7 @@ public class VuforiaAuto extends LinearOpMode {
                 //back up to the first stone from the third stone
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(-25/STRAFE_VEL));
-                drive.forwardWithPower((-20/FORWARD_VEL));
+                drive.forwardWithPower(-speed);
                 sleep((int)(-20/FORWARD_VEL));
 
                 // lower holder's arm, clamp, and raise back up
@@ -434,7 +434,7 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
-
+                //servo 1 down
                 //servo 2 up
                 //servo 1 up
 
@@ -444,18 +444,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
                 sleep((int)(96/FORWARD_VEL));
-                //servo 2 up
+
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5/STRAFE_VEL));
                 //servo 1 down
                 //servo 2 down
                 //servo 1 up
 
 
-                drive.strafeLeftWithPower(speed);//strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
 
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
@@ -466,7 +463,7 @@ public class VuforiaAuto extends LinearOpMode {
 
                 //servo 1 down
                 //servo 2 up
-
+                //servo 1 up
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
                 while(gyro.getAngle()>-90){        //turn right -90 degrees
@@ -503,17 +500,23 @@ public class VuforiaAuto extends LinearOpMode {
                 //park in our lane
                 break;
             case 2:
+                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
+                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
+
+
                 //back up to the first stone from the third stone
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(-25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
-                sleep((int)(16/FORWARD_VEL));
-                //servo 1 down
+                sleep((int)(-20/FORWARD_VEL));
 
-                //servo 2 down
-
-                //servo 1 up
-
+                // lower holder's arm, clamp, and raise back up
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed); //strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
@@ -522,26 +525,25 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
+                //servo 1 down
                 //servo 2 up
                 //servo 1 up
+
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
 
                 drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
                 sleep((int)(96/FORWARD_VEL));
-                //servo 2 up
+
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5/STRAFE_VEL));
                 //servo 1 down
                 //servo 2 down
                 //servo 1 up
 
 
-                drive.strafeLeftWithPower(speed);//strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
 
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
@@ -552,7 +554,7 @@ public class VuforiaAuto extends LinearOpMode {
 
                 //servo 1 down
                 //servo 2 up
-
+                //servo 1 up
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
                 while(gyro.getAngle()>-90){        //turn right -90 degrees
@@ -589,17 +591,23 @@ public class VuforiaAuto extends LinearOpMode {
                 //park in our lane
                 break;
             case 3:
+                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
+                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
+
+
                 //back up to the first stone from the third stone
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(-25/STRAFE_VEL));
-                drive.forwardWithPower((-20/FORWARD_VEL));
+                drive.forwardWithPower(-speed);
                 sleep((int)(-20/FORWARD_VEL));
-                //servo 1 down
 
-                //servo 2 down
-
-                //servo 1 up
-
+                // lower holder's arm, clamp, and raise back up
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed); //strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
@@ -608,26 +616,25 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
+                //servo 1 down
                 //servo 2 up
                 //servo 1 up
+
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
 
                 drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
                 sleep((int)(96/FORWARD_VEL));
-                //servo 2 up
+
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5/STRAFE_VEL));
                 //servo 1 down
                 //servo 2 down
                 //servo 1 up
 
 
-                drive.strafeLeftWithPower(speed);//strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
 
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
@@ -638,7 +645,7 @@ public class VuforiaAuto extends LinearOpMode {
 
                 //servo 1 down
                 //servo 2 up
-
+                //servo 1 up
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
                 while(gyro.getAngle()>-90){        //turn right -90 degrees
