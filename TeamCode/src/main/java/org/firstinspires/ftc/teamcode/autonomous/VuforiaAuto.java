@@ -103,7 +103,7 @@ public class VuforiaAuto extends LinearOpMode {
     //
     private Gyro gyro;
     private double speed =0.75;
-    private double deltaTime;
+    private double deltaTime = 2.8;
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private MecanumDrive drive;
@@ -153,10 +153,10 @@ public class VuforiaAuto extends LinearOpMode {
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
     private static double SCALE_FACTOR;
-    public VuforiaAuto(int side, double deltaTime) {
+   /*public VuforiaAuto(int side, double deltaTime) {
         sideModifier = side;
         this.deltaTime = deltaTime;
-    }
+    }*/
     @Override public void runOpMode() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -353,7 +353,7 @@ public class VuforiaAuto extends LinearOpMode {
 
         //Set zoom of the camera
         com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
-        com.vuforia.CameraDevice.getInstance().setField("zoom", "30");
+        com.vuforia.CameraDevice.getInstance().setField("zoom", "10");
         int positionSkystone = 0;
         while(positionSkystone <1 || positionSkystone >3) {
             // check all the trackable targets to see which one (if any) is visible.
@@ -415,9 +415,9 @@ public class VuforiaAuto extends LinearOpMode {
 
                 //back up to the first stone from the third stone
                 drive.strafeLeftWithPower(-speed);
-                sleep((int)(-25/STRAFE_VEL));
+                sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
-                sleep((int)(-20/FORWARD_VEL));
+                sleep((int)(20/FORWARD_VEL));
 
                 // grab brick
                 drive.stop();
@@ -522,11 +522,12 @@ public class VuforiaAuto extends LinearOpMode {
 
                 //back up to the first stone from the third stone
                 drive.strafeLeftWithPower(-speed);
-                sleep((int)(-25/STRAFE_VEL));
+                sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
-                sleep((int)(-20/FORWARD_VEL));
+                sleep((int)(20/FORWARD_VEL));
 
                 // grab brick
+                drive.stop();
                 holder.lower();
                 sleep(500);
                 holder.clamp();
@@ -628,9 +629,9 @@ public class VuforiaAuto extends LinearOpMode {
 
                 //back up to the first stone from the third stone
                 drive.strafeLeftWithPower(-speed);
-                sleep((int)(-25/STRAFE_VEL));
+                sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
-                sleep((int)(-20/FORWARD_VEL));
+                sleep((int)(20/FORWARD_VEL));
 
                 // grab brick
                 holder.lower();

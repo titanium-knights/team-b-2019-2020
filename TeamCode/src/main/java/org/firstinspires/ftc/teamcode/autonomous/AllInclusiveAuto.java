@@ -25,9 +25,9 @@ public class AllInclusiveAuto extends LinearOpMode {
     private static DistanceSensor sensorDistance;
     double driftAdjustment = -3;
 
-    private int sideModifier;
+    private int sideModifier =1;
     private double speed =0.75;
-    private double deltaTime;
+    private double deltaTime =2.8;
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private static float satValPos[] = {0F,0F,0F};//Saturation values for left,center, and right stones will be stored in this array of 3 elements
@@ -35,10 +35,10 @@ public class AllInclusiveAuto extends LinearOpMode {
     private MecanumDrive drive;
 
     private static double SCALE_FACTOR;
-    public AllInclusiveAuto(int side, double deltaTime) {
+    /*public AllInclusiveAuto(int side, double deltaTime) {
         sideModifier = side;
         this.deltaTime = deltaTime;
-    }
+    }*/
 
     @Override
     public void runOpMode() throws InterruptedException {
