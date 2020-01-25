@@ -173,6 +173,7 @@ public class VuforiaAuto extends LinearOpMode implements PIDControllerMovable {
         drive = MecanumDrive.standard(hardwareMap);
         clamp = PlateClamp.standard(hardwareMap);
         holder = BrickHolder.standard(hardwareMap);
+        gyro = BNO055IMUGyro.standard(hardwareMap);
 
         // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
@@ -354,6 +355,9 @@ public class VuforiaAuto extends LinearOpMode implements PIDControllerMovable {
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
+
+        gyro.initialize();
+        gyro.calibrate();
 
         //Turn the flash on
         com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);

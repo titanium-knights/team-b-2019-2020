@@ -57,7 +57,7 @@ class PIDController(
     }
 
     fun strafeLeft(opMode: PIDControllerMovable, power: Double, time: Long) =
-            move(opMode, power, MecanumDrive.Motor.Vector2D(-1.0, 0.0), time)
+            move(opMode, power, MecanumDrive.Motor.Vector2D(1.0, 0.0), time)
 
     fun forward(opMode: PIDControllerMovable, power: Double, time: Long) =
             move(opMode, power, MecanumDrive.Motor.Vector2D(0.0, 1.0), time)
