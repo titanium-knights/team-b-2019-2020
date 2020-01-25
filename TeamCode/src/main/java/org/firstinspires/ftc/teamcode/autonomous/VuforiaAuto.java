@@ -57,6 +57,8 @@ import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
 import org.firstinspires.ftc.teamcode.sensors.Gyro;
+import org.firstinspires.ftc.teamcode.util.PIDControllerMovable;
+
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
@@ -95,7 +97,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @Autonomous(name="SKYSTONE Vuforia Nav", group ="Autonomous")
-public class VuforiaAuto extends LinearOpMode {
+public class VuforiaAuto extends LinearOpMode implements PIDControllerMovable {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -731,5 +733,15 @@ public class VuforiaAuto extends LinearOpMode {
                 //park in our lane
                 break;
         }
+    }
+
+    @Override
+    public MecanumDrive getDrive() {
+        return drive;
+    }
+
+    @Override
+    public Gyro getGyro() {
+        return gyro;
     }
 }

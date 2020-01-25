@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.util
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive
 import org.firstinspires.ftc.teamcode.sensors.Gyro
 
 interface PIDControllerMovable {
-    val mecanumDrive: MecanumDrive
+    val drive: MecanumDrive
     val gyro: Gyro
 
     fun idle()
@@ -48,13 +47,13 @@ class PIDController(
         while (elapsedTime.milliseconds() - startTime < time) {
             val now = elapsedTime.milliseconds()
 
-            opMode.mecanumDrive.move(power, vector, evaluate(opMode.gyro.angle, setpoint, now - previous))
+            opMode.drive.move(power, vector, evaluate(opMode.gyro.angle, setpoint, now - previous))
             opMode.idle()
 
             previous = now
         }
 
-        opMode.mecanumDrive.stop()
+        opMode.drive.stop()
     }
 
     fun strafeLeft(opMode: PIDControllerMovable, power: Double, time: Long) =
