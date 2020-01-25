@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.movement;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
@@ -275,7 +276,7 @@ public class MecanumDrive {
     static String[] standardMotorNames = {"mecanum_fl", "mecanum_fr", "mecanum_bl", "mecanum_br"};
     static Motor.Vector2D[] standardMotorVectors = {new Motor.Vector2D(1, 1), new Motor.Vector2D(-1, 1), new Motor.Vector2D(-1, 1), new Motor.Vector2D(1, 1)};
     static Motor.Location[] standardMotorLocations = {Motor.Location.FRONT_LEFT, Motor.Location.FRONT_RIGHT, Motor.Location.BACK_LEFT, Motor.Location.BACK_RIGHT};
-    static DcMotor.Direction[] standardMotorDirections = {DcMotor.Direction.REVERSE, DcMotor.Direction.FORWARD, DcMotor.Direction.REVERSE, DcMotor.Direction.FORWARD};
+    static DcMotor.Direction[] standardMotorDirections = {DcMotor.Direction.REVERSE, DcMotor.Direction.FORWARD, DcMotor.Direction.FORWARD, DcMotor.Direction.FORWARD};
 
     /**
      * Given only a hardware map, constructs a ready-to-use mecanum drive with preset motors.
