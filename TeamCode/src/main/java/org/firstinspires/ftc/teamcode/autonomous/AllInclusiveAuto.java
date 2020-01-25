@@ -9,7 +9,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.movement.BrickHolder;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
+import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
 import org.firstinspires.ftc.teamcode.sensors.Gyro;
 
@@ -25,9 +27,11 @@ public class AllInclusiveAuto extends LinearOpMode {
     private static DistanceSensor sensorDistance;
     double driftAdjustment = -3;
 
+    private PlateClamp clamp;
+    private BrickHolder holder;
     private int sideModifier =1;
-    private double speed =0.75;
-    private double deltaTime =2.8;
+    private double speed =1;
+    private double deltaTime =2.5;
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private static float satValPos[] = {0F,0F,0F};//Saturation values for left,center, and right stones will be stored in this array of 3 elements
@@ -48,19 +52,16 @@ public class AllInclusiveAuto extends LinearOpMode {
         SCALE_FACTOR = 255;
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color");
         //pos = vuforiaStuff.vuforiascan(false, false);
-        speed = 0.25;
         float satLeft;
         float satCenter;
         float satRight;
 
         roboInit();
-
-
+        speed = 0.5;
         drive.forwardWithPower(-1*speed);
-        sleep((int)(24/FORWARD_VEL));
-        while(getDistance()>6) {
-            drive.strafeLeftWithPower(speed);
-        }
+        sleep((int)((20/FORWARD_VEL)*2));
+        drive.strafeLeftWithPower(speed);
+        sleep((int)((20/STRAFE_VEL)*2));
         drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
@@ -69,14 +70,14 @@ public class AllInclusiveAuto extends LinearOpMode {
         satLeft = hsvValues[1];
         //saturation value of the color of the left is stored in satLeft
         drive.forwardWithPower(speed);
-        sleep((int)(8/FORWARD_VEL));
+        sleep((int)((8/FORWARD_VEL)*2));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satCenter = hsvValues[1];
         drive.forwardWithPower(speed);
-        sleep((int)(8/FORWARD_VEL));
+        sleep((int)((8/FORWARD_VEL)*2));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -85,20 +86,25 @@ public class AllInclusiveAuto extends LinearOpMode {
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         speed=1;
         switch (pos) {
-            case 0: // Stone is at Left pos
+            case 1:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-
+                telemetry.addData("Case: ", 1);
 
                 //back up to the first stone from the third stone
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
-                sleep((int)(-8/FORWARD_VEL));
-                //servo 1 down
+                sleep((int)(20/FORWARD_VEL));
 
-                //servo 2 down
-
-                //servo 1 up
-
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed); //strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
@@ -107,26 +113,34 @@ public class AllInclusiveAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
-                //servo 2 up
-                //servo 1 up
+
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
 
                 drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
                 sleep((int)(96/FORWARD_VEL));
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
-                //servo 1 up
 
-
-                drive.strafeLeftWithPower(speed);//strafe right a little bit
+                drive.strafeLeftWithPower(speed);
                 sleep((int)(5/STRAFE_VEL));
 
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
@@ -135,8 +149,14 @@ public class AllInclusiveAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(5/FORWARD_VEL));
 
-                //servo 1 down
-                //servo 2 up
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
@@ -147,14 +167,21 @@ public class AllInclusiveAuto extends LinearOpMode {
                 //back up 6 inches
                 drive.forwardWithPower(-speed);
                 sleep((int)(6/FORWARD_VEL));
-                //servo 3 down
-                //servo 4 down
+
+                // clamp the foundation
+                drive.stop();
+                clamp.setDown();
+                sleep(1000);
 
                 //drive forward as much as possible
                 drive.forwardWithPower(speed);
                 sleep((int)(24/STRAFE_VEL));
-                //servo 3 up
-                //servo 4 up
+
+                // release the foundation
+                drive.stop();
+                clamp.setUp();
+                sleep(1000);
+
                 //slowly strafe right
                 speed = 0.25;
                 drive.strafeLeftWithPower(-speed);
@@ -165,51 +192,62 @@ public class AllInclusiveAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(10/STRAFE_VEL));
                 //park in our lane
-
                 break;
-            case 1: // Stone is at Center pos
+            case 2:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-
+                telemetry.addData("Case: ", 2);
 
                 //back up to the first stone from the third stone
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
-                sleep((int)(4/FORWARD_VEL));
-                //servo 1 down
+                sleep((int)(20/FORWARD_VEL));
 
-                //servo 2 down
-
-                //servo 1 up
-
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed); //strafe right a little bit
                 sleep((int)(5/STRAFE_VEL));
-
                 drive.forwardWithPower(speed);//drive forward to the building zone
                 sleep((int)(120/FORWARD_VEL));
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
-                //servo 2 up
-                //servo 1 up
+
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
 
                 drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
                 sleep((int)(96/FORWARD_VEL));
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
-                //servo 1 up
 
-
-                drive.strafeLeftWithPower(speed);//strafe right a little bit
+                drive.strafeLeftWithPower(speed);
                 sleep((int)(5/STRAFE_VEL));
 
-                //servo 2 up
-                //servo 1 down
-                //servo 2 down
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
@@ -218,8 +256,14 @@ public class AllInclusiveAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(5/FORWARD_VEL));
 
-                //servo 1 down
-                //servo 2 up
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
@@ -230,26 +274,138 @@ public class AllInclusiveAuto extends LinearOpMode {
                 //back up 6 inches
                 drive.forwardWithPower(-speed);
                 sleep((int)(6/FORWARD_VEL));
-                //servo 3 down
-                //servo 4 down
+
+                // clamp the foundation
+                drive.stop();
+                clamp.setDown();
+                sleep(1000);
 
                 //drive forward as much as possible
                 drive.forwardWithPower(speed);
                 sleep((int)(24/STRAFE_VEL));
-                //servo 3 up
-                //servo 4 up
+
+                // release the foundation
+                drive.stop();
+                clamp.setUp();
+                sleep(1000);
+
                 //slowly strafe right
                 speed = 0.25;
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(10/STRAFE_VEL));
                 //back up to stay in line
                 drive.forwardWithPower(-speed);
-
+                sleep((int)(18/FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
                 //park in our lane
-
                 break;
-            case 2: //sotne is at right pos
-                //insert code here
+            case 3:
+                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
+                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
+                telemetry.addData("Case: ", 3);
+
+                //back up to the first stone from the third stone
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(25/STRAFE_VEL));
+                drive.forwardWithPower(-speed);
+                sleep((int)(20/FORWARD_VEL));
+
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
+                drive.strafeLeftWithPower(-speed); //strafe right a little bit
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(2/STRAFE_VEL));
+
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
+                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
+                sleep((int)(2/STRAFE_VEL));
+
+                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
+                sleep((int)(96/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);
+                sleep((int)(5/STRAFE_VEL));
+
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(5/STRAFE_VEL));
+                drive.forwardWithPower(speed);//drive forward to the building zone
+                sleep((int)(120/FORWARD_VEL));
+
+                drive.strafeLeftWithPower(speed);//strafe a little left
+                sleep((int)(5/FORWARD_VEL));
+
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
+                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
+                sleep((int)(16/STRAFE_VEL));
+                while(gyro.getAngle()>-90){        //turn right -90 degrees
+                    drive.turnInPlace(speed,true);
+                }
+                drive.stop();
+                //back up 6 inches
+                drive.forwardWithPower(-speed);
+                sleep((int)(6/FORWARD_VEL));
+
+                // clamp the foundation
+                drive.stop();
+                clamp.setDown();
+                sleep(1000);
+
+                //drive forward as much as possible
+                drive.forwardWithPower(speed);
+                sleep((int)(24/STRAFE_VEL));
+
+                // release the foundation
+                drive.stop();
+                clamp.setUp();
+                sleep(1000);
+
+                //slowly strafe right
+                speed = 0.25;
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //back up to stay in line
+                drive.forwardWithPower(-speed);
+                sleep((int)(18/FORWARD_VEL));
+                drive.strafeLeftWithPower(-speed);
+                sleep((int)(10/STRAFE_VEL));
+                //park in our lane
                 break;
         }
 
