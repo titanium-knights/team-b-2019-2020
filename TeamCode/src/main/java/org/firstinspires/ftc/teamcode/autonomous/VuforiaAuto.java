@@ -419,7 +419,8 @@ public class VuforiaAuto extends LinearOpMode {
                 drive.forwardWithPower(-speed);
                 sleep((int)(-20/FORWARD_VEL));
 
-                // lower holder's arm, clamp, and raise back up
+                // grab brick
+                drive.stop();
                 holder.lower();
                 sleep(500);
                 holder.clamp();
@@ -434,10 +435,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
-                //servo 1 down
-                //servo 2 up
-                //servo 1 up
 
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
@@ -447,11 +453,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);
                 sleep((int)(5/STRAFE_VEL));
-                //servo 1 down
-                //servo 2 down
-                //servo 1 up
 
-
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
@@ -461,9 +471,15 @@ public class VuforiaAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(5/FORWARD_VEL));
 
-                //servo 1 down
-                //servo 2 up
-                //servo 1 up
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
                 while(gyro.getAngle()>-90){        //turn right -90 degrees
@@ -510,7 +526,7 @@ public class VuforiaAuto extends LinearOpMode {
                 drive.forwardWithPower(-speed);
                 sleep((int)(-20/FORWARD_VEL));
 
-                // lower holder's arm, clamp, and raise back up
+                // grab brick
                 holder.lower();
                 sleep(500);
                 holder.clamp();
@@ -525,10 +541,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
-                //servo 1 down
-                //servo 2 up
-                //servo 1 up
 
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
@@ -538,11 +559,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);
                 sleep((int)(5/STRAFE_VEL));
-                //servo 1 down
-                //servo 2 down
-                //servo 1 up
 
-
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
@@ -552,9 +577,15 @@ public class VuforiaAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(5/FORWARD_VEL));
 
-                //servo 1 down
-                //servo 2 up
-                //servo 1 up
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
                 while(gyro.getAngle()>-90){        //turn right -90 degrees
@@ -601,7 +632,7 @@ public class VuforiaAuto extends LinearOpMode {
                 drive.forwardWithPower(-speed);
                 sleep((int)(-20/FORWARD_VEL));
 
-                // lower holder's arm, clamp, and raise back up
+                // grab brick
                 holder.lower();
                 sleep(500);
                 holder.clamp();
@@ -616,10 +647,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(2/STRAFE_VEL));
-                //servo 1 down
-                //servo 2 up
-                //servo 1 up
 
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);//strafe right 2 inches
                 sleep((int)(2/STRAFE_VEL));
@@ -629,11 +665,15 @@ public class VuforiaAuto extends LinearOpMode {
 
                 drive.strafeLeftWithPower(speed);
                 sleep((int)(5/STRAFE_VEL));
-                //servo 1 down
-                //servo 2 down
-                //servo 1 up
 
-
+                // grab brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.clamp();
+                sleep(500);
+                holder.raise();
+                sleep(500);
 
                 drive.strafeLeftWithPower(-speed);
                 sleep((int)(5/STRAFE_VEL));
@@ -643,9 +683,15 @@ public class VuforiaAuto extends LinearOpMode {
                 drive.strafeLeftWithPower(speed);//strafe a little left
                 sleep((int)(5/FORWARD_VEL));
 
-                //servo 1 down
-                //servo 2 up
-                //servo 1 up
+                // place brick
+                drive.stop();
+                holder.lower();
+                sleep(500);
+                holder.release();
+                sleep(500);
+                holder.raise();
+                sleep(500);
+
                 drive.strafeLeftWithPower(-speed);//strafe right 16 inches
                 sleep((int)(16/STRAFE_VEL));
                 while(gyro.getAngle()>-90){        //turn right -90 degrees
