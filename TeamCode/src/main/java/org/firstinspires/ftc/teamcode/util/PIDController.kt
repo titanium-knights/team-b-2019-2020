@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.util
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.DistanceSensor
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive
 import org.firstinspires.ftc.teamcode.sensors.Gyro
-
-interface PIDControllerMovable {
-    val drive: MecanumDrive
-    val gyro: Gyro
-
-    fun idle()
-}
+import kotlin.math.sign
 
 class PIDController(
         var Kp: Double,
@@ -37,28 +34,4 @@ class PIDController(
 
         return result
     }
-
-    fun move(opMode: PIDControllerMovable, power: Double, vector: MecanumDrive.Motor.Vector2D, time: Long) {
-        val elapsedTime = ElapsedTime()
-        val startTime = elapsedTime.milliseconds()
-        val setpoint = opMode.gyro.angle
-        var previous = startTime
-
-        while (elapsedTime.milliseconds() - startTime < time) {
-            val now = elapsedTime.milliseconds()
-
-            opMode.drive.move(power, vector, evaluate(opMode.gyro.angle, setpoint, now - previous))
-            opMode.idle()
-
-            previous = now
-        }
-
-        opMode.drive.stop()
-    }
-
-    fun strafeLeft(opMode: PIDControllerMovable, power: Double, time: Long) =
-            move(opMode, power, MecanumDrive.Motor.Vector2D(-1.0, 0.0), time)
-
-    fun forward(opMode: PIDControllerMovable, power: Double, time: Long) =
-            move(opMode, power, MecanumDrive.Motor.Vector2D(0.0, 1.0), time)
 }

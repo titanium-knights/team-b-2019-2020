@@ -17,14 +17,14 @@ import org.firstinspires.ftc.teamcode.sensors.Gyro;
 
 
 @Autonomous(name = "Auto", group = "Autonomous")
-public class AllInclusiveAuto extends LinearOpMode {
+public class AllInclusiveAuto extends AutoBaseOpMode {
     private VuforiaLocalizer vuforia;
-    private Gyro gyro;
     private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
     double stoneDiff;
     double stoneDiff2;
     private static ColorSensor sensorColor;
     private static DistanceSensor sensorDistance;
+    private static DistanceSensor backDistance;
     double driftAdjustment = -3;
 
     private PlateClamp clamp;
@@ -36,7 +36,6 @@ public class AllInclusiveAuto extends LinearOpMode {
     private double STRAFE_VEL;
     private static float satValPos[] = {0F,0F,0F};//Saturation values for left,center, and right stones will be stored in this array of 3 elements
     private static float hsvValues[] = {0F, 0F, 0F};//Hue, saturation, & vue
-    private MecanumDrive drive;
 
     private static double SCALE_FACTOR;
     /*public AllInclusiveAuto(int side, double deltaTime) {
@@ -45,39 +44,38 @@ public class AllInclusiveAuto extends LinearOpMode {
     }*/
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        gyro = BNO055IMUGyro.standard(hardwareMap);
-        gyro.initialize();
+    public void runOpMode() {
+        super.runOpMode();
+
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color");
         SCALE_FACTOR = 255;
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color");
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+        backDistance = hardwareMap.get(DistanceSensor.class, "back_distance");
         //pos = vuforiaStuff.vuforiascan(false, false);
         float satLeft;
         float satCenter;
         float satRight;
 
         roboInit();
+        double startAngle = gyro.getAngle();
         speed = 0.5;
         drive.forwardWithPower(-1*speed);
         sleep((int)((20/FORWARD_VEL)*2));
-        drive.strafeLeftWithPower(speed);
-        sleep((int)((20/STRAFE_VEL)*2));
+        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 1);
         drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satLeft = hsvValues[1];
-        //saturation value of the color of the left is stored in satLeft
-        drive.forwardWithPower(speed);
-        sleep((int)((8/FORWARD_VEL)*2));
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satCenter = hsvValues[1];
-        drive.forwardWithPower(speed);
-        sleep((int)((8/FORWARD_VEL)*2));
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
+        drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -85,6 +83,12 @@ public class AllInclusiveAuto extends LinearOpMode {
         satRight = hsvValues[1];
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         speed=1;
+
+        telemetry.addData("Pos", pos);
+        telemetry.update();
+        sleep(5000L);
+        if (true) { return; }
+
         switch (pos) {
             case 1:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
@@ -429,7 +433,6 @@ public class AllInclusiveAuto extends LinearOpMode {
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);*/
 
-        drive = MecanumDrive.standard(hardwareMap);
         // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
         FORWARD_VEL = 0.0347 / deltaTime;
@@ -449,14 +452,14 @@ public class AllInclusiveAuto extends LinearOpMode {
         return (sensorDistance.getDistance(DistanceUnit.INCH));
     }
     public static int decidePositionBasedOnVal(float left, float center, float right){
-        if(left>center && left >right){
-            return 0;
-        }
-        else if(center > left && center>right){
+        if(left < center && left < right){
             return 1;
         }
-        else if(right>center && right>left){
+        else if(center < left && center < right){
             return 2;
+        }
+        else if(right < center && right < left){
+            return 0;
         }
         return -1;
     }
