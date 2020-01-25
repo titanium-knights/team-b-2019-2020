@@ -38,7 +38,7 @@ class PlateClamp(
     companion object: Factory<PlateClamp> {
         @JvmStatic
         override fun standard(hardwareMap: HardwareMap): PlateClamp {
-            val names = arrayOf("front_clamp", "back_clamp")
+            val names = arrayOf("tray_clamp_l", "tray_clamp_r")
             return PlateClamp(names.map { hardwareMap[Servo::class.java, it] }, 0.0, 0.5, 1.0)
         }
     }

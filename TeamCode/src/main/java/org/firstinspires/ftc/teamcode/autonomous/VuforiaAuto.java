@@ -104,8 +104,8 @@ public class VuforiaAuto extends LinearOpMode {
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
     private Gyro gyro;
-    private double speed =0.75;
-    private double deltaTime = 2.8;
+    private double speed =0.375;
+    private double deltaTime = 2.5;
     private double FORWARD_VEL;
     private double STRAFE_VEL;
     private MecanumDrive drive;
@@ -412,10 +412,10 @@ public class VuforiaAuto extends LinearOpMode {
             case 1:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-
+                telemetry.addData("Case: ", 1);
 
                 //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(-speed);
+                drive.strafeLeftWithPower(speed);
                 sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
                 sleep((int)(20/FORWARD_VEL));
@@ -519,10 +519,10 @@ public class VuforiaAuto extends LinearOpMode {
             case 2:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-
+                telemetry.addData("Case: ", 2);
 
                 //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(-speed);
+                drive.strafeLeftWithPower(speed);
                 sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
                 sleep((int)(20/FORWARD_VEL));
@@ -626,15 +626,16 @@ public class VuforiaAuto extends LinearOpMode {
             case 3:
                 // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
                 //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-
+                telemetry.addData("Case: ", 3);
 
                 //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(-speed);
+                drive.strafeLeftWithPower(speed);
                 sleep((int)(25/STRAFE_VEL));
                 drive.forwardWithPower(-speed);
                 sleep((int)(20/FORWARD_VEL));
 
                 // grab brick
+                drive.stop();
                 holder.lower();
                 sleep(500);
                 holder.clamp();

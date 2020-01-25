@@ -43,6 +43,7 @@ public class HolderTester extends OpMode {
         telemetry.addData("Arm A Pos: ", holder.armA.getPosition());
         telemetry.addData("Arm B Pos: ", holder.armB.getPosition());
         telemetry.addData("Claw Pos: ", holder.claw.getPosition());
+        telemetry.addData("Speed", speed);
     }
 
 }

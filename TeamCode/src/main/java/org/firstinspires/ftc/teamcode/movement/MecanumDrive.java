@@ -79,9 +79,10 @@ public class MecanumDrive {
          * @param vector the direction this Motor moves in
          * @param location the location at which this Motor is mounted on the physical robot
          */
-        public Motor(DcMotor motor, Vector2D vector, Location location) {
+        public Motor(DcMotor motor, Vector2D vector, Location location, String name) {
             this.motor = motor;
             this.vector = vector;
+            this.name = name;
 
             if (location == Location.FRONT_LEFT) {
                 this.location = 2;
@@ -288,7 +289,7 @@ public class MecanumDrive {
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = hardwareMap.get(DcMotor.class, standardMotorNames[i]);
             motor.setDirection(standardMotorDirections[i]);
-            motors[i] = new Motor(motor, standardMotorVectors[i], standardMotorLocations[i]);
+            motors[i] = new Motor(motor, standardMotorVectors[i], standardMotorLocations[i], standardMotorNames[i]);
         }
         return new MecanumDrive(motors);
     }

@@ -11,6 +11,7 @@ class ElevatorOuttake(
 ) {
 
     fun moveVertical(power: Double) {
+        vertical.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         vertical.power = power
     }
 
@@ -18,7 +19,9 @@ class ElevatorOuttake(
     fun stopVertical() = moveVertical(0.0)
 
     /** Moves the claw forwards or backwards at the given speed */
+
     fun moveHorizontal(power: Double) {
+        horizontal.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         horizontal.power = power
     }
     fun setEncoders(){

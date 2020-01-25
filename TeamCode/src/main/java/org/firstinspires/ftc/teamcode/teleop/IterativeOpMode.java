@@ -18,9 +18,10 @@ public class IterativeOpMode extends OpMode {
     private ElevatorOuttake elevatorOuttake;
 
     private PlateClamp plateClamp;
-    private BrickHook brickHook;
+    // private BrickHook brickHook;
 
     private ButtonToggler flywheelBT;
+    private ButtonToggler trayBT;
     private ButtonToggler overrideBT = new ButtonToggler();
     private ButtonToggler downBT = new ButtonToggler();
     private ButtonToggler midBT = new ButtonToggler();
@@ -42,9 +43,10 @@ public class IterativeOpMode extends OpMode {
         intake = Intake.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
-        brickHook = BrickHook.standard(hardwareMap);
+        // brickHook = BrickHook.standard(hardwareMap);
 
         flywheelBT = new ButtonToggler();
+        trayBT = new ButtonToggler();
         elapsedTime = new ElapsedTime();
         intakePower = new ButtonBoolean(gamepad2, "dpad_down");
         intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
@@ -74,6 +76,14 @@ public class IterativeOpMode extends OpMode {
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
         drive.move(1, vector, turn);
 
+        if (turn == 0 && strafe == 0 && speed == 0) {
+            if (gamepad1.left_bumper) {
+                drive.turnInPlace(1, true);
+            } else if (gamepad1.right_bumper) {
+                drive.turnInPlace(1, false);
+            }
+        }
+
         // Activate and deactivate pivot flywheels (toggles)
         flywheelBT.ifRelease(gamepad1.y);
         flywheelBT.update(gamepad1.y);
@@ -90,7 +100,7 @@ public class IterativeOpMode extends OpMode {
 
 
 
-        double elevatorHeight = gamepad2.left_stick_y;
+        double elevatorHeight = -gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
 
         if (Math.abs(elevatorHeight) < 0.2) {
@@ -102,23 +112,34 @@ public class IterativeOpMode extends OpMode {
 
         elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
 
-        if (gamepad1.dpad_up) {
+        if (gamepad2.dpad_up) {
             elevatorOuttake.moveClamp(1);
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad2.dpad_down) {
             elevatorOuttake.moveClamp(-1);
-        } else {
-            elevatorOuttake.stopClamp();
         }
-        if(gamepad2.dpad_down){
+
+        if(gamepad2.dpad_left){
             elevatorOuttake.moveToEncoder(0,100);
         }
 
+        /*
         if (gamepad2.dpad_left) {
             brickHook.release();
         } else if (gamepad2.dpad_right) {
             brickHook.clamp();
         } else {
             brickHook.stop();
+        }
+         */
+
+        // Raise and lower the foundation puller
+        trayBT.ifPress(gamepad2.a);
+        trayBT.update(gamepad2.a);
+
+        if (trayBT.getMode()) {
+            plateClamp.setUp();
+        } else {
+            plateClamp.setDown();
         }
 
         // Telemetry data
