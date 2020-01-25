@@ -320,11 +320,13 @@ public class TestSkystonePos extends LinearOpMode {
         //Turn the flash on
         com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);
 
+        double zoom = 30;
+
         //Set zoom of the camera
         com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
-        com.vuforia.CameraDevice.getInstance().setField("zoom", "30");
 
         while (!isStopRequested()) {
+            com.vuforia.CameraDevice.getInstance().setField("zoom", String.valueOf(zoom));
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
@@ -372,6 +374,15 @@ public class TestSkystonePos extends LinearOpMode {
                 telemetry.addData("Visible Target", "none");
             }
             telemetry.addData("Skystone Position", positionSkystone);
+
+            if (gamepad1.dpad_left) {
+                zoom--;
+            } else if (gamepad1.dpad_right) {
+                zoom++;
+            }
+
+            telemetry.addData("Zoom", zoom);
+
             telemetry.update();
         }
 
