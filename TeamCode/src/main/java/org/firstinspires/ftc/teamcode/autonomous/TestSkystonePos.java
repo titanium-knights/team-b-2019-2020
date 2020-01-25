@@ -50,6 +50,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
 /**
  * This 2019-2020 OpMode illustrates the basics of using the Vuforia localizer to determine
@@ -91,7 +92,7 @@ public class TestSkystonePos extends LinearOpMode {
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    private static final boolean PHONE_IS_PORTRAIT = false  ;
+    private static final boolean PHONE_IS_PORTRAIT = true  ;
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -320,7 +321,7 @@ public class TestSkystonePos extends LinearOpMode {
         //Turn the flash on
         com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);
 
-        double zoom = 30;
+        double zoom = 20;
 
         //Set zoom of the camera
         com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
@@ -333,9 +334,9 @@ public class TestSkystonePos extends LinearOpMode {
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
-
                     if(trackable.getName().equals("Stone Target")){
                         telemetry.addLine("Stone Target Is Visible");
+
                     }
 
                     targetVisible = true;

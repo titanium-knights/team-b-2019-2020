@@ -389,9 +389,9 @@ public class VuforiaAuto extends LinearOpMode {
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
                 double xPosition = translation.get(0);
-                if (xPosition > -19.75) {
+                if (xPosition > -20) {
                     positionSkystone = 1;
-                } else if (xPosition <= -19.75 && xPosition > 20.6) {
+                } else if (xPosition <= -20 && xPosition > -27) {
                     positionSkystone = 2;
                 }
 
