@@ -57,6 +57,7 @@ import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.movement.PlateClamp;
 import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
 import org.firstinspires.ftc.teamcode.sensors.Gyro;
+import org.firstinspires.ftc.teamcode.util.PIDController;
 import org.firstinspires.ftc.teamcode.util.PIDControllerMovable;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
@@ -148,6 +149,8 @@ public class VuforiaAuto extends LinearOpMode implements PIDControllerMovable {
     // Constants for perimeter targets
     private static final float halfField = 72 * mmPerInch;
     private static final float quadField  = 36 * mmPerInch;
+
+    private PIDController controller = new PIDController(0.1, 0, 0);
 
     private int sideModifier;    // Class Members
     private OpenGLMatrix lastLocation = null;
@@ -631,8 +634,7 @@ public class VuforiaAuto extends LinearOpMode implements PIDControllerMovable {
                 telemetry.addData("Case: ", 3);
 
                 //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(25/STRAFE_VEL));
+                controller.strafeLeft(this, speed, (int)(25 / STRAFE_VEL));
                 drive.forwardWithPower(-speed);
                 sleep((int)(20/FORWARD_VEL));
 
@@ -645,8 +647,7 @@ public class VuforiaAuto extends LinearOpMode implements PIDControllerMovable {
                 holder.raise();
                 sleep(500);
 
-                drive.strafeLeftWithPower(-speed); //strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
+                controller.strafeLeft(this, -speed, (int)(25 / STRAFE_VEL));
                 drive.forwardWithPower(speed);//drive forward to the building zone
                 sleep((int)(120/FORWARD_VEL));
 
