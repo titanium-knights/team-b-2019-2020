@@ -87,331 +87,108 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         telemetry.addData("Pos", pos);
         telemetry.update();
         sleep(5000L);
-        if (true) { return; }
 
-        switch (pos) {
-            case 1:
-                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
-                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-                telemetry.addData("Case: ", 1);
+        //back up to the first stone from the third stone
+        drive.strafeLeftWithPower(speed);
+        sleep((int)(25/STRAFE_VEL));
+        drive.forwardWithPower(-speed);
+        sleep((int)(20/FORWARD_VEL));
 
-                //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(25/STRAFE_VEL));
-                drive.forwardWithPower(-speed);
-                sleep((int)(20/FORWARD_VEL));
+        // grab brick
+        drive.stop();
+        holder.lower();
+        sleep(500);
+        holder.clamp();
+        sleep(500);
+        holder.raise();
+        sleep(500);
 
-                // grab brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.clamp();
-                sleep(500);
-                holder.raise();
-                sleep(500);
+        drive.strafeLeftWithPower(-speed); //strafe right a little bit
+        sleep((int)(5/STRAFE_VEL));
+        drive.forwardWithPower(speed);//drive forward to the building zone
+        sleep((int)(120/FORWARD_VEL));
 
-                drive.strafeLeftWithPower(-speed); //strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
-                drive.forwardWithPower(speed);//drive forward to the building zone
-                sleep((int)(120/FORWARD_VEL));
+        drive.strafeLeftWithPower(speed);//strafe a little left
+        sleep((int)(2/STRAFE_VEL));
 
-                drive.strafeLeftWithPower(speed);//strafe a little left
-                sleep((int)(2/STRAFE_VEL));
+        // place brick
+        drive.stop();
+        holder.lower();
+        sleep(500);
+        holder.release();
+        sleep(500);
+        holder.raise();
+        sleep(500);
 
-                // place brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.release();
-                sleep(500);
-                holder.raise();
-                sleep(500);
+        drive.strafeLeftWithPower(-speed);//strafe right 2 inches
+        sleep((int)(2/STRAFE_VEL));
 
-                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
-                sleep((int)(2/STRAFE_VEL));
+        drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
+        sleep((int)(96/FORWARD_VEL));
 
-                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
-                sleep((int)(96/FORWARD_VEL));
+        drive.strafeLeftWithPower(speed);
+        sleep((int)(5/STRAFE_VEL));
 
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(5/STRAFE_VEL));
+        // grab brick
+        drive.stop();
+        holder.lower();
+        sleep(500);
+        holder.clamp();
+        sleep(500);
+        holder.raise();
+        sleep(500);
 
-                // grab brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.clamp();
-                sleep(500);
-                holder.raise();
-                sleep(500);
+        drive.strafeLeftWithPower(-speed);
+        sleep((int)(5/STRAFE_VEL));
+        drive.forwardWithPower(speed);//drive forward to the building zone
+        sleep((int)(120/FORWARD_VEL));
 
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(5/STRAFE_VEL));
-                drive.forwardWithPower(speed);//drive forward to the building zone
-                sleep((int)(120/FORWARD_VEL));
+        drive.strafeLeftWithPower(speed);//strafe a little left
+        sleep((int)(5/FORWARD_VEL));
 
-                drive.strafeLeftWithPower(speed);//strafe a little left
-                sleep((int)(5/FORWARD_VEL));
+        // place brick
+        drive.stop();
+        holder.lower();
+        sleep(500);
+        holder.release();
+        sleep(500);
+        holder.raise();
+        sleep(500);
 
-                // place brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.release();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
-                sleep((int)(16/STRAFE_VEL));
-                while(gyro.getAngle()>-90){        //turn right -90 degrees
-                    drive.turnInPlace(speed,true);
-                }
-                drive.stop();
-                //back up 6 inches
-                drive.forwardWithPower(-speed);
-                sleep((int)(6/FORWARD_VEL));
-
-                // clamp the foundation
-                drive.stop();
-                clamp.setDown();
-                sleep(1000);
-
-                //drive forward as much as possible
-                drive.forwardWithPower(speed);
-                sleep((int)(24/STRAFE_VEL));
-
-                // release the foundation
-                drive.stop();
-                clamp.setUp();
-                sleep(1000);
-
-                //slowly strafe right
-                speed = 0.25;
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(10/STRAFE_VEL));
-                //back up to stay in line
-                drive.forwardWithPower(-speed);
-                sleep((int)(18/FORWARD_VEL));
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(10/STRAFE_VEL));
-                //park in our lane
-                break;
-            case 2:
-                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
-                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-                telemetry.addData("Case: ", 2);
-
-                //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(25/STRAFE_VEL));
-                drive.forwardWithPower(-speed);
-                sleep((int)(20/FORWARD_VEL));
-
-                // grab brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.clamp();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed); //strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
-                drive.forwardWithPower(speed);//drive forward to the building zone
-                sleep((int)(120/FORWARD_VEL));
-
-                drive.strafeLeftWithPower(speed);//strafe a little left
-                sleep((int)(2/STRAFE_VEL));
-
-                // place brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.release();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
-                sleep((int)(2/STRAFE_VEL));
-
-                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
-                sleep((int)(96/FORWARD_VEL));
-
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(5/STRAFE_VEL));
-
-                // grab brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.clamp();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(5/STRAFE_VEL));
-                drive.forwardWithPower(speed);//drive forward to the building zone
-                sleep((int)(120/FORWARD_VEL));
-
-                drive.strafeLeftWithPower(speed);//strafe a little left
-                sleep((int)(5/FORWARD_VEL));
-
-                // place brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.release();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
-                sleep((int)(16/STRAFE_VEL));
-                while(gyro.getAngle()>-90){        //turn right -90 degrees
-                    drive.turnInPlace(speed,true);
-                }
-                drive.stop();
-                //back up 6 inches
-                drive.forwardWithPower(-speed);
-                sleep((int)(6/FORWARD_VEL));
-
-                // clamp the foundation
-                drive.stop();
-                clamp.setDown();
-                sleep(1000);
-
-                //drive forward as much as possible
-                drive.forwardWithPower(speed);
-                sleep((int)(24/STRAFE_VEL));
-
-                // release the foundation
-                drive.stop();
-                clamp.setUp();
-                sleep(1000);
-
-                //slowly strafe right
-                speed = 0.25;
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(10/STRAFE_VEL));
-                //back up to stay in line
-                drive.forwardWithPower(-speed);
-                sleep((int)(18/FORWARD_VEL));
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(10/STRAFE_VEL));
-                //park in our lane
-                break;
-            case 3:
-                // Declaration --> servo 1 is the the arm of the thing that picks up the skystone
-                //Declaration --> servo 2 is the 'claw' of the thing that picks up the skystone
-                telemetry.addData("Case: ", 3);
-
-                //back up to the first stone from the third stone
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(25/STRAFE_VEL));
-                drive.forwardWithPower(-speed);
-                sleep((int)(20/FORWARD_VEL));
-
-                // grab brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.clamp();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed); //strafe right a little bit
-                sleep((int)(5/STRAFE_VEL));
-                drive.forwardWithPower(speed);//drive forward to the building zone
-                sleep((int)(120/FORWARD_VEL));
-
-                drive.strafeLeftWithPower(speed);//strafe a little left
-                sleep((int)(2/STRAFE_VEL));
-
-                // place brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.release();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);//strafe right 2 inches
-                sleep((int)(2/STRAFE_VEL));
-
-                drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
-                sleep((int)(96/FORWARD_VEL));
-
-                drive.strafeLeftWithPower(speed);
-                sleep((int)(5/STRAFE_VEL));
-
-                // grab brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.clamp();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(5/STRAFE_VEL));
-                drive.forwardWithPower(speed);//drive forward to the building zone
-                sleep((int)(120/FORWARD_VEL));
-
-                drive.strafeLeftWithPower(speed);//strafe a little left
-                sleep((int)(5/FORWARD_VEL));
-
-                // place brick
-                drive.stop();
-                holder.lower();
-                sleep(500);
-                holder.release();
-                sleep(500);
-                holder.raise();
-                sleep(500);
-
-                drive.strafeLeftWithPower(-speed);//strafe right 16 inches
-                sleep((int)(16/STRAFE_VEL));
-                while(gyro.getAngle()>-90){        //turn right -90 degrees
-                    drive.turnInPlace(speed,true);
-                }
-                drive.stop();
-                //back up 6 inches
-                drive.forwardWithPower(-speed);
-                sleep((int)(6/FORWARD_VEL));
-
-                // clamp the foundation
-                drive.stop();
-                clamp.setDown();
-                sleep(1000);
-
-                //drive forward as much as possible
-                drive.forwardWithPower(speed);
-                sleep((int)(24/STRAFE_VEL));
-
-                // release the foundation
-                drive.stop();
-                clamp.setUp();
-                sleep(1000);
-
-                //slowly strafe right
-                speed = 0.25;
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(10/STRAFE_VEL));
-                //back up to stay in line
-                drive.forwardWithPower(-speed);
-                sleep((int)(18/FORWARD_VEL));
-                drive.strafeLeftWithPower(-speed);
-                sleep((int)(10/STRAFE_VEL));
-                //park in our lane
-                break;
+        drive.strafeLeftWithPower(-speed);//strafe right 16 inches
+        sleep((int)(16/STRAFE_VEL));
+        while(gyro.getAngle()>-90){        //turn right -90 degrees
+            drive.turnInPlace(speed,true);
         }
+        drive.stop();
+        //back up 6 inches
+        drive.forwardWithPower(-speed);
+        sleep((int)(6/FORWARD_VEL));
+
+        // clamp the foundation
+        drive.stop();
+        clamp.setDown();
+        sleep(1000);
+
+        //drive forward as much as possible
+        drive.forwardWithPower(speed);
+        sleep((int)(24/STRAFE_VEL));
+
+        // release the foundation
+        drive.stop();
+        clamp.setUp();
+        sleep(1000);
+
+        //slowly strafe right
+        speed = 0.25;
+        drive.strafeLeftWithPower(-speed);
+        sleep((int)(10/STRAFE_VEL));
+        //back up to stay in line
+        drive.forwardWithPower(-speed);
+        sleep((int)(18/FORWARD_VEL));
+        drive.strafeLeftWithPower(-speed);
+        sleep((int)(10/STRAFE_VEL));
+        //park in our lane
 
         sleep(200);
         /*if (pos == VuforiaStuff.skystonePos.RIGHT) {
