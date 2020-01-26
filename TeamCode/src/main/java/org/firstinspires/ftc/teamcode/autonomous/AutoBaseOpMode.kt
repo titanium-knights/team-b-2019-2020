@@ -45,6 +45,9 @@ open class AutoBaseOpMode: LinearOpMode() {
             val turn = pidController.evaluate(currentAngle, targetAngle, now - previous)
             previous = now
 
+            telemetry.addData("Distance", distance)
+            telemetry.update()
+
             drive.move(power, vector, -turn, MecanumDrive.TurnBehavior.ADDSUBTRACT)
 
             sleep(8L)

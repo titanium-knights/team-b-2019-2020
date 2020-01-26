@@ -25,6 +25,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
     private static ColorSensor sensorColor;
     private static DistanceSensor sensorDistance;
     private static DistanceSensor backDistance;
+    private static DistanceSensor frontDistance;
     double driftAdjustment = -3;
 
     private PlateClamp clamp;
@@ -51,6 +52,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         SCALE_FACTOR = 255;
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
         backDistance = hardwareMap.get(DistanceSensor.class, "back_distance");
+        frontDistance = hardwareMap.get(DistanceSensor.class, "front_distance");
         holder = BrickHolder.standard(hardwareMap);
 
         //pos = vuforiaStuff.vuforiascan(false, false);
@@ -94,7 +96,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         if (pos == 2) {
             sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -20);
         } else {
-            sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, pos * 8 + 2);
+            sensorDrive(new MecanumDrive.Motor.Vector2D(0, 1), startAngle, backDistance, pos * 8 + 2);
         }
 
         // grab brick
@@ -106,15 +108,16 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         holder.raise();
         sleep(500); */
 
-        drive.strafeLeftWithPower(-speed); //strafe right a little bit
-        sleep((int)(5/STRAFE_VEL));
-        drive.forwardWithPower(speed);//drive forward to the building zone
-        sleep((int)((108 - pos * 8)/FORWARD_VEL));
+        // drive.strafeLeftWithPower(-speed); //strafe right a little bit
+        // sleep((int)(5/STRAFE_VEL));
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, frontDistance, 50);
+        drive.forwardWithPower(-speed);
+        sleep((long)(12 / FORWARD_VEL));
 
         if (true) return;
 
-        drive.strafeLeftWithPower(speed);//strafe a little left
-        sleep((int)(2/STRAFE_VEL));
+        // drive.strafeLeftWithPower(speed);//strafe a little left
+        // sleep((int)(2/STRAFE_VEL));
 
         // place brick
         /* drive.stop();
