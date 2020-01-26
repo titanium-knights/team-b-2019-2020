@@ -108,8 +108,8 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         holder.raise();
         sleep(500); */
 
-        // drive.strafeLeftWithPower(-speed); //strafe right a little bit
-        // sleep((int)(5/STRAFE_VEL));
+        drive.strafeLeftWithPower(-speed); //strafe right a little bit
+        sleep((int)(5/STRAFE_VEL));
         sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, frontDistance, 50);
         drive.forwardWithPower(-speed);
         sleep((long)(12 / FORWARD_VEL));

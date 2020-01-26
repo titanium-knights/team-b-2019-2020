@@ -7,21 +7,25 @@ public class BrickHolder {
 
     public Servo armA;
     public Servo armB;
-    public Servo claw;
+    public Servo clawA;
+    public Servo clawB;
 
-    public BrickHolder (Servo armA, Servo armB, Servo claw) {
+    public BrickHolder (Servo armA, Servo armB, Servo clawA, Servo clawB) {
         this.armA = armA;
         this.armB = armB;
-        this.claw = claw;
+        this.clawA = clawA;
+        this.clawB = clawB;
     }
-
+    public void initialClawAPosition(int pos){
+        clawA.setPosition(1);
+    }
     public void moveArm (int pos) {
         armA.setPosition(armA.getPosition() + pos);
         armB.setPosition(armB.getPosition() - pos);
     }
 
     public void moveClaw (int pos) {
-        claw.setPosition(claw.getPosition() + pos);
+        clawB.setPosition(clawB.getPosition() + pos);
     }
 
     public void clamp () {
@@ -40,10 +44,10 @@ public class BrickHolder {
 
     }
 
-    private static String[] standardMotorNames = {"holder_arm_a", "holder_arm_b", "holder_claw"};
+    private static String[] standardMotorNames = {"holder_arm_a", "holder_arm_b", "holder_claw_a", "holder_claw_b"};
 
     public static BrickHolder standard(HardwareMap hardwareMap) {
-        return new BrickHolder(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(Servo.class, standardMotorNames[1]), hardwareMap.get(Servo.class, standardMotorNames[2]));
+        return new BrickHolder(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(Servo.class, standardMotorNames[1]), hardwareMap.get(Servo.class, standardMotorNames[2]), hardwareMap.get(Servo.class, standardMotorNames[3]));
     }
 
 }

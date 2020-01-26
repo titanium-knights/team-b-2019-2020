@@ -118,9 +118,9 @@ public class IterativeOpMode extends OpMode {
             elevatorOuttake.moveClamp(-1);
         }
 
-        if(gamepad2.dpad_left){
+        /*if(gamepad2.dpad_left){
             elevatorOuttake.moveToEncoder(0,100);
-        }
+        }*/
 
         /*
         if (gamepad2.dpad_left) {
