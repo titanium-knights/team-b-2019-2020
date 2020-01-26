@@ -51,6 +51,8 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         SCALE_FACTOR = 255;
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
         backDistance = hardwareMap.get(DistanceSensor.class, "back_distance");
+        holder = BrickHolder.standard(hardwareMap);
+
         //pos = vuforiaStuff.vuforiascan(false, false);
         float satLeft;
         float satCenter;
@@ -97,31 +99,31 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         // grab brick
         drive.stop();
-        holder.lower();
+        /* holder.lower();
         sleep(500);
         holder.clamp();
         sleep(500);
         holder.raise();
-        sleep(500);
-
-        if (!!!false) return;
+        sleep(500); */
 
         drive.strafeLeftWithPower(-speed); //strafe right a little bit
         sleep((int)(5/STRAFE_VEL));
         drive.forwardWithPower(speed);//drive forward to the building zone
-        sleep((int)(120/FORWARD_VEL));
+        sleep((int)((108 - pos * 8)/FORWARD_VEL));
+
+        if (true) return;
 
         drive.strafeLeftWithPower(speed);//strafe a little left
         sleep((int)(2/STRAFE_VEL));
 
         // place brick
-        drive.stop();
+        /* drive.stop();
         holder.lower();
         sleep(500);
         holder.release();
         sleep(500);
         holder.raise();
-        sleep(500);
+        sleep(500); */
 
         drive.strafeLeftWithPower(-speed);//strafe right 2 inches
         sleep((int)(2/STRAFE_VEL));
