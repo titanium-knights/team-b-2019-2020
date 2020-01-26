@@ -16,8 +16,8 @@ open class Button(val property: KProperty0<Boolean>) {
         currentState = property.get()
     }
 
-    val isPushed: Boolean = !previousState && currentState
-    val isReleased: Boolean = previousState && !currentState
+    val isPushed get() = !previousState && currentState
+    val isReleased get() = previousState && !currentState
 
     val pushed: EventOpMode.() -> Boolean = { this@Button.isPushed }
     val released: EventOpMode.() -> Boolean = { this@Button.isReleased }
