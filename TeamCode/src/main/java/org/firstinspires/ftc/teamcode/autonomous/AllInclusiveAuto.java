@@ -63,6 +63,8 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         sleep((int)((20/FORWARD_VEL)*2));
         sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 1);
         drive.stop();
+        drive.forwardWithPower((-1*speed));
+        sleep((int)((5/FORWARD_VEL)*2));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
