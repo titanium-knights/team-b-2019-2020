@@ -101,12 +101,12 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         // grab brick
         drive.stop();
-        /* holder.lower();
+        holder.lower();
         sleep(500);
         holder.clamp();
         sleep(500);
         holder.raise();
-        sleep(500); */
+        sleep(500);
 
         drive.strafeLeftWithPower(-speed); //strafe right a little bit
         sleep((int)(5/STRAFE_VEL));
@@ -114,6 +114,12 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.forwardWithPower(-speed);
         sleep((long)(12 / FORWARD_VEL));
 
+        holder.lower();
+        sleep(500);
+        holder.release();
+        sleep(500);
+        holder.raise();
+        sleep(500);
         if (true) return;
 
         // drive.strafeLeftWithPower(speed);//strafe a little left
