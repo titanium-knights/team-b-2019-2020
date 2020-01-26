@@ -77,7 +77,6 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 hsvValues);
         satCenter = hsvValues[1];
         sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
-        drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -88,13 +87,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         telemetry.addData("Pos", pos);
         telemetry.update();
-        sleep(5000L);
+        sleep(1000L);
 
-        //back up to the first stone from the third stone
-        drive.strafeLeftWithPower(speed);
-        sleep((int)(25/STRAFE_VEL));
-        drive.forwardWithPower(-speed);
-        sleep((int)(20/FORWARD_VEL));
+        if (pos == 2) {
+            sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -20);
+        } else {
+            sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, pos * 8 + 2);
+        }
 
         // grab brick
         drive.stop();
@@ -104,6 +103,8 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         sleep(500);
         holder.raise();
         sleep(500);
+
+        if (!!!false) return;
 
         drive.strafeLeftWithPower(-speed); //strafe right a little bit
         sleep((int)(5/STRAFE_VEL));
