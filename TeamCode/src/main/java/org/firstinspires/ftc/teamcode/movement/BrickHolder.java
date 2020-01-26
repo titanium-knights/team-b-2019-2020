@@ -33,17 +33,17 @@ public class BrickHolder {
     }
 
     public void release () {
-        clawB.setPosition(-1) ;
+        clawB.setPosition(0) ;
     }
 
     public void raise () {
-        armA.setPosition(-1);
+        armA.setPosition(0);
         armB.setPosition(1);
     }
 
     public void lower () {
         armA.setPosition(1);
-        armB.setPosition(-1);
+        armB.setPosition(0);
     }
 
     private static String[] standardMotorNames = {"holder_arm_a", "holder_arm_b", "holder_claw_a", "holder_claw_b"};
