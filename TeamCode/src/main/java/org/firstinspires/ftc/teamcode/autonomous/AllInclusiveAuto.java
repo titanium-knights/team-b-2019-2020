@@ -232,13 +232,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
     }
     public static int decidePositionBasedOnVal(float left, float center, float right){
         if(left < center && left < right){
-            return 1;
+            return 0;
         }
         else if(center < left && center < right){
-            return 2;
+            return 1;
         }
         else if(right < center && right < left){
-            return 0;
+            return 2;
         }
         return -1;
     }
