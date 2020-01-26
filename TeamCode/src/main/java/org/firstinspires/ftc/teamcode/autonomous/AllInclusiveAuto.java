@@ -157,40 +157,15 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         holder.raise();
         sleep(500);
 
-        drive.strafeLeftWithPower(-speed);//strafe right 16 inches
-        sleep((int)(16/STRAFE_VEL));
-        while(gyro.getAngle()>-90){        //turn right -90 degrees
-            drive.turnInPlace(speed,true);
-        }
-        drive.stop();
-        //back up 6 inches
+        drive.strafeLeftWithPower(-speed);//strafe right 5 inches
+        sleep((int)(5/STRAFE_VEL));
+        //back up 40 inches
         drive.forwardWithPower(-speed);
-        sleep((int)(6/FORWARD_VEL));
+        sleep((int)(40/FORWARD_VEL));
 
         // clamp the foundation
         drive.stop();
-        clamp.setDown();
-        sleep(1000);
 
-        //drive forward as much as possible
-        drive.forwardWithPower(speed);
-        sleep((int)(24/STRAFE_VEL));
-
-        // release the foundation
-        drive.stop();
-        clamp.setUp();
-        sleep(1000);
-
-        //slowly strafe right
-        speed = 0.25;
-        drive.strafeLeftWithPower(-speed);
-        sleep((int)(10/STRAFE_VEL));
-        //back up to stay in line
-        drive.forwardWithPower(-speed);
-        sleep((int)(18/FORWARD_VEL));
-        drive.strafeLeftWithPower(-speed);
-        sleep((int)(10/STRAFE_VEL));
-        //park in our lane
 
         sleep(200);
         /*if (pos == VuforiaStuff.skystonePos.RIGHT) {
