@@ -16,7 +16,7 @@ public class BrickHolder {
         this.clawA = clawA;
         this.clawB = clawB;
     }
-    public void initialClawAPosition(int pos){
+    public void initialClawAPosition(){
         clawA.setPosition(1);
     }
     public void moveArm (int pos) {
@@ -29,19 +29,21 @@ public class BrickHolder {
     }
 
     public void clamp () {
-
+        clawB.setPosition(1);
     }
 
     public void release () {
-
+        clawB.setPosition(-1) ;
     }
 
     public void raise () {
-
+        armA.setPosition(-1);
+        armB.setPosition(1);
     }
 
     public void lower () {
-
+        armA.setPosition(1);
+        armB.setPosition(-1);
     }
 
     private static String[] standardMotorNames = {"holder_arm_a", "holder_arm_b", "holder_claw_a", "holder_claw_b"};

@@ -61,6 +61,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         float satRight;
 
         roboInit();
+        holder.initialClawAPosition();
         double startAngle = gyro.getAngle();
         speed = 0.5;
         drive.forwardWithPower(-1*speed);
@@ -107,6 +108,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         sleep(500);
         holder.raise();
         sleep(500);
+
 
         drive.strafeLeftWithPower(-speed); //strafe right a little bit
         sleep((int)(5/STRAFE_VEL));
