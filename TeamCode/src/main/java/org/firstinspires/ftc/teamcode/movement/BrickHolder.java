@@ -23,7 +23,6 @@ public class BrickHolder {
         armA.setPosition(armA.getPosition() + pos);
         armB.setPosition(armB.getPosition() - pos);
     }
-
     public void moveClaw (int pos) {
         clawB.setPosition(clawB.getPosition() + pos);
     }

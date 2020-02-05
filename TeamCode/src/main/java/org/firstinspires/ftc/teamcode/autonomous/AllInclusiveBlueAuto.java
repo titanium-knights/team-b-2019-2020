@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
@@ -12,17 +11,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.movement.BrickHolder;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.movement.PlateClamp;
-import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
-import org.firstinspires.ftc.teamcode.sensors.Gyro;
 
 
-@Autonomous(name = "Red Auto", group = "Autonomous")
-public class AllInclusiveAuto extends AutoBaseOpMode {
+@Autonomous(name = "Blue Auto", group = "Autonomous")
+public class AllInclusiveBlueAuto extends AutoBaseOpMode {
     private VuforiaLocalizer vuforia;
     private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
     double stoneDiff;
     double stoneDiff2;
     private static ColorSensor sensorColor;
+    private static ColorSensor frontColor;
+    private static DistanceSensor leftDistance;
+    private static ColorSensor leftColor;
     private static DistanceSensor sensorDistance;
     private static DistanceSensor backDistance;
     private static DistanceSensor frontDistance;
@@ -50,8 +50,11 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         super.runOpMode();
 
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color");
+        leftColor = hardwareMap.get(ColorSensor.class, "sensor_color left");
         SCALE_FACTOR = 255;
+        frontColor = hardwareMap.get(ColorSensor.class,"sensor_color_front");
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+        leftDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
         backDistance = hardwareMap.get(DistanceSensor.class, "back_distance");
         frontDistance = hardwareMap.get(DistanceSensor.class, "front_distance");
         holder = BrickHolder.standard(hardwareMap);
@@ -65,26 +68,22 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         holder.initialClawAPosition();
         double startAngle = gyro.getAngle();
         speed = 0.5;
-        drive.forwardWithPower(-1*speed);
-        sleep((int)((20/FORWARD_VEL)*2));
-        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 1);
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0.0, 1.0), startAngle, sensorDistance, 1);
         drive.stop();
-        drive.forwardWithPower((-1*speed));
-        sleep((int)((5/FORWARD_VEL)*2));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satLeft = hsvValues[1];
         drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, 16, true);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satCenter = hsvValues[1];
         drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, 12, true);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -128,7 +127,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(-speed);
         sleep((long)(5/STRAFE_VEL));
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 38-positionOffset);
+        sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 24-positionOffset);
 
         holder.lower();
         sleep(500);
