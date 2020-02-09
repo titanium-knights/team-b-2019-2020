@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 class ElevatorOuttake(
         val vertical: DcMotor,
         val horizontal: DcMotor,
-        val clamp: CRServo
+        val clamp: CRServo,
+        val clampB: CRServo
 ) {
 
     fun moveVertical(power: Double) {
@@ -93,8 +94,14 @@ class ElevatorOuttake(
 
     fun moveClamp(power: Double) {
         clamp.power = power
+        clampB.power = -1*power
     }
-
+    fun grabClamp(){
+        moveClamp(1.0)
+    }
+    fun releaseClamp(){
+        moveClamp(-1.0)
+    }
     fun stopClamp() = moveClamp(0.0)
 
     fun stopAll() {
@@ -106,7 +113,8 @@ class ElevatorOuttake(
         @JvmStatic fun standard(hardwareMap: HardwareMap): ElevatorOuttake = ElevatorOuttake(
                 hardwareMap[DcMotor::class.java, "vertical_elevator"],
                 hardwareMap[DcMotor::class.java, "horizontal_elevator"],
-                hardwareMap[CRServo::class.java, "outtake_claw"]
+                hardwareMap[CRServo::class.java, "outtake_claw"],
+                hardwareMap[CRServo::class.java, "outtake_claw_right"]
         )
     }
 }

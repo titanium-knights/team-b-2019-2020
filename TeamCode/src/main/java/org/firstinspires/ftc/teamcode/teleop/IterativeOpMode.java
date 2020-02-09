@@ -113,9 +113,10 @@ public class IterativeOpMode extends OpMode {
         elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
 
         if (gamepad2.dpad_up) {
-            elevatorOuttake.moveClamp(1);
+            //elevatorOuttake.moveClamp(1);
+            elevatorOuttake.grabClamp();
         } else if (gamepad2.dpad_down) {
-            elevatorOuttake.moveClamp(-1);
+            elevatorOuttake.releaseClamp();
         }
 
         /*if(gamepad2.dpad_left){
