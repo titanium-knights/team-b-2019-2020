@@ -20,7 +20,7 @@ class HolderTester2: EventOpMode({
     doWhen(makeButton(gamepad1::dpad_up).pushed) {
         if (mode) {
             holder.armA.position += 0.1
-            holder.armB.position -= 0.1
+            //holder.armB.position -= 0.1
         } else {
             holder.clawA.position = 1.0
         }
@@ -29,7 +29,7 @@ class HolderTester2: EventOpMode({
     doWhen(makeButton(gamepad1::dpad_down).pushed) {
         if (mode) {
             holder.armA.position -= 0.1
-            holder.armB.position += 0.1
+            //holder.armB.position += 0.1
         } else {
             holder.clawA.position = 0.0
         }

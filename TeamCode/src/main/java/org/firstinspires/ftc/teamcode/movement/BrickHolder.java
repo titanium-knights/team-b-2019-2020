@@ -6,49 +6,44 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class BrickHolder {
 
     public Servo armA;
-    public Servo armB;
+    //public Servo armB;
     public Servo clawA;
-    public Servo clawB;
+    //public Servo clawB;
 
-    public BrickHolder (Servo armA, Servo armB, Servo clawA, Servo clawB) {
+    public BrickHolder (Servo armA, Servo clawA) {
         this.armA = armA;
-        this.armB = armB;
+        //this.armB = armB;
         this.clawA = clawA;
-        this.clawB = clawB;
-    }
-    public void initialClawAPosition(){
-        clawA.setPosition(1);
+        //this.clawB = clawB;
     }
     public void moveArm (int pos) {
         armA.setPosition(armA.getPosition() + pos);
-        armB.setPosition(armB.getPosition() - pos);
+        //armB.setPosition(armB.getPosition() - pos);
     }
     public void moveClaw (int pos) {
-        clawB.setPosition(clawB.getPosition() + pos);
+        clawA.setPosition(clawA.getPosition() + pos);
     }
 
     public void clamp () {
-        clawB.setPosition(1);
+        clawA.setPosition(1);
     }
 
     public void release () {
-        clawB.setPosition(0) ;
+        clawA.setPosition(0) ;
     }
 
     public void raise () {
         armA.setPosition(0);
-        armB.setPosition(1);
     }
 
     public void lower () {
         armA.setPosition(1);
-        armB.setPosition(0);
     }
 
-    private static String[] standardMotorNames = {"holder_arm_a", "holder_arm_b", "holder_claw_a", "holder_claw_b"};
+    private static String[] standardMotorNames = {"holder_arm_a", "holder_claw_a"};
 
     public static BrickHolder standard(HardwareMap hardwareMap) {
-        return new BrickHolder(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(Servo.class, standardMotorNames[1]), hardwareMap.get(Servo.class, standardMotorNames[2]), hardwareMap.get(Servo.class, standardMotorNames[3]));
+        return new BrickHolder(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(Servo.class, standardMotorNames[1]));
     }
 
 }

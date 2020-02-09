@@ -60,17 +60,18 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         float satLeft;
         float satCenter;
         float satRight;
-
         roboInit();
-        holder.initialClawAPosition();
+        sensorColor.enableLed(true);
         double startAngle = gyro.getAngle();
-        speed = 0.5;
+        speed = 0.25;
         drive.forwardWithPower(-1*speed);
-        sleep((int)((20/FORWARD_VEL)*2));
+        sleep((int)((20/FORWARD_VEL)*4));
+        drive.stop();
         sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 1);
         drive.stop();
         drive.forwardWithPower((-1*speed));
-        sleep((int)((5/FORWARD_VEL)*2));
+        sleep((int)((5/FORWARD_VEL)*4));
+        drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -115,10 +116,14 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(-speed); //strafe right a little bit
         sleep((long)(5/STRAFE_VEL));
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, frontDistance, 50);
+        drive.stop();
+        //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, frontDistance, 50);
+        drive.forwardWithPower(speed);
+        sleep((long)(20/FORWARD_VEL));
+        drive.stop();
         drive.strafeLeftWithPower(speed);
         sleep((long)(5/STRAFE_VEL));
-
+        drive.stop();
         holder.lower();
         sleep(500);
         holder.release();
@@ -128,8 +133,9 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(-speed);
         sleep((long)(5/STRAFE_VEL));
+        drive.stop();
         sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 38-positionOffset);
-
+        drive.stop();
         holder.lower();
         sleep(500);
         holder.clamp();
@@ -150,13 +156,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(-speed);//strafe right 2 inches
         sleep((long)(2/STRAFE_VEL));
-
+        drive.stop();
         drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
         sleep((long)(96/FORWARD_VEL));
-
+        drive.stop();
         drive.strafeLeftWithPower(speed);
         sleep((long)(5/STRAFE_VEL));
-
+        drive.stop();
         // grab brick
         drive.stop();
         holder.lower();
@@ -168,12 +174,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(-speed);
         sleep((long)(5/STRAFE_VEL));
+        drive.stop();
         drive.forwardWithPower(speed);//drive forward to the building zone
         sleep((long)(120/FORWARD_VEL));
-
+        drive.stop();
         drive.strafeLeftWithPower(speed);//strafe a little left
         sleep((long)(5/FORWARD_VEL));
-
+        drive.stop();
         // place brick
         drive.stop();
         holder.lower();
@@ -185,10 +192,11 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(-speed);//strafe right 5 inches
         sleep((int)(5/STRAFE_VEL));
+        drive.stop();
         //back up 40 inches
         drive.forwardWithPower(-speed);
         sleep((int)(40/FORWARD_VEL));
-
+        drive.stop();
         // clamp the foundation
         drive.stop();
 
@@ -215,9 +223,9 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
-        FORWARD_VEL = 0.0347 / deltaTime;
+        FORWARD_VEL = 0.06 / deltaTime;
         /** average strafing velocity of the robot at full power (inches per millisecond) */
-        STRAFE_VEL = 0.0257 / deltaTime;
+        STRAFE_VEL = 0.0365/ deltaTime;
 
         waitForStart();
     }

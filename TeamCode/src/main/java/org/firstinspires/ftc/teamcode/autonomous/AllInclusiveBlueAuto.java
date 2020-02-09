@@ -65,7 +65,6 @@ public class AllInclusiveBlueAuto extends AutoBaseOpMode {
         float satRight;
 
         roboInit();
-        holder.initialClawAPosition();
         double startAngle = gyro.getAngle();
         speed = 0.5;
         sensorDrive(new MecanumDrive.Motor.Vector2D(0.0, 1.0), startAngle, sensorDistance, 1);
