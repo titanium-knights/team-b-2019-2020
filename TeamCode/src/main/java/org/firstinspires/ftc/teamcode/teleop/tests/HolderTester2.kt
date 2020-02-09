@@ -22,7 +22,7 @@ class HolderTester2: EventOpMode({
             holder.armA.position += 0.1
             //holder.armB.position -= 0.1
         } else {
-            holder.clawA.position = 1.0
+            //.holder.clawA.position = 1.0
         }
     }
 
@@ -31,7 +31,7 @@ class HolderTester2: EventOpMode({
             holder.armA.position -= 0.1
             //holder.armB.position += 0.1
         } else {
-            holder.clawA.position = 0.0
+            //holder.clawA.position = 0.0
         }
     }
 

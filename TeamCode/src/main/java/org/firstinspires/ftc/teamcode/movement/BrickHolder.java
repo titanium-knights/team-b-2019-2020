@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.movement;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import static android.os.SystemClock.sleep;
 
 public class BrickHolder {
 
     public Servo armA;
     //public Servo armB;
-    public Servo clawA;
+    public CRServo clawA;
     //public Servo clawB;
 
-    public BrickHolder (Servo armA, Servo clawA) {
+    public BrickHolder (Servo armA, CRServo clawA) {
         this.armA = armA;
         //this.armB = armB;
         this.clawA = clawA;
@@ -21,15 +24,21 @@ public class BrickHolder {
         //armB.setPosition(armB.getPosition() - pos);
     }
     public void moveClaw (int pos) {
-        clawA.setPosition(clawA.getPosition() + pos);
+        clawA.setPower(1);
+        sleep(1000);
+        clawA.setPower(0);
     }
 
     public void clamp () {
-        clawA.setPosition(1);
+        clawA.setPower(1);
+        sleep(1000);
+        clawA.setPower(0);
     }
 
     public void release () {
-        clawA.setPosition(0) ;
+        clawA.setPower(-1) ;
+        sleep(1000);
+        clawA.setPower(0);
     }
 
     public void raise () {
@@ -43,7 +52,7 @@ public class BrickHolder {
     private static String[] standardMotorNames = {"holder_arm_a", "holder_claw_a"};
 
     public static BrickHolder standard(HardwareMap hardwareMap) {
-        return new BrickHolder(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(Servo.class, standardMotorNames[1]));
+        return new BrickHolder(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(CRServo.class, standardMotorNames[1]));
     }
 
 }

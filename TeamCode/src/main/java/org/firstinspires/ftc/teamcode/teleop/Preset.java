@@ -2,17 +2,16 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.movement.BrickHook;
-import org.firstinspires.ftc.teamcode.movement.ElevatorOuttake;
-import org.firstinspires.ftc.teamcode.movement.Intake;
-import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
-import org.firstinspires.ftc.teamcode.movement.PlateClamp;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.movement.*;
+
 import org.firstinspires.ftc.teamcode.util.ButtonBoolean;
+import org.firstinspires.ftc.teamcode.util.ButtonSelector;
 import org.firstinspires.ftc.teamcode.util.ButtonToggler;
 
-@TeleOp(name = "Preset")
+@TeleOp(name = "Preset Op")
 public class Preset extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
@@ -20,15 +19,16 @@ public class Preset extends OpMode {
     private ElevatorOuttake elevatorOuttake;
 
     private PlateClamp plateClamp;
-    private BrickHook brickHook;
+    // private BrickHook brickHook;
 
     private ButtonToggler flywheelBT;
+    private ButtonToggler trayBT;
     private ButtonToggler overrideBT = new ButtonToggler();
     private ButtonToggler downBT = new ButtonToggler();
     private ButtonToggler midBT = new ButtonToggler();
     private ButtonToggler upBT = new ButtonToggler();
 
-    private ButtonBoolean intakePower;
+    private ButtonBoolean intakePower ;
     private ButtonBoolean intakeDirection;
     /*
         intakePower.get() --> gives you the state (true or false) of the toggler
@@ -40,17 +40,19 @@ public class Preset extends OpMode {
 
     @Override
     public void init() {
+
+        // set the digital channel to input.
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
-        brickHook = BrickHook.standard(hardwareMap);
-        elevatorOuttake.setEncoders();
-        flywheelBT = new ButtonToggler();
-        elapsedTime = new ElapsedTime();
+        // brickHook = BrickHook.standard(hardwareMap);
 
+        flywheelBT = new ButtonToggler();
+        trayBT = new ButtonToggler();
+        elapsedTime = new ElapsedTime();
+        intakePower = new ButtonBoolean(gamepad2, "dpad_down");
         intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
-        intakePower = new ButtonBoolean(gamepad2, "dpad_up");
     }
 
     @Override
@@ -65,23 +67,40 @@ public class Preset extends OpMode {
 
         if (Math.abs(turn) < 0.2) {
             turn = 0;
+            drive.stop();
         }
         if (Math.abs(strafe) < 0.2) {
             strafe = 0;
+            drive.stop();
         }
         if (Math.abs(speed) < 0.2) {
             speed = 0;
+            drive.stop();
         }
 
         // Drive in the inputted direction.
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
         drive.move(1, vector, turn);
+/*
+        if (turn == 0 && strafe == 0 && speed == 0) {
+            if (gamepad1.left_bumper) {
+                drive.turnInPlace(1, true);
+            } else if (gamepad1.right_bumper) {
+                drive.turnInPlace(1, false);
+            }
+        }*/
+        if (gamepad1.left_bumper) {
+            drive.strafeLeftWithPower(0.25);
 
+        } else if (gamepad1.right_bumper) {
+            drive.strafeLeftWithPower(-0.25);
+        }
         // Activate and deactivate pivot flywheels (toggles)
         flywheelBT.ifRelease(gamepad1.y);
         flywheelBT.update(gamepad1.y);
 
         // Either spins or doesn't depending on mode
+
         if (flywheelBT.getMode()) {
             intake.spin();
         } else if (gamepad1.b) {
@@ -90,12 +109,10 @@ public class Preset extends OpMode {
             intake.stopSpinning();
         }
 
-        double elevatorHeight = gamepad2.left_stick_y;
+
+        double elevatorHeight = -gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
-        boolean ltBtn = gamepad2.right_bumper;
-        if(ltBtn){
-            elevatorOuttake.moveToEncoder(0,100);
-        }
+
         if (Math.abs(elevatorHeight) < 0.2) {
             elevatorHeight = 0;
         }
@@ -109,16 +126,30 @@ public class Preset extends OpMode {
             elevatorOuttake.moveClamp(1);
         } else if (gamepad2.dpad_down) {
             elevatorOuttake.moveClamp(-1);
-        } else {
-            elevatorOuttake.stopClamp();
         }
 
+        /*if(gamepad2.dpad_left){
+            elevatorOuttake.moveToEncoder(0,100);
+        }*/
+
+        /*
         if (gamepad2.dpad_left) {
             brickHook.release();
         } else if (gamepad2.dpad_right) {
             brickHook.clamp();
         } else {
             brickHook.stop();
+        }
+         */
+
+        // Raise and lower the foundation puller
+        trayBT.ifPress(gamepad2.a);
+        trayBT.update(gamepad2.a);
+
+        if (trayBT.getMode()) {
+            plateClamp.setUp();
+        } else {
+            plateClamp.setDown();
         }
 
         // Telemetry data
@@ -131,4 +162,5 @@ public class Preset extends OpMode {
         telemetry.addData("Vertical Elevator Encoder", elevatorOuttake.getVerticalEncoder());
         telemetry.addData("Horizontal Elevator Encoder", elevatorOuttake.getHorizontalEncoder());
     }
+
 }

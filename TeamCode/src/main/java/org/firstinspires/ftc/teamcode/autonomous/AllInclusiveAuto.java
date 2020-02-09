@@ -67,7 +67,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.forwardWithPower(-1*speed);
         sleep((int)((20/FORWARD_VEL)*4));
         drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 1);
+        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 2 );
         drive.stop();
         drive.forwardWithPower((-1*speed));
         sleep((int)((5/FORWARD_VEL)*4));
@@ -76,7 +76,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
-        satLeft = hsvValues[1];
+        satLeft = hsvValues[0];
         drive.stop();
         sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
@@ -90,17 +90,20 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
-        satRight = hsvValues[1];
+        satRight = hsvValues[2];
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         speed=1;
         positionOffset = 4*(pos+1);
         telemetry.addData("Pos", pos);
         telemetry.update();
         sleep(1000L);
+        if(1==1){
+            return;
+        }
         //Done with sensing and poistion should be stored in the pos variable.
         /*if (pos == 2) {
             sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -20);
-        } else {
+        } else {p 
             sensorDrive(new MecanumDrive.Motor.Vector2D(0, 1), startAngle, backDistance, pos * 8 + 2);
         }*/
         sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 12-positionOffset);
