@@ -76,7 +76,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
-        satLeft = hsvValues[0];
+        satLeft = hsvValues[1];
         drive.stop();
         sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
@@ -90,7 +90,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
-        satRight = hsvValues[2];
+        satRight = hsvValues[1];
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         speed=1;
         positionOffset = 4*(pos+1);

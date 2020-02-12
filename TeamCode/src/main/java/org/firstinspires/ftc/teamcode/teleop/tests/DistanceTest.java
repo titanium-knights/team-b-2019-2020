@@ -19,8 +19,9 @@ public class DistanceTest extends OpMode {
     }
     public void loop(){
         telemetry.addData("Left Distance", leftDistance.getDistance(DistanceUnit.INCH));
-        telemetry.update();
+
         telemetry.addData("Front Distance", frontDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Back Distance", backDistance.getDistance(DistanceUnit.INCH));
+        telemetry.update();
     }
 }
