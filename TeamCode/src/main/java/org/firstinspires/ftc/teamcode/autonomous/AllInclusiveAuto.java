@@ -67,10 +67,15 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.forwardWithPower(-1*speed);
         sleep((int)((20/FORWARD_VEL)*4));
         drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
+        //sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
+        drive.strafeLeftWithPower(speed);
+        long placeHolder=0L;
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>3){
+            placeHolder++;
+        }
         drive.stop();
         drive.forwardWithPower((-1*speed));
-        sleep((int)((5/FORWARD_VEL)*4));
+        sleep(500);
         drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
@@ -78,16 +83,26 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 hsvValues);
         satLeft = hsvValues[1];
         telemetry.addData("First", satLeft);
+        telemetry.update();
         drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
+        sleep(2000L);
+        //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
+        drive.forwardWithPower(-speed);
+        sleep((long)(4/STRAFE_VEL));
+        drive.stop();
+        drive.forwardWithPower(speed);
+        sleep((long)(4/FORWARD_VEL));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satCenter = hsvValues[1];
-        drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
         telemetry.addData("Center", satCenter);
+        drive.stop();
+        sleep(1000L);
+        //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
+        drive.forwardWithPower(speed);
+        sleep((long)(4/FORWARD_VEL));
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -99,7 +114,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         positionOffset = 4*(pos+1);
         telemetry.addData("Pos", pos);
         telemetry.update();
-        sleep(1000L);
+        sleep(5000L);
         if(1==1){
             return;
         }
