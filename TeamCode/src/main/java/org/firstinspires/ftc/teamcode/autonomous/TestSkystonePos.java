@@ -39,6 +39,7 @@ public class TestSkystonePos extends OpMode {
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
                     hsvValues);
+            telemetry.addLine("y pressed");
             satLeft = hsvValues[1];
         }
         if(gamepad1.b) {

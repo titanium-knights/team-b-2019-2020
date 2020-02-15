@@ -67,7 +67,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.forwardWithPower(-1*speed);
         sleep((int)((20/FORWARD_VEL)*4));
         drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 2 );
+        sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
         drive.stop();
         drive.forwardWithPower((-1*speed));
         sleep((int)((5/FORWARD_VEL)*4));
@@ -77,6 +77,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satLeft = hsvValues[1];
+        telemetry.addData("First", satLeft);
         drive.stop();
         sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
@@ -86,11 +87,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         satCenter = hsvValues[1];
         drive.stop();
         sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
+        telemetry.addData("Center", satCenter);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satRight = hsvValues[1];
+        telemetry.addData("Right",satRight);
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         speed=1;
         positionOffset = 4*(pos+1);

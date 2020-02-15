@@ -10,13 +10,15 @@ import org.firstinspires.ftc.teamcode.util.ButtonBoolean;
 import org.firstinspires.ftc.teamcode.util.ButtonSelector;
 import org.firstinspires.ftc.teamcode.util.ButtonToggler;
 
+import static java.lang.Thread.sleep;
+
 @TeleOp(name = "Tele Op Mode")
 public class IterativeOpMode extends OpMode {
     private MecanumDrive drive;
     private Intake intake;
 
     private ElevatorOuttake elevatorOuttake;
-
+    private ElevatorOuttake2 elevatorOuttake2;
     private PlateClamp plateClamp;
     // private BrickHook brickHook;
 
@@ -43,6 +45,7 @@ public class IterativeOpMode extends OpMode {
         intake = Intake.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         plateClamp = PlateClamp.standard(hardwareMap);
+        elevatorOuttake2=ElevatorOuttake2.standard(hardwareMap);
         // brickHook = BrickHook.standard(hardwareMap);
 
         flywheelBT = new ButtonToggler();
@@ -53,7 +56,7 @@ public class IterativeOpMode extends OpMode {
     }
 
     @Override
-    public void loop() {
+    public void loop(){
         double seconds = elapsedTime.seconds();
         double delta = (lastLoop < 0) ? 0 : (seconds - lastLoop);
         lastLoop = seconds;
@@ -111,14 +114,21 @@ public class IterativeOpMode extends OpMode {
         }
 
         elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
-
-        if (gamepad2.dpad_up) {
-            //elevatorOuttake.moveClamp(1);
-            elevatorOuttake.grabClamp();
-        } else if (gamepad2.dpad_down) {
-            elevatorOuttake.releaseClamp();
+        try {
+            if (gamepad2.dpad_up) {
+                elevatorOuttake2.grab();
+                telemetry.addData("Up Pressed", true);
+                //elevatorOuttake.grabClamp();
+            } else if (gamepad2.dpad_down) {
+                elevatorOuttake2.release();
+                telemetry.addData("Down Pressed", true);
+                Thread.sleep(250);
+                elevatorOuttake2.stop();
+            }
         }
-
+        catch (InterruptedException e){
+            throw new RuntimeException(e);
+        }
         /*if(gamepad2.dpad_left){
             elevatorOuttake.moveToEncoder(0,100);
         }*/
