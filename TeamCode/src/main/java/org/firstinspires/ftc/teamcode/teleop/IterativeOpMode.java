@@ -19,7 +19,7 @@ public class IterativeOpMode extends OpMode {
 
     private ElevatorOuttake elevatorOuttake;
     private ElevatorOuttake2 elevatorOuttake2;
-    private PlateClamp plateClamp;
+    private TrayPull trayPuller;
     // private BrickHook brickHook;
 
     private ButtonToggler flywheelBT;
@@ -44,7 +44,8 @@ public class IterativeOpMode extends OpMode {
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
-        plateClamp = PlateClamp.standard(hardwareMap);
+        //plateClamp = PlateClamp.standard(hardwareMap);
+        trayPuller = TrayPull.standard(hardwareMap);
         elevatorOuttake2=ElevatorOuttake2.standard(hardwareMap);
         // brickHook = BrickHook.standard(hardwareMap);
 
@@ -117,13 +118,21 @@ public class IterativeOpMode extends OpMode {
         try {
             if (gamepad2.dpad_up) {
                 elevatorOuttake2.grab();
-                telemetry.addData("Up Pressed", true);
+                telemetry.addData("gamepad 2-up Pressed ", true);
                 //elevatorOuttake.grabClamp();
             } else if (gamepad2.dpad_down) {
                 elevatorOuttake2.release();
-                telemetry.addData("Down Pressed", true);
+                telemetry.addData("gamepad2-down Pressed", true);
                 Thread.sleep(250);
                 elevatorOuttake2.stop();
+            }
+            if(gamepad1.dpad_down){
+                trayPuller.down();
+                telemetry.addData("gamepad1-Down Pressed", true);
+            }
+            if(gamepad1.dpad_up){
+                trayPuller.up();
+                telemetry.addData("gamepad2-Up Pressed", true);
             }
         }
         catch (InterruptedException e){
@@ -144,14 +153,12 @@ public class IterativeOpMode extends OpMode {
          */
 
         // Raise and lower the foundation puller
+        /*
         trayBT.ifPress(gamepad2.a);
         trayBT.update(gamepad2.a);
+        */
 
-        if (trayBT.getMode()) {
-            plateClamp.setUp();
-        } else {
-            plateClamp.setDown();
-        }
+
 
         // Telemetry data
         telemetry.addData("Speed", speed);
