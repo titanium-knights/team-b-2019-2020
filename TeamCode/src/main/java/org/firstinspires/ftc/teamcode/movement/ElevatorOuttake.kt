@@ -94,13 +94,15 @@ class ElevatorOuttake(
 
     fun moveClamp(power: Double) {
         clamp.power = power
-        clampB.power = -1*power
+        clampB.power = 1-power
     }
     fun grabClamp(){
-        moveClamp(1.0)
+        clamp.power = 0.0
+        clampB.power = 1.0
     }
     fun releaseClamp(){
-        moveClamp(-1.0)
+        clamp.power = 1.0
+        clampB.power = 0.0
     }
     fun stopClamp() = moveClamp(0.0)
 

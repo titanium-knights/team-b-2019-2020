@@ -34,11 +34,17 @@ public class TestSkystonePos extends OpMode {
 
         telemetry.addData("Front Distance", frontDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Back Distance", backDistance.getDistance(DistanceUnit.INCH));
+        Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                (int) (sensorColor.green() * SCALE_FACTOR),
+                (int) (sensorColor.blue() * SCALE_FACTOR),
+                hsvValues);
+        telemetry.addData("Color", hsvValues[1]);
         if(gamepad1.y) {
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
                     hsvValues);
+            telemetry.addLine("y pressed");
             satLeft = hsvValues[1];
         }
         if(gamepad1.b) {
