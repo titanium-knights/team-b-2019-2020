@@ -14,21 +14,24 @@ public class TrayPull {
     public Servo right;
     //public Servo clawB;
 
-    public TrayPull (Servo left, Servo right) {
+    public TrayPull(Servo left, Servo right) {
         this.left = left;
         //this.armB = armB;
         this.right = right;
         //this.clawB = clawB;
     }
-    public void down(){
+
+    public void down() {
         left.setPosition(1);
         right.setPosition(0);
 
     }
-    public void up(){
+
+    public void up() {
         left.setPosition(0);
         right.setPosition(1);
     }
+
     private static String[] standardMotorNames = {"tray_puller_l", "tray_puller_r"};
 
     public static TrayPull standard(HardwareMap hardwareMap) {

@@ -19,6 +19,7 @@ public class IterativeOpMode extends OpMode {
 
     private ElevatorOuttake elevatorOuttake;
     private ElevatorOuttake2 elevatorOuttake2;
+
     private PlateClamp plateClamp;
     private TrayPull trayPuller;
     // private BrickHook brickHook;
@@ -47,11 +48,10 @@ public class IterativeOpMode extends OpMode {
     public void init() {
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
-        elevatorOuttake2 = ElevatorOuttake2.standard(hardwareMap);
-        // plateClamp = PlateClamp.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
-        // brickHook = BrickHook.standard(hardwareMap);
+        elevatorOuttake2 = ElevatorOuttake2.standard(hardwareMap);
         trayPuller = TrayPull.standard(hardwareMap);
+        // brickHook = BrickHook.standard(hardwareMap);
 
         flywheelBT = new ButtonToggler();
         trayBT = new ButtonToggler();
@@ -162,16 +162,6 @@ public class IterativeOpMode extends OpMode {
             brickHook.stop();
         }
          */
-
-        // Raise and lower the foundation puller
-        /*
-        trayBT.ifPress(gamepad2.a);
-        if (trayBT.getMode()) {
-            plateClamp.setUp();
-        } else {
-            plateClamp.setDown();
-        }
-        trayBT.update(gamepad2.a); */
 
         // Telemetry data
         telemetry.addData("Speed Mode", speedBT.getMode() ? "Fast" : "Slow");
