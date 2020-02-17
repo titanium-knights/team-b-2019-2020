@@ -20,6 +20,7 @@ public class IterativeOpMode extends OpMode {
     private ElevatorOuttake elevatorOuttake;
     private ElevatorOuttake2 elevatorOuttake2;
     private PlateClamp plateClamp;
+    private TrayPull trayPuller;
     // private BrickHook brickHook;
 
     private ButtonToggler flywheelBT;
@@ -28,6 +29,7 @@ public class IterativeOpMode extends OpMode {
     private ButtonToggler downBT = new ButtonToggler();
     private ButtonToggler midBT = new ButtonToggler();
     private ButtonToggler upBT = new ButtonToggler();
+    private ButtonToggler speedBT = new ButtonToggler();
 
     private ButtonBoolean intakePower ;
     private ButtonBoolean intakeDirection;
@@ -37,22 +39,27 @@ public class IterativeOpMode extends OpMode {
 
     private ElapsedTime elapsedTime;
 
+    private double speedMode;
+
     private double lastLoop = -1;
 
     @Override
     public void init() {
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
+        elevatorOuttake2 = ElevatorOuttake2.standard(hardwareMap);
+        // plateClamp = PlateClamp.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
-        plateClamp = PlateClamp.standard(hardwareMap);
-        elevatorOuttake2=ElevatorOuttake2.standard(hardwareMap);
         // brickHook = BrickHook.standard(hardwareMap);
+        trayPuller = TrayPull.standard(hardwareMap);
 
         flywheelBT = new ButtonToggler();
         trayBT = new ButtonToggler();
         elapsedTime = new ElapsedTime();
         intakePower = new ButtonBoolean(gamepad2, "dpad_down");
         intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
+
+        speedMode = 1.0;
     }
 
     @Override
@@ -60,6 +67,11 @@ public class IterativeOpMode extends OpMode {
         double seconds = elapsedTime.seconds();
         double delta = (lastLoop < 0) ? 0 : (seconds - lastLoop);
         lastLoop = seconds;
+
+        // Toggles the speed between fast and slow
+        speedBT.ifPress(gamepad1.x);
+        speedMode = speedBT.getMode() ? 0.8 : 0.5;
+        speedBT.update(gamepad1.x);
 
         double speed = gamepad1.left_stick_y;
         double strafe = -gamepad1.left_stick_x;
@@ -77,13 +89,13 @@ public class IterativeOpMode extends OpMode {
 
         // Drive in the inputted direction.
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
-        drive.move(1, vector, turn);
+        drive.move(speedMode, vector, turn);
 
         if (turn == 0 && strafe == 0 && speed == 0) {
             if (gamepad1.left_bumper) {
-                drive.turnInPlace(1, true);
+                drive.turnInPlace(speedMode, true);
             } else if (gamepad1.right_bumper) {
-                drive.turnInPlace(1, false);
+                drive.turnInPlace(speedMode, false);
             }
         }
 
@@ -101,8 +113,6 @@ public class IterativeOpMode extends OpMode {
             intake.stopSpinning();
         }
 
-
-
         double elevatorHeight = -gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
 
@@ -113,22 +123,32 @@ public class IterativeOpMode extends OpMode {
             clawDistance = 0;
         }
 
+
         elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
         try {
             if (gamepad2.dpad_up) {
                 elevatorOuttake2.grab();
-                telemetry.addData("Up Pressed", true);
+                telemetry.addData("gamepad 2-up Pressed ", true);
                 //elevatorOuttake.grabClamp();
             } else if (gamepad2.dpad_down) {
                 elevatorOuttake2.release();
-                telemetry.addData("Down Pressed", true);
+                telemetry.addData("gamepad2-down Pressed", true);
                 Thread.sleep(250);
                 elevatorOuttake2.stop();
+            }
+            if(gamepad1.dpad_down){
+                trayPuller.down();
+                telemetry.addData("gamepad1-Down Pressed", true);
+            }
+            if(gamepad1.dpad_up){
+                trayPuller.up();
+                telemetry.addData("gamepad1-Up Pressed", true);
             }
         }
         catch (InterruptedException e){
             throw new RuntimeException(e);
         }
+
         /*if(gamepad2.dpad_left){
             elevatorOuttake.moveToEncoder(0,100);
         }*/
@@ -144,16 +164,17 @@ public class IterativeOpMode extends OpMode {
          */
 
         // Raise and lower the foundation puller
+        /*
         trayBT.ifPress(gamepad2.a);
-        trayBT.update(gamepad2.a);
-
         if (trayBT.getMode()) {
             plateClamp.setUp();
         } else {
             plateClamp.setDown();
         }
+        trayBT.update(gamepad2.a); */
 
         // Telemetry data
+        telemetry.addData("Speed Mode", speedBT.getMode() ? "Fast" : "Slow");
         telemetry.addData("Speed", speed);
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
