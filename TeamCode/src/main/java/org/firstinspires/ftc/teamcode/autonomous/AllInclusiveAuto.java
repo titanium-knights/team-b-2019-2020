@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.internal.android.dx.cf.attrib.InnerClassList;
 import org.firstinspires.ftc.teamcode.movement.BrickHolder;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.movement.PlateClamp;
@@ -63,6 +64,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         roboInit();
         sensorColor.enableLed(true);
         double startAngle = gyro.getAngle();
+        while(!isStopRequested()){
         speed = 0.25;
         drive.forwardWithPower(-1*speed);
         sleep((int)((20/FORWARD_VEL)*4));
@@ -114,17 +116,17 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
                 *(pos+1);
         telemetry.addData("Pos", pos);
         telemetry.update();
-        sleep(5000L);
         double backVar;
+        speed=0.125;
         if(pos==2){
-            backVar = 18.5;
+            backVar = 20;
             drive.forwardWithPower(speed);
             while(backDistance.getDistance(DistanceUnit.INCH)<backVar){
                 placeHolder++;
             }
         }
         else if(pos==1){
-            backVar = 10.5;
+            backVar = 12;
             drive.forwardWithPower(-1*speed);
             while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
                 placeHolder++;
@@ -132,29 +134,61 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
             drive.stop();
         }
         else{
-            backVar = 2.5;
+            backVar = 4;
+            drive.forwardWithPower(-1*speed);
+            while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
+                placeHolder++;
+            }
+            drive.stop();
+
         }
-        drive.stop();
-        drive.forwardWithPower(-1*speed);
-        while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
-            placeHolder++;
-        }
+
         drive.stop();
 
         placeHolder=0;
-        drive.strafeLeftWithPower(speed);
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>2){
+        drive.strafeLeftWithPower(0.2);
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>1.5){
+            placeHolder++;
+        }
+        speed=0.125;
+        drive.stop();
+
+        drive.stop();
+        holder.lower();
+        sleep(4000);
+        holder.clamp();
+        sleep(1000);
+        holder.raise();
+        sleep(500);
+        speed=0.25;
+        drive.strafeLeftWithPower(-1*speed);
+        sleep((long)(4/STRAFE_VEL)*4);
+        placeHolder =0;
+        drive.forwardWithPower(speed);
+        while(backDistance.getDistance(DistanceUnit.INCH)>48){
             placeHolder++;
         }
         drive.stop();
-        holder.lower();
-        sleep(2000);
-        holder.clamp();
-        holder.raise();
-        sleep(500);
+        sleep(1000);
+        drive.forwardWithPower(speed);
+        sleep((long)(42/FORWARD_VEL)*4);
+        /*placeHolder=0;
+        while(frontDistance.getDistance(DistanceUnit.INCH)>30){
+            placeHolder++;
+        }*/
+
+        drive.stop();
+        drive.strafeLeftWithPower(speed);
+        placeHolder=0;
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
+            placeHolder++;
+        }
+        holder.release();
+        sleep(1000);
+
         if(1==1){
             return;
-        }
+        }}
 
     }
     public void roboInit() {

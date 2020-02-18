@@ -25,6 +25,7 @@ public class ElevatorOuttake2 {
         left.setPower(1);
         right.setDirection(CRServo.Direction.REVERSE);
         right.setPower(1);
+
     }
     public void release(){
         left.setDirection(CRServo.Direction.REVERSE);

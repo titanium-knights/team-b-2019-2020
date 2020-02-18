@@ -18,14 +18,12 @@ public class BrickHolder {
         //this.armB = armB;
         this.clawA = clawA;
         //this.clawB = clawB;
-        clawA.setPower(-1);
     }
     public void initialClawPos(){
         clawA.setPower(1);
     }
     public void stop(){
         clawA.setPower(0);
-        armA.setPosition(0);
     }
     public void moveArm (int pos) {
         armA.setPosition(armA.getPosition() + pos);
@@ -46,11 +44,11 @@ public class BrickHolder {
     }
 
     public void raise () {
-        armA.setPosition(1);
+        armA.setPosition(0.0);
     }
 
     public void lower () {
-        armA.setPosition(0.25);
+        armA.setPosition(1);
 
     }
 
