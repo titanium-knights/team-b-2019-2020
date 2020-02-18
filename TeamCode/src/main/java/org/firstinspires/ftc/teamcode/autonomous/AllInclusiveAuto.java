@@ -70,12 +70,14 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         //sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
         drive.strafeLeftWithPower(speed);
         long placeHolder=0L;
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>5){
             placeHolder++;
         }
         drive.stop();
         drive.forwardWithPower((-1*speed));
+        sleep(500);
         drive.stop();
+        sleep(750);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -83,43 +85,56 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         satLeft = hsvValues[1];
         telemetry.addData("First", satLeft);
         telemetry.update();
-        drive.stop();
         //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
         drive.forwardWithPower(speed);
-        sleep((long)(5/FORWARD_VEL));
+        sleep((long)(3/FORWARD_VEL)*4);
         drive.stop();
+        sleep(1000);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satCenter = hsvValues[1];
         telemetry.addData("Center", satCenter);
-        drive.stop();
-        sleep(1000L);
+        telemetry.update();
+
         //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
         drive.forwardWithPower(speed);
-        sleep((long)(4/FORWARD_VEL));
+        sleep((long)(3/FORWARD_VEL)*4);
+        drive.stop();
+        sleep(1000);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
         satRight = hsvValues[1];
         telemetry.addData("Right",satRight);
+        telemetry.update();
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
         speed=1;
         positionOffset = 4*(pos+1);
         telemetry.addData("Pos", pos);
         telemetry.update();
         sleep(5000L);
-        if(1==1){
-            return;
+        drive.forwardWithPower(-speed);
+        while(backDistance.getDistance(DistanceUnit.INCH)>positionOffset){
+            placeHolder++;
         }
+        drive.stop();
+        holder.lower();
+        sleep(500);
+        holder.clamp();
+        holder.raise();
+        sleep(150);
+
+
         //Done with sensing and poistion should be stored in the pos variable.
         /*if (pos == 2) {
             sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -20);
         } else {p 
             sensorDrive(new MecanumDrive.Motor.Vector2D(0, 1), startAngle, backDistance, pos * 8 + 2);
-        }*/
+        }
+
         sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 12-positionOffset);
         // grab brick
         drive.stop();
@@ -163,13 +178,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         // sleep((int)(2/STRAFE_VEL));
 
         // place brick
-        /* drive.stop();
+         drive.stop();
         holder.lower();
         sleep(500);
         holder.release();
         sleep(500);
         holder.raise();
-        sleep(500); */
+        sleep(500);
 
         drive.strafeLeftWithPower(-speed);//strafe right 2 inches
         sleep((long)(2/STRAFE_VEL));
@@ -219,13 +234,17 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
 
         sleep(200);
-        /*if (pos == VuforiaStuff.skystonePos.RIGHT) {
+        if (pos == VuforiaStuff.skystonePos.RIGHT) {
 
         }
         else {
 
-        }*/
-        sleep(300);
+        }
+        */
+        if(1==1){
+            return;
+        }
+
     }
     public void roboInit() {
         /*int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -268,4 +287,5 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         }
         return -1;
     }
+
     }
