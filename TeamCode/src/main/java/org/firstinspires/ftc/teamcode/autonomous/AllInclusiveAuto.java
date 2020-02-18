@@ -98,7 +98,6 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         telemetry.addData("Center", satCenter);
         telemetry.update();
 
-        //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -16, true);
         drive.forwardWithPower(speed);
         sleep((long)(3/FORWARD_VEL)*4);
         drive.stop();
@@ -116,17 +115,27 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         telemetry.addData("Pos", pos);
         telemetry.update();
         sleep(5000L);
-        drive.forwardWithPower(-speed);
         double backVar;
-        if(pos==0){
+        if(pos==2){
             backVar = 18.5;
+            drive.forwardWithPower(speed);
+            while(backDistance.getDistance(DistanceUnit.INCH)<backVar){
+                placeHolder++;
+            }
         }
         else if(pos==1){
             backVar = 10.5;
+            drive.forwardWithPower(-1*speed);
+            while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
+                placeHolder++;
+            }
+            drive.stop();
         }
         else{
             backVar = 2.5;
         }
+        drive.stop();
+        drive.forwardWithPower(-1*speed);
         while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
             placeHolder++;
         }
@@ -143,138 +152,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         holder.clamp();
         holder.raise();
         sleep(500);
-
-
-        //Done with sensing and poistion should be stored in the pos variable.
-        /*if (pos == 2) {
-            sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -20);
-        } else {p 
-            sensorDrive(new MecanumDrive.Motor.Vector2D(0, 1), startAngle, backDistance, pos * 8 + 2);
-        }
-
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 12-positionOffset);
-        // grab brick
-        drive.stop();
-        holder.lower();
-        sleep(500);
-        holder.clamp();
-        sleep(500);
-        holder.raise();
-        sleep(500);
-
-
-        drive.strafeLeftWithPower(-speed); //strafe right a little bit
-        sleep((long)(5/STRAFE_VEL));
-        drive.stop();
-        //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, frontDistance, 50);
-        drive.forwardWithPower(speed);
-        sleep((long)(20/FORWARD_VEL));
-        drive.stop();
-        drive.strafeLeftWithPower(speed);
-        sleep((long)(5/STRAFE_VEL));
-        drive.stop();
-        holder.lower();
-        sleep(500);
-        holder.release();
-        sleep(500);
-        holder.raise();
-        sleep(500);
-
-        drive.strafeLeftWithPower(-speed);
-        sleep((long)(5/STRAFE_VEL));
-        drive.stop();
-        sensorDrive(new MecanumDrive.Motor.Vector2D(0,-1), startAngle, backDistance, 38-positionOffset);
-        drive.stop();
-        holder.lower();
-        sleep(500);
-        holder.clamp();
-        sleep(500);
-        holder.raise();
-        sleep(500);
-        // drive.strafeLeftWithPower(speed);//strafe a little left
-        // sleep((int)(2/STRAFE_VEL));
-
-        // place brick
-         drive.stop();
-        holder.lower();
-        sleep(500);
-        holder.release();
-        sleep(500);
-        holder.raise();
-        sleep(500);
-
-        drive.strafeLeftWithPower(-speed);//strafe right 2 inches
-        sleep((long)(2/STRAFE_VEL));
-        drive.stop();
-        drive.forwardWithPower(-speed);//drive backwards to next set of three skystones
-        sleep((long)(96/FORWARD_VEL));
-        drive.stop();
-        drive.strafeLeftWithPower(speed);
-        sleep((long)(5/STRAFE_VEL));
-        drive.stop();
-        // grab brick
-        drive.stop();
-        holder.lower();
-        sleep(500);
-        holder.clamp();
-        sleep(500);
-        holder.raise();
-        sleep(500);
-
-        drive.strafeLeftWithPower(-speed);
-        sleep((long)(5/STRAFE_VEL));
-        drive.stop();
-        drive.forwardWithPower(speed);//drive forward to the building zone
-        sleep((long)(120/FORWARD_VEL));
-        drive.stop();
-        drive.strafeLeftWithPower(speed);//strafe a little left
-        sleep((long)(5/FORWARD_VEL));
-        drive.stop();
-        // place brick
-        drive.stop();
-        holder.lower();
-        sleep(500);
-        holder.release();
-        sleep(500);
-        holder.raise();
-        sleep(500);
-
-        drive.strafeLeftWithPower(-speed);//strafe right 5 inches
-        sleep((int)(5/STRAFE_VEL));
-        drive.stop();
-        //back up 40 inches
-        drive.forwardWithPower(-speed);
-        sleep((int)(40/FORWARD_VEL));
-        drive.stop();
-        // clamp the foundation
-        drive.stop();
-
-
-        sleep(200);
-        if (pos == VuforiaStuff.skystonePos.RIGHT) {
-
-        }
-        else {
-
-        }
-        */
         if(1==1){
             return;
         }
 
     }
     public void roboInit() {
-        /*int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);*/
-
-        // MOVEMENT CONSTANTS
         /** average forward velocity of the robot at full power (inches per millisecond) */
         FORWARD_VEL = 0.06 / deltaTime;
         /** average strafing velocity of the robot at full power (inches per millisecond) */

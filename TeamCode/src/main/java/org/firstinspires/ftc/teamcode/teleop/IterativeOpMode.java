@@ -92,15 +92,14 @@ public class IterativeOpMode extends OpMode {
         drive.move(speedMode, vector, turn);
 
         if (turn == 0 && strafe == 0 && speed == 0) {
-            bump = new MecanumDrive.Motor.Vector2D(strafe, speed);
-            drive.move(speedMode, vector, turn);
             if (gamepad1.left_bumper) {
-                //drive.turnInPlace(speedMode, true);
-                //1,-1
+                drive.turnInPlace(speedMode, true);
             } else if (gamepad1.right_bumper) {
                 drive.turnInPlace(speedMode, false);
-                //-1,1
-
+            } else if (gamepad1.left_trigger > 0.2f) {
+                drive.strafeLeftWithPower(gamepad1.left_trigger);
+            } else if (gamepad1.right_trigger > 0.2f) {
+                drive.strafeRightWithPower(gamepad1.right_trigger);
             }
         }
 
