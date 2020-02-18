@@ -16,20 +16,22 @@ public class TrayPull {
 
     public TrayPull(Servo left, Servo right) {
         this.left = left;
-        //this.armB = armB;
         this.right = right;
         //this.clawB = clawB;
     }
 
     public void down() {
         left.setPosition(1);
+        left.setDirection(Servo.Direction.REVERSE);
         right.setPosition(0);
-
+        right.setDirection(Servo.Direction.FORWARD);
     }
 
     public void up() {
         left.setPosition(0);
+        left.setDirection(Servo.Direction.FORWARD);
         right.setPosition(1);
+        right.setDirection(Servo.Direction.REVERSE);
     }
 
     private static String[] standardMotorNames = {"tray_puller_l", "tray_puller_r"};

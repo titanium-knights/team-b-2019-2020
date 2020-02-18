@@ -85,12 +85,16 @@ class ElevatorOuttake(
     fun stopHorizontal() = moveHorizontal(0.0)
 
     fun moveElevators(verticalPower: Double, horizontalPower: Double) {
+        vertical.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
         moveVertical(verticalPower)
         moveHorizontal(horizontalPower)
     }
 
     /** Stops the movement of the elevator and claw */
-    fun stopElevators() = moveElevators(0.0, 0.0)
+    fun stopElevators() {
+        moveElevators(0.0, 0.0)
+        vertical.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+    }
 
     fun moveClamp(power: Double) {
         clamp.power = power
