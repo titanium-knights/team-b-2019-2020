@@ -73,10 +73,10 @@ public class IterativeOpMode extends OpMode {
         speedMode = speedBT.getMode() ? 0.8 : 0.5;
         speedBT.update(gamepad1.x);
 
+        // Gets the speed, strafe, and turn of the robot and accounts for stick drifting
         double speed = gamepad1.left_stick_y;
         double strafe = -gamepad1.left_stick_x;
         double turn = gamepad1.right_stick_x;
-
         if (Math.abs(turn) < 0.2) {
             turn = 0;
         }
@@ -87,19 +87,26 @@ public class IterativeOpMode extends OpMode {
             speed = 0;
         }
 
-        // Drive in the inputted direction.
+        // Drives in the inputted direction.
         MecanumDrive.Motor.Vector2D vector = new MecanumDrive.Motor.Vector2D(strafe, speed);
         drive.move(speedMode, vector, turn);
 
+        // If not driving, check for turning in place or pure strafing
         if (turn == 0 && strafe == 0 && speed == 0) {
             if (gamepad1.left_bumper) {
+                telemetry.addData("MISC DRIVING", "Left Bumper");
                 drive.turnInPlace(speedMode, true);
             } else if (gamepad1.right_bumper) {
+                telemetry.addData("MISC DRIVING", "Right Bumper");
                 drive.turnInPlace(speedMode, false);
             } else if (gamepad1.left_trigger > 0.2f) {
+                telemetry.addData("MISC DRIVING", "Left Trigger");
                 drive.strafeLeftWithPower(gamepad1.left_trigger);
             } else if (gamepad1.right_trigger > 0.2f) {
+                telemetry.addData("MISC DRIVING", "Right Trigger");
                 drive.strafeRightWithPower(gamepad1.right_trigger);
+            } else {
+                telemetry.addData("MISC DRIVING", "none");
             }
         }
 
@@ -107,8 +114,7 @@ public class IterativeOpMode extends OpMode {
         flywheelBT.ifRelease(gamepad1.y);
         flywheelBT.update(gamepad1.y);
 
-        // Either spins or doesn't depending on mode
-
+        // Determines if the flywheels spin, spin in reverse, or freeze
         if (flywheelBT.getMode()) {
             intake.spin();
         } else if (gamepad1.b) {
@@ -117,9 +123,9 @@ public class IterativeOpMode extends OpMode {
             intake.stopSpinning();
         }
 
+        // Gets the elevator's movement inputs and accounts for stick drifting
         double elevatorHeight = -gamepad2.left_stick_y;
         double clawDistance = gamepad2.right_stick_y;
-
         if (Math.abs(elevatorHeight) < 0.2) {
             elevatorHeight = 0;
         }
@@ -127,7 +133,7 @@ public class IterativeOpMode extends OpMode {
             clawDistance = 0;
         }
 
-
+        // Moves the elevators and controls the claw and tray pullers
         elevatorOuttake.moveElevators(elevatorHeight, clawDistance);
         try {
             if (gamepad2.dpad_up) {
@@ -169,6 +175,7 @@ public class IterativeOpMode extends OpMode {
 
         // Telemetry data
         telemetry.addData("Speed Mode", speedBT.getMode() ? "Fast" : "Slow");
+        telemetry.addData("Foundation Pos", trayPuller.left.getPosition());
         telemetry.addData("Speed", speed);
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
