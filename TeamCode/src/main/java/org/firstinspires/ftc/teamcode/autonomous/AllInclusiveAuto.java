@@ -70,12 +70,11 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         //sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
         drive.strafeLeftWithPower(speed);
         long placeHolder=0L;
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>3){
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
             placeHolder++;
         }
         drive.stop();
         drive.forwardWithPower((-1*speed));
-        sleep(500);
         drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
@@ -85,13 +84,10 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         telemetry.addData("First", satLeft);
         telemetry.update();
         drive.stop();
-        sleep(2000L);
         //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
-        drive.forwardWithPower(-speed);
-        sleep((long)(4/STRAFE_VEL));
-        drive.stop();
         drive.forwardWithPower(speed);
-        sleep((long)(4/FORWARD_VEL));
+        sleep((long)(5/FORWARD_VEL));
+        drive.stop();
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
