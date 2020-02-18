@@ -111,21 +111,38 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         telemetry.addData("Right",satRight);
         telemetry.update();
         int pos = decidePositionBasedOnVal(satLeft,satCenter,satRight);
-        speed=1;
-        positionOffset = 4*(pos+1);
+        positionOffset = 8
+                *(pos+1);
         telemetry.addData("Pos", pos);
         telemetry.update();
         sleep(5000L);
         drive.forwardWithPower(-speed);
-        while(backDistance.getDistance(DistanceUnit.INCH)>positionOffset){
+        double backVar;
+        if(pos==0){
+            backVar = 18.5;
+        }
+        else if(pos==1){
+            backVar = 10.5;
+        }
+        else{
+            backVar = 2.5;
+        }
+        while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
+            placeHolder++;
+        }
+        drive.stop();
+
+        placeHolder=0;
+        drive.strafeLeftWithPower(speed);
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>2){
             placeHolder++;
         }
         drive.stop();
         holder.lower();
-        sleep(500);
+        sleep(2000);
         holder.clamp();
         holder.raise();
-        sleep(150);
+        sleep(500);
 
 
         //Done with sensing and poistion should be stored in the pos variable.

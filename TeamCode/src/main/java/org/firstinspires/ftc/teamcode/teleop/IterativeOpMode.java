@@ -31,7 +31,7 @@ public class IterativeOpMode extends OpMode {
     private ButtonToggler midBT = new ButtonToggler();
     private ButtonToggler upBT = new ButtonToggler();
     private ButtonToggler speedBT = new ButtonToggler();
-
+    public MecanumDrive.Motor.Vector2D bump;
     private ButtonBoolean intakePower ;
     private ButtonBoolean intakeDirection;
     /*
@@ -58,7 +58,7 @@ public class IterativeOpMode extends OpMode {
         elapsedTime = new ElapsedTime();
         intakePower = new ButtonBoolean(gamepad2, "dpad_down");
         intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
-
+        MecanumDrive.Motor.Vector2D bump;
         speedMode = 1.0;
     }
 
@@ -92,10 +92,15 @@ public class IterativeOpMode extends OpMode {
         drive.move(speedMode, vector, turn);
 
         if (turn == 0 && strafe == 0 && speed == 0) {
+            bump = new MecanumDrive.Motor.Vector2D(strafe, speed);
+            drive.move(speedMode, vector, turn);
             if (gamepad1.left_bumper) {
-                drive.turnInPlace(speedMode, true);
+                //drive.turnInPlace(speedMode, true);
+                //1,-1
             } else if (gamepad1.right_bumper) {
                 drive.turnInPlace(speedMode, false);
+                //-1,1
+
             }
         }
 
