@@ -155,7 +155,9 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.stop();
         holder.lower();
-        sleep(4000);
+        holder.lower();
+        holder.lower();
+        sleep(2000);
         holder.clamp();
         sleep(1000);
         holder.raise();
@@ -171,7 +173,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.stop();
         sleep(1000);
         drive.forwardWithPower(speed);
-        sleep((long)(42/FORWARD_VEL)*4);
+        sleep((long)(40 /FORWARD_VEL)*4);
         /*placeHolder=0;
         while(frontDistance.getDistance(DistanceUnit.INCH)>30){
             placeHolder++;
@@ -185,6 +187,63 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         }
         holder.release();
         sleep(1000);
+        //DONE WITH STONE ONE (HOPEFULLY)
+
+        drive.strafeLeftWithPower(-1*speed);
+        sleep((long)(4/STRAFE_VEL)*4);
+        placeHolder=0;
+        drive.stop();
+        drive.forwardWithPower(-1*speed);
+        sleep((long)(15/FORWARD_VEL)*4);
+        drive.stop();
+        drive.forwardWithPower(-1*speed);
+        while(backDistance.getDistance(DistanceUnit.INCH)>(backVar+26)){
+            placeHolder++;
+        }
+
+        drive.stop();
+        holder.release();
+        sleep(250);
+        holder.stop();
+
+        drive.strafeLeftWithPower(speed);
+        placeHolder=0;
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
+            placeHolder++;
+        }
+        drive.stop();
+        holder.lower();
+        sleep(4000);
+        holder.clamp();
+        sleep(1000);
+        holder.raise();
+        sleep(500);
+        speed=0.25;
+        drive.strafeLeftWithPower(-1*speed);
+        sleep((long)(4/STRAFE_VEL)*4);
+        drive.forwardWithPower(speed);
+        sleep((long)(38/FORWARD_VEL)*4);
+    /*placeHolder=0;
+    while(frontDistance.getDistance(DistanceUnit.INCH)>30){
+        placeHolder++;
+    }*/
+
+        drive.stop();
+        drive.strafeLeftWithPower(speed);
+        placeHolder=0;
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
+            placeHolder++;
+        }
+        drive.stop();
+        holder.release();
+        //done with second skystone
+        drive.strafeLeftWithPower(-1*speed);
+        sleep((long)(4/STRAFE_VEL)*4);
+        drive.stop();
+        drive.forwardWithPower(-1*speed);
+        sleep((long)(55/FORWARD_VEL)*4);
+        drive.stop();
+
 
         if(1==1){
             return;
