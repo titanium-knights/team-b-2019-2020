@@ -146,17 +146,18 @@ public class IterativeOpMode extends OpMode {
                 Thread.sleep(250);
                 elevatorOuttake2.stop();
             }
-            if(gamepad1.dpad_down){
-                trayPuller.down();
-                telemetry.addData("gamepad1-Down Pressed", true);
-            }
-            if(gamepad1.dpad_up){
-                trayPuller.up();
-                telemetry.addData("gamepad1-Up Pressed", true);
-            }
         }
         catch (InterruptedException e){
             throw new RuntimeException(e);
+        }
+
+        if(gamepad1.dpad_down){
+            trayPuller.down();
+            telemetry.addData("gamepad1-Down Pressed", true);
+        }
+        if(gamepad1.dpad_up){
+            trayPuller.up();
+            telemetry.addData("gamepad1-Up Pressed", true);
         }
 
         /*if(gamepad2.dpad_left){
