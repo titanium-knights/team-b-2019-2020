@@ -95,16 +95,16 @@ public class IterativeOpMode extends OpMode {
         if (turn == 0 && strafe == 0 && speed == 0) {
             if (gamepad1.left_bumper) {
                 telemetry.addData("MISC DRIVING", "Left Bumper");
-                drive.turnInPlace(speedMode, true);
+                drive.strafeLeftWithPower(speedMode);
             } else if (gamepad1.right_bumper) {
                 telemetry.addData("MISC DRIVING", "Right Bumper");
-                drive.turnInPlace(speedMode, false);
+                drive.strafeRightWithPower(speedMode);
             } else if (gamepad1.left_trigger > 0.2f) {
                 telemetry.addData("MISC DRIVING", "Left Trigger");
-                drive.strafeLeftWithPower(gamepad1.left_trigger);
+                drive.turnInPlace(gamepad1.left_trigger, true);
             } else if (gamepad1.right_trigger > 0.2f) {
                 telemetry.addData("MISC DRIVING", "Right Trigger");
-                drive.strafeRightWithPower(gamepad1.right_trigger);
+                drive.turnInPlace(gamepad1.right_trigger, false);
             } else {
                 telemetry.addData("MISC DRIVING", "none");
             }
