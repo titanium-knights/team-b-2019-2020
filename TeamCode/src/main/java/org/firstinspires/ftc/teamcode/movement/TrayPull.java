@@ -9,35 +9,38 @@ import static android.os.SystemClock.sleep;
 
 public class TrayPull {
 
-    public Servo left;
+    public CRServo left;
     //public Servo armB;
-    public Servo right;
+    public CRServo right;
     //public Servo clawB;
 
-    public TrayPull(Servo left, Servo right) {
+    public TrayPull (CRServo left, CRServo right) {
         this.left = left;
+        //this.armB = armB;
         this.right = right;
         //this.clawB = clawB;
     }
+    public void down(){
+        left.setDirection(CRServo.Direction.FORWARD);
+        left.setPower(1);
+        right.setDirection(CRServo.Direction.REVERSE);
+        right.setPower(1);
 
-    public void down() {
-        left.setPosition(1);
-        left.setDirection(Servo.Direction.REVERSE);
-        right.setPosition(0);
-        right.setDirection(Servo.Direction.FORWARD);
     }
-
-    public void up() {
-        left.setPosition(0);
-        left.setDirection(Servo.Direction.FORWARD);
-        right.setPosition(1);
-        right.setDirection(Servo.Direction.REVERSE);
+    public void up(){
+        left.setDirection(CRServo.Direction.REVERSE);
+        left.setPower(1);
+        right.setDirection(CRServo.Direction.FORWARD);
+        right.setPower(1);
     }
-
+    public void stop(){
+        left.setPower(0);
+        right.setPower(0);
+    }
     private static String[] standardMotorNames = {"tray_puller_l", "tray_puller_r"};
 
     public static TrayPull standard(HardwareMap hardwareMap) {
-        return new TrayPull(hardwareMap.get(Servo.class, standardMotorNames[0]), hardwareMap.get(Servo.class, standardMotorNames[1]));
+        return new TrayPull(hardwareMap.get(CRServo.class, standardMotorNames[0]), hardwareMap.get(CRServo.class, standardMotorNames[1]));
     }
 
 }

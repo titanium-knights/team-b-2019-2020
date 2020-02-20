@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.sensors.Gyro;
 @Autonomous(name = "Red Auto", group = "Autonomous")
 public class AllInclusiveAuto extends AutoBaseOpMode {
     private VuforiaLocalizer vuforia;
-    private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
+    //private static final String VUFORIA_KEY = "AdPNlBX/////AAABmVfye0Qoq0efoZI4OrEHeIQSRjhNr9KQMKROnvTahH08r6+kPliev3BPNHMIPuFAdFRiZ28ted7hD7VN11J8ThMrQUdfilKWo6DRpZ6tVR2qvf5HxAIB0DZX3G7dbCfVbNSeal9I5EDQ9DpVgLPJqk0Txk5NTCcco1g32oPU1D3qnIhMLPmco9oSrFwXFIvuwZYtd/iC1kQOpH+32afAE/x2fy7zphkojHhpaNmAEATUYs+63PMnG1hB/0LnHS/JrT3WjK2lHO28ESwRSOU96L9ljHl/lHKfW+397WDSNp2OAFoFhEpmk9dNnM5CPzh8i9BFXNMRj1EEraAQgrGr7sLzIS558bKfDgXHV+4zIMVy";
     double stoneDiff;
     double stoneDiff2;
     private static ColorSensor sensorColor;
@@ -144,7 +144,9 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         }
 
         drive.stop();
-
+        /*while(gyro.getAngle()!=0){
+            if(gyro.getAngle()<)
+        }*/
         placeHolder=0;
         drive.strafeLeftWithPower(0.2);
         while(sensorDistance.getDistance(DistanceUnit.INCH)>1.5){
@@ -173,7 +175,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.stop();
         sleep(1000);
         drive.forwardWithPower(speed);
-        sleep((long)(40 /FORWARD_VEL)*4);
+        sleep((long)(52 /FORWARD_VEL)*4);
         /*placeHolder=0;
         while(frontDistance.getDistance(DistanceUnit.INCH)>30){
             placeHolder++;

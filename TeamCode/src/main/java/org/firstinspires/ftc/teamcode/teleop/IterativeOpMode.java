@@ -176,7 +176,7 @@ public class IterativeOpMode extends OpMode {
 
         // Telemetry data
         telemetry.addData("Speed Mode", speedBT.getMode() ? "Fast" : "Slow");
-        telemetry.addData("Foundation Pos", trayPuller.left.getPosition());
+
         telemetry.addData("Speed", speed);
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
