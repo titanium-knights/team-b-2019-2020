@@ -104,10 +104,10 @@ public class IterativeOpMode extends OpMode {
                 drive.strafeRightWithPower(speedMode);
             } else if (gamepad1.left_trigger > 0.2f) {
                 telemetry.addData("MISC DRIVING", "Left Trigger");
-                drive.turnInPlace(gamepad1.left_trigger, true);
+                drive.turnInPlace(gamepad1.left_trigger, false);
             } else if (gamepad1.right_trigger > 0.2f) {
                 telemetry.addData("MISC DRIVING", "Right Trigger");
-                drive.turnInPlace(gamepad1.right_trigger, false);
+                drive.turnInPlace(gamepad1.right_trigger, true);
             } else {
                 telemetry.addData("MISC DRIVING", "none");
             }
