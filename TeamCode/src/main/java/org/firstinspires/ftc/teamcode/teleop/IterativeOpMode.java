@@ -47,6 +47,7 @@ public class IterativeOpMode extends OpMode {
 
     @Override
     public void init() {
+        brickHolder=BrickHolder.standard(hardwareMap);
         brickHolder.moveArm(0.25);
 
         drive = MecanumDrive.standard(hardwareMap);

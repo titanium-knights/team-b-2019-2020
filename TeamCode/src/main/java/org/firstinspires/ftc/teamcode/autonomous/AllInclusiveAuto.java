@@ -73,6 +73,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
             placeHolder++;
         }
         drive.stop();
+        holder.raise();
         drive.forwardWithPower((-1*speed));
         sleep(500);
         drive.stop();
@@ -157,10 +158,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         holder.clamp();
         sleep(1000);
         holder.raise();
+        holder.raise();
+        holder.raise();
+        holder.raise();
         sleep(500);
         speed=0.25;
         drive.strafeLeftWithPower(-1*speed);
-        sleep((long)(4/STRAFE_VEL)*4);
+        sleep((long)(5/STRAFE_VEL)*4);
         placeHolder =0;
         drive.forwardWithPower(speed);
         while(backDistance.getDistance(DistanceUnit.INCH)<40){
@@ -183,7 +187,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         }
         drive.stop();
         drive.forwardWithPower(speed);
-        sleep((long)(10/FORWARD_VEL)*4);
+        sleep((long)(13/FORWARD_VEL)*4);
         drive.strafeLeftWithPower(speed);
         placeHolder=0;
         while(sensorDistance.getDistance(DistanceUnit.INCH)>3){
@@ -201,18 +205,18 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         sleep((long)(30/FORWARD_VEL)*4);
         drive.stop();
         drive.forwardWithPower(-1*speed);
-        while(backDistance.getDistance(DistanceUnit.INCH)>(backVar+24)){
+
+        while(backDistance.getDistance(DistanceUnit.INCH)>(backVar+30 )){
             placeHolder++;
         }
 
         drive.stop();
-        holder.release();
-        sleep(250);
-        holder.stop();
+        //holder.release();
+        //sleep(500);
 
         drive.strafeLeftWithPower(speed);
         placeHolder=0;
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>3.5){
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>2){
             placeHolder++;
         }
         drive.stop();
@@ -226,7 +230,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.strafeLeftWithPower(-1*speed);
         sleep((long)(4/STRAFE_VEL)*4);
         drive.forwardWithPower(speed);
-        sleep((long)(38/FORWARD_VEL)*4);
+        sleep((long)(41/FORWARD_VEL)*4);
     /*placeHolder=0;
     while(frontDistance.getDistance(DistanceUnit.INCH)>30){
         placeHolder++;
@@ -243,10 +247,10 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         //done with second skystone
         sleep(500);
         drive.strafeLeftWithPower(-1*speed);
-        sleep((long)(4/STRAFE_VEL)*4);
+        sleep((long)(5/STRAFE_VEL)*4);
         drive.stop();
         drive.forwardWithPower(-1*speed);
-        sleep((long)(30/FORWARD_VEL)*4);
+        sleep((long)(25/FORWARD_VEL)*4);
 
         drive.stop();
 
