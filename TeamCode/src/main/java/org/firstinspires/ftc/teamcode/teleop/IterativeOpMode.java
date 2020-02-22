@@ -21,6 +21,7 @@ public class IterativeOpMode extends OpMode {
     private ElevatorOuttake2 elevatorOuttake2;
 
     private PlateClamp plateClamp;
+    private BrickHolder brickHolder;
     private TrayPull trayPuller;
     // private BrickHook brickHook;
 
@@ -46,6 +47,8 @@ public class IterativeOpMode extends OpMode {
 
     @Override
     public void init() {
+        brickHolder.moveArm(0.25);
+
         drive = MecanumDrive.standard(hardwareMap);
         intake = Intake.standard(hardwareMap);
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);

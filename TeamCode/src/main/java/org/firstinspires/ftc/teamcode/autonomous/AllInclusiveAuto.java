@@ -13,9 +13,6 @@ import org.firstinspires.ftc.robotcore.internal.android.dx.cf.attrib.InnerClassL
 import org.firstinspires.ftc.teamcode.movement.BrickHolder;
 import org.firstinspires.ftc.teamcode.movement.MecanumDrive;
 import org.firstinspires.ftc.teamcode.movement.PlateClamp;
-import org.firstinspires.ftc.teamcode.sensors.BNO055IMUGyro;
-import org.firstinspires.ftc.teamcode.sensors.Gyro;
-
 
 @Autonomous(name = "Red Auto", group = "Autonomous")
 public class AllInclusiveAuto extends AutoBaseOpMode {
@@ -119,14 +116,14 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         double backVar;
         speed=0.125;
         if(pos==2){
-            backVar = 20;
+            backVar = 18;
             drive.forwardWithPower(speed);
             while(backDistance.getDistance(DistanceUnit.INCH)<backVar){
                 placeHolder++;
             }
         }
         else if(pos==1){
-            backVar = 12;
+            backVar = 11;
             drive.forwardWithPower(-1*speed);
             while(backDistance.getDistance(DistanceUnit.INCH)>backVar){
                 placeHolder++;
@@ -144,9 +141,6 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         }
 
         drive.stop();
-        /*while(gyro.getAngle()!=0){
-            if(gyro.getAngle()<)
-        }*/
         placeHolder=0;
         drive.strafeLeftWithPower(0.2);
         while(sensorDistance.getDistance(DistanceUnit.INCH)>1.5){
@@ -169,22 +163,30 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         sleep((long)(4/STRAFE_VEL)*4);
         placeHolder =0;
         drive.forwardWithPower(speed);
-        while(backDistance.getDistance(DistanceUnit.INCH)>48){
+        while(backDistance.getDistance(DistanceUnit.INCH)<40){
             placeHolder++;
         }
         drive.stop();
         sleep(1000);
         drive.forwardWithPower(speed);
-        sleep((long)(52 /FORWARD_VEL)*4);
+        sleep((long)(20/FORWARD_VEL)*4);
         /*placeHolder=0;
         while(frontDistance.getDistance(DistanceUnit.INCH)>30){
             placeHolder++;
         }*/
 
         drive.stop();
+        placeHolder=0;
+        drive.forwardWithPower(speed);
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>30){
+            placeHolder++;
+        }
+        drive.stop();
+        drive.forwardWithPower(speed);
+        sleep((long)(10/FORWARD_VEL)*4);
         drive.strafeLeftWithPower(speed);
         placeHolder=0;
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>3){
             placeHolder++;
         }
         holder.release();
@@ -192,14 +194,14 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         //DONE WITH STONE ONE (HOPEFULLY)
 
         drive.strafeLeftWithPower(-1*speed);
-        sleep((long)(4/STRAFE_VEL)*4);
+        sleep((long)(5/STRAFE_VEL)*4);
         placeHolder=0;
         drive.stop();
         drive.forwardWithPower(-1*speed);
-        sleep((long)(15/FORWARD_VEL)*4);
+        sleep((long)(30/FORWARD_VEL)*4);
         drive.stop();
         drive.forwardWithPower(-1*speed);
-        while(backDistance.getDistance(DistanceUnit.INCH)>(backVar+26)){
+        while(backDistance.getDistance(DistanceUnit.INCH)>(backVar+24)){
             placeHolder++;
         }
 
@@ -210,7 +212,7 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
 
         drive.strafeLeftWithPower(speed);
         placeHolder=0;
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>4){
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>3.5){
             placeHolder++;
         }
         drive.stop();
@@ -239,11 +241,13 @@ public class AllInclusiveAuto extends AutoBaseOpMode {
         drive.stop();
         holder.release();
         //done with second skystone
+        sleep(500);
         drive.strafeLeftWithPower(-1*speed);
         sleep((long)(4/STRAFE_VEL)*4);
         drive.stop();
         drive.forwardWithPower(-1*speed);
-        sleep((long)(55/FORWARD_VEL)*4);
+        sleep((long)(30/FORWARD_VEL)*4);
+
         drive.stop();
 
 

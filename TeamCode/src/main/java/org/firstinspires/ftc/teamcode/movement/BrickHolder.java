@@ -25,8 +25,8 @@ public class BrickHolder {
     public void stop(){
         clawA.setPower(0);
     }
-    public void moveArm (int pos) {
-        armA.setPosition(armA.getPosition() + pos);
+    public void moveArm (double pos) {
+        armA.setPosition(pos);
         //armB.setPosition(armB.getPosition() - pos);
     }
     public void moveClaw (int pos) {
