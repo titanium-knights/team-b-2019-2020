@@ -70,15 +70,15 @@ public class FastRedAuto extends AutoBaseOpMode {
             //sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
             drive.strafeLeftWithPower(speed);
             long placeHolder = 0L;
-            while (sensorDistance.getDistance(DistanceUnit.INCH) > 5) {
+            while (sensorDistance.getDistance(DistanceUnit.INCH) > 6) {
                 placeHolder++;
             }
             drive.stop();
             holder.raise();
             drive.forwardWithPower((-1 * speed));
-            sleep(400);
+            sleep(250);
             drive.stop();
-            sleep(750);
+            sleep(250);
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -90,7 +90,7 @@ public class FastRedAuto extends AutoBaseOpMode {
             drive.forwardWithPower(speed);
             sleep((long) ((3 / FORWARD_VEL) * 1.5));
             drive.stop();
-            sleep(1000);
+            sleep(250);
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -102,7 +102,7 @@ public class FastRedAuto extends AutoBaseOpMode {
             drive.forwardWithPower(speed);
             sleep((long) ((3 / FORWARD_VEL) * 1.5));
             drive.stop();
-            sleep(1000);
+            sleep(250);
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -154,17 +154,18 @@ public class FastRedAuto extends AutoBaseOpMode {
             holder.lower();
             holder.lower();
             holder.lower();
-            sleep(2000);
+            sleep(750);
             holder.clamp();
-            sleep(1000);
+            sleep(250);
             holder.raise();
             holder.raise();
             holder.raise();
             holder.raise();
-            sleep(500);
+            sleep(250);
             speed = 0.4;
             drive.strafeLeftWithPower(-1 * speed);
             sleep((long) ((4 / STRAFE_VEL) * 2));
+            speed=0.5;
             placeHolder = 0;
             drive.forwardWithPower(speed);
             while (backDistance.getDistance(DistanceUnit.INCH) < 40) {
@@ -173,7 +174,7 @@ public class FastRedAuto extends AutoBaseOpMode {
             drive.stop();
 
             drive.forwardWithPower(speed);
-            sleep((long)((24/ FORWARD_VEL) * 2));
+            sleep((long)((30/FORWARD_VEL)));
         /*placeHolder=0;
         while(frontDistance.getDistance(DistanceUnit.INCH)>30){
             placeHolder++;
@@ -186,8 +187,9 @@ public class FastRedAuto extends AutoBaseOpMode {
             }
             drive.stop();
             drive.forwardWithPower(speed);
-            sleep((long) ((8 / FORWARD_VEL) * 2));
+            sleep((long) ((10 / FORWARD_VEL) * 2));
             drive.stop();
+            speed=0.4;
             drive.strafeLeftWithPower(speed);
             placeHolder = 0;
             while (sensorDistance.getDistance(DistanceUnit.INCH) > 4) {
@@ -202,12 +204,21 @@ public class FastRedAuto extends AutoBaseOpMode {
             sleep((long) ((5 / STRAFE_VEL) * 2));
             placeHolder = 0;
             drive.stop();
+            speed=0.5;
             drive.forwardWithPower(-1 * speed);
             sleep((long) ((30 / FORWARD_VEL) * 2));
             drive.stop();
             drive.forwardWithPower(-1 * speed);
-            while (backDistance.getDistance(DistanceUnit.INCH) > (backVar + 33)) {
-                placeHolder++;
+            speed=0.4;
+            if(pos==0||pos==1) {
+                while (backDistance.getDistance(DistanceUnit.INCH) > (backVar + 32)) {
+                    placeHolder++;
+                }
+            }
+            else{
+                while (backDistance.getDistance(DistanceUnit.INCH) > ((backVar-1) + 32)) {
+                    placeHolder++;
+                }
             }
 
                 drive.stop();
@@ -216,27 +227,39 @@ public class FastRedAuto extends AutoBaseOpMode {
 
                 drive.strafeLeftWithPower(speed);
                 placeHolder = 0;
-                if (pos == 0 || pos == 1) {
-                    while (sensorDistance.getDistance(DistanceUnit.INCH) > 5) {
-                        placeHolder++;
-                    }
-                } else {
-                    while (backLeftDistance.getDistance(DistanceUnit.INCH) > 5) {
+                while (sensorDistance.getDistance(DistanceUnit.INCH) > 5) {
+                    placeHolder++;
+                }
+                drive.stop();
+                placeHolder=0;
+                speed=0.25;
+                drive.forwardWithPower(speed);
+                if(pos==2){
+                    while(backDistance.getDistance(DistanceUnit.INCH)<(backVar+22)){
                         placeHolder++;
                     }
                 }
+                speed=0.4;
+                drive.stop();
                 drive.stop();
                 holder.lower();
-                sleep(4000);
+                sleep(200);
                 holder.clamp();
-                sleep(1000);
-                holder.raise();
+
                 sleep(500);
+                holder.raise();
+                sleep(250);
                 speed = 0.4;
                 drive.strafeLeftWithPower(-1 * speed);
                 sleep((long) ((4 / STRAFE_VEL) * 2));
                 drive.forwardWithPower(speed);
-                sleep((long) ((41 / FORWARD_VEL) * 2));
+                if(pos!=2){
+                    sleep((long) ((41 / FORWARD_VEL) * 2));
+                }
+                else{
+
+                    sleep((long)((30/FORWARD_VEL)*2));
+                }
     /*placeHolder=0;
     while(frontDistance.getDistance(DistanceUnit.INCH)>30){
         placeHolder++;
@@ -257,7 +280,7 @@ public class FastRedAuto extends AutoBaseOpMode {
                 sleep((long) (5 / STRAFE_VEL) * 2);
                 drive.stop();
                 drive.forwardWithPower(-1 * speed);
-                sleep((long) ((30 / FORWARD_VEL) * 1.5));
+                sleep((long) ((26 / FORWARD_VEL) * 1.5));
 
                 drive.stop();
 
