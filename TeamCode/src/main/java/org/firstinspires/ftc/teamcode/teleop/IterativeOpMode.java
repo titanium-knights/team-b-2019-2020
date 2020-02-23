@@ -2,51 +2,27 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.movement.*;
-
-import org.firstinspires.ftc.teamcode.util.ButtonBoolean;
-import org.firstinspires.ftc.teamcode.util.ButtonSelector;
 import org.firstinspires.ftc.teamcode.util.ButtonToggler;
-
-import static java.lang.Thread.sleep;
 
 @TeleOp(name = "Tele Op Mode")
 public class IterativeOpMode extends OpMode {
+
     private MecanumDrive drive;
     private Intake intake;
-
     private ElevatorOuttake elevatorOuttake;
     private ElevatorOuttake2 elevatorOuttake2;
-
-    private PlateClamp plateClamp;
     private BrickHolder brickHolder;
     private TrayPull trayPuller;
-    // private BrickHook brickHook;
 
-    private ButtonToggler flywheelBT;
-    private ButtonToggler trayBT;
-    private ButtonToggler overrideBT = new ButtonToggler();
-    private ButtonToggler downBT = new ButtonToggler();
-    private ButtonToggler midBT = new ButtonToggler();
-    private ButtonToggler upBT = new ButtonToggler();
+    private ButtonToggler flywheelBT = new ButtonToggler();
     private ButtonToggler speedBT = new ButtonToggler();
-    public MecanumDrive.Motor.Vector2D bump;
-    private ButtonBoolean intakePower ;
-    private ButtonBoolean intakeDirection;
-    /*
-        intakePower.get() --> gives you the state (true or false) of the toggler
-     */
-
-    private ElapsedTime elapsedTime;
 
     private double speedMode;
 
-    private double lastLoop = -1;
-
     @Override
     public void init() {
+
         brickHolder=BrickHolder.standard(hardwareMap);
         brickHolder.moveArm(0.25);
 
@@ -55,22 +31,14 @@ public class IterativeOpMode extends OpMode {
         elevatorOuttake = ElevatorOuttake.standard(hardwareMap);
         elevatorOuttake2 = ElevatorOuttake2.standard(hardwareMap);
         trayPuller = TrayPull.standard(hardwareMap);
-        // brickHook = BrickHook.standard(hardwareMap);
 
         flywheelBT = new ButtonToggler();
-        trayBT = new ButtonToggler();
-        elapsedTime = new ElapsedTime();
-        intakePower = new ButtonBoolean(gamepad2, "dpad_down");
-        intakeDirection = new ButtonBoolean(gamepad2, "dpad_down");
-        MecanumDrive.Motor.Vector2D bump;
         speedMode = 1.0;
+
     }
 
     @Override
     public void loop(){
-        double seconds = elapsedTime.seconds();
-        double delta = (lastLoop < 0) ? 0 : (seconds - lastLoop);
-        lastLoop = seconds;
 
         // Toggles the speed between fast and slow
         speedBT.ifPress(gamepad1.x);
@@ -98,19 +66,13 @@ public class IterativeOpMode extends OpMode {
         // If not driving, check for turning in place or pure strafing
         if (turn == 0 && strafe == 0 && speed == 0) {
             if (gamepad1.left_bumper) {
-                telemetry.addData("MISC DRIVING", "Left Bumper");
                 drive.strafeLeftWithPower(speedMode);
             } else if (gamepad1.right_bumper) {
-                telemetry.addData("MISC DRIVING", "Right Bumper");
                 drive.strafeRightWithPower(speedMode);
             } else if (gamepad1.left_trigger > 0.2f) {
-                telemetry.addData("MISC DRIVING", "Left Trigger");
                 drive.turnInPlace(gamepad1.left_trigger, false);
             } else if (gamepad1.right_trigger > 0.2f) {
-                telemetry.addData("MISC DRIVING", "Right Trigger");
                 drive.turnInPlace(gamepad1.right_trigger, true);
-            } else {
-                telemetry.addData("MISC DRIVING", "none");
             }
         }
 
@@ -155,38 +117,21 @@ public class IterativeOpMode extends OpMode {
             throw new RuntimeException(e);
         }
 
+        // Raise or lower the tray pullers
         if(gamepad1.dpad_down){
             trayPuller.down();
-            telemetry.addData("gamepad1-Down Pressed", true);
         }
         if(gamepad1.dpad_up){
             trayPuller.up();
-            telemetry.addData("gamepad1-Up Pressed", true);
         }
-
-        /*if(gamepad2.dpad_left){
-            elevatorOuttake.moveToEncoder(0,100);
-        }*/
-
-        /*
-        if (gamepad2.dpad_left) {
-            brickHook.release();
-        } else if (gamepad2.dpad_right) {
-            brickHook.clamp();
-        } else {
-            brickHook.stop();
-        }
-         */
 
         // Telemetry data
         telemetry.addData("Speed Mode", speedBT.getMode() ? "Fast" : "Slow");
-
         telemetry.addData("Speed", speed);
         telemetry.addData("Strafe", strafe);
         telemetry.addData("Turn", turn);
         telemetry.addData("Elevator Height", elevatorHeight);
         telemetry.addData("Claw Distance", clawDistance);
-        telemetry.addData("Delta Time", delta);
         telemetry.addData("Vertical Elevator Encoder", elevatorOuttake.getVerticalEncoder());
         telemetry.addData("Horizontal Elevator Encoder", elevatorOuttake.getHorizontalEncoder());
     }
