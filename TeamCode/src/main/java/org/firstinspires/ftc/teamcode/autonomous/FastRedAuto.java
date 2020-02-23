@@ -116,15 +116,15 @@ public class FastRedAuto extends AutoBaseOpMode {
             telemetry.addData("Pos", pos);
             telemetry.update();
             double backVar;
-            speed = 0.125;
+            speed = 0.25;
             if (pos == 2) {
-                backVar = 20;
+                backVar = 17 ;
                 drive.forwardWithPower(speed);
                 while (backDistance.getDistance(DistanceUnit.INCH) < backVar) {
                     placeHolder++;
                 }
             } else if (pos == 1) {
-                backVar = 11;
+                backVar = 12;
                 drive.forwardWithPower(-1 * speed);
                 while (backDistance.getDistance(DistanceUnit.INCH) > backVar) {
                     placeHolder++;
@@ -142,29 +142,28 @@ public class FastRedAuto extends AutoBaseOpMode {
 
             drive.stop();
             placeHolder = 0;
-            speed = 0.125;
+            speed = 0.25;
             drive.strafeLeftWithPower(speed);
             while (sensorDistance.getDistance(DistanceUnit.INCH) > 2) {
                 placeHolder++;
             }
-            speed = 0.4;
             drive.stop();
 
+            speed = 0.4;
+            sleep(100);
+
+            drive.stop();
             drive.stop();
             holder.lower();
-            holder.lower();
-            holder.lower();
-            sleep(750);
+            sleep(400);
             holder.clamp();
-            sleep(250);
-            holder.raise();
-            holder.raise();
-            holder.raise();
+
+            sleep(500);
             holder.raise();
             sleep(250);
             speed = 0.4;
             drive.strafeLeftWithPower(-1 * speed);
-            sleep((long) ((4 / STRAFE_VEL) * 2));
+            sleep((long) ((3 / STRAFE_VEL)));
             speed=0.5;
             placeHolder = 0;
             drive.forwardWithPower(speed);
@@ -201,7 +200,7 @@ public class FastRedAuto extends AutoBaseOpMode {
             //DONE WITH STONE ONE (HOPEFULLY)
 
             drive.strafeLeftWithPower(-1 * speed);
-            sleep((long) ((5 / STRAFE_VEL) * 2));
+            sleep((long) ((2 / STRAFE_VEL) * 2));
             placeHolder = 0;
             drive.stop();
             speed=0.5;
@@ -224,17 +223,18 @@ public class FastRedAuto extends AutoBaseOpMode {
                 drive.stop();
                 //holder.release();
                 //sleep(500);
-
+                speed=0.25;
                 drive.strafeLeftWithPower(speed);
                 placeHolder = 0;
-                while (sensorDistance.getDistance(DistanceUnit.INCH) > 5) {
+                while (sensorDistance.getDistance(DistanceUnit.INCH) > 2.5) {
                     placeHolder++;
                 }
                 drive.stop();
                 placeHolder=0;
                 speed=0.25;
-                drive.forwardWithPower(speed);
+
                 if(pos==2){
+                    drive.forwardWithPower(speed);
                     while(backDistance.getDistance(DistanceUnit.INCH)<(backVar+22)){
                         placeHolder++;
                     }
@@ -243,7 +243,7 @@ public class FastRedAuto extends AutoBaseOpMode {
                 drive.stop();
                 drive.stop();
                 holder.lower();
-                sleep(200);
+                sleep(350);
                 holder.clamp();
 
                 sleep(500);
@@ -251,7 +251,7 @@ public class FastRedAuto extends AutoBaseOpMode {
                 sleep(250);
                 speed = 0.4;
                 drive.strafeLeftWithPower(-1 * speed);
-                sleep((long) ((4 / STRAFE_VEL) * 2));
+                sleep((long) ((3 / STRAFE_VEL) * 2));
                 drive.forwardWithPower(speed);
                 if(pos!=2){
                     sleep((long) ((41 / FORWARD_VEL) * 2));

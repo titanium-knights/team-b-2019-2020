@@ -29,9 +29,9 @@ public class TrayPull {
     }
     public void up(){
         left.setDirection(CRServo.Direction.REVERSE);
-        left.setPower(1);
+        left.setPower(-1);
         right.setDirection(CRServo.Direction.FORWARD);
-        right.setPower(1);
+        right.setPower(-1);
     }
     public void stop(){
         left.setPower(0);
