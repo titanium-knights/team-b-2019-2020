@@ -54,8 +54,6 @@ public class FastRedAuto extends AutoBaseOpMode {
         backDistance = hardwareMap.get(DistanceSensor.class, "back_distance");
         backLeftDistance = hardwareMap.get(DistanceSensor.class, "front_distance");
         holder = BrickHolder.standard(hardwareMap);
-
-        //pos = vuforiaStuff.vuforiascan(false, false);
         float satLeft;
         float satCenter;
         float satRight;
@@ -64,10 +62,11 @@ public class FastRedAuto extends AutoBaseOpMode {
         double startAngle = gyro.getAngle();
         while (!isStopRequested()) {
             speed = 0.4;
+            drive.strafeLeftWithPower(speed);
+            sleep(1500);
             drive.forwardWithPower(-1 * speed);
             sleep((int) ((20 / FORWARD_VEL) * 2.5));
             drive.stop();
-            //sensorDrive(new MecanumDrive.Motor.Vector2D(1.0, 0.0), startAngle, sensorDistance, 4 );
             drive.strafeLeftWithPower(speed);
             long placeHolder = 0L;
             while (sensorDistance.getDistance(DistanceUnit.INCH) > 6) {
@@ -163,7 +162,7 @@ public class FastRedAuto extends AutoBaseOpMode {
             sleep(250);
             speed = 0.4;
             drive.strafeLeftWithPower(-1 * speed);
-            sleep((long) ((3 / STRAFE_VEL)));
+            sleep((long) ((3 / STRAFE_VEL)*2));
             speed=0.5;
             placeHolder = 0;
             drive.forwardWithPower(speed);
@@ -210,7 +209,7 @@ public class FastRedAuto extends AutoBaseOpMode {
             drive.forwardWithPower(-1 * speed);
             speed=0.4;
             if(pos==0||pos==1) {
-                while (backDistance.getDistance(DistanceUnit.INCH) > (backVar + 32)) {
+                while (backDistance.getDistance(DistanceUnit.INCH) > (backVar + 33)) {
                     placeHolder++;
                 }
             }
@@ -289,6 +288,7 @@ public class FastRedAuto extends AutoBaseOpMode {
                     return;
                 }
             }
+        return;
 
         }
 

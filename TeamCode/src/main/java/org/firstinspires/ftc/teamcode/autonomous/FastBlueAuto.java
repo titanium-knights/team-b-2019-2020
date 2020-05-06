@@ -50,7 +50,7 @@ public class FastBlueAuto extends AutoBaseOpMode {
         SCALE_FACTOR = 255;
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
         backDistance = hardwareMap.get(DistanceSensor.class, "back_distance");
-        backLeftDistance = hardwareMap.get(DistanceSensor.class, "front_distance");
+        frontDistance = hardwareMap.get(DistanceSensor.class, "front_distance");
         holder = BrickHolder.standard(hardwareMap);
 
         //pos = vuforiaStuff.vuforiascan(false, false);
@@ -61,17 +61,19 @@ public class FastBlueAuto extends AutoBaseOpMode {
         sensorColor.enableLed(true);
 
         long placeHolder=0;
-        speed=0.4;
+        speed=0.25;
         drive.strafeLeftWithPower(speed);
-        while(sensorDistance.getDistance(DistanceUnit.INCH)>5){
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>5.5){
             placeHolder++;
         }
         drive.stop();
+        sleep(100);
         drive.forwardWithPower(-1*speed);
         placeHolder=0;
-        while(frontDistance.getDistance(DistanceUnit.INCH)>124){
+        while(frontDistance.getDistance(DistanceUnit.INCH)<32){
             placeHolder++;
         }
+        speed=0.4;
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -81,7 +83,7 @@ public class FastBlueAuto extends AutoBaseOpMode {
         telemetry.update();
         //sensorDrive(new MecanumDrive.Motor.Vector2D(0, -1), startAngle, backDistance, -8, true);
         drive.forwardWithPower(speed);
-        sleep((long) ((3 / FORWARD_VEL) * 1.5));
+        sleep((long) ((3 / FORWARD_VEL) * 1.7));
         drive.stop();
         sleep(250);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
@@ -93,7 +95,7 @@ public class FastBlueAuto extends AutoBaseOpMode {
         telemetry.update();
 
         drive.forwardWithPower(speed);
-        sleep((long) ((3 / FORWARD_VEL) * 1.5));
+        sleep((long) ((3 / FORWARD_VEL) * 1.7));
         drive.stop();
         sleep(250);
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
@@ -110,30 +112,36 @@ public class FastBlueAuto extends AutoBaseOpMode {
         telemetry.update();
         double frontVar;
         if (pos == 2) {
-            frontVar = 44;
-            drive.forwardWithPower(speed);
+            frontVar = 24;
+            drive.forwardWithPower(-1*speed);
             while (frontDistance.getDistance(DistanceUnit.INCH) < frontVar) {
                 placeHolder++;
             }
         } else if (pos == 1) {
-            frontVar = 35;
-            drive.forwardWithPower(speed);
-            while (frontDistance.getDistance(DistanceUnit.INCH) > frontVar) {
+            frontVar = 25;
+            drive.forwardWithPower(-1*speed);
+            while (frontDistance.getDistance(DistanceUnit.INCH) < frontVar) {
                 placeHolder++;
             }
             drive.stop();
         } else {
-            frontVar = 29;
-            drive.forwardWithPower(speed);
-            while (frontDistance.getDistance(DistanceUnit.INCH) > frontVar) {
+            frontVar = 19;
+            drive.forwardWithPower(-1*speed);
+            while (frontDistance.getDistance(DistanceUnit.INCH) < frontVar) {
                 placeHolder++;
             }
             drive.stop();
 
         }
         drive.stop();
+        drive.strafeLeftWithPower(speed);
+        placeHolder=0;
+        while(sensorDistance.getDistance(DistanceUnit.INCH)>3.5){
+            placeHolder++;
+        }
+        drive.stop();
         holder.lower();
-        sleep(350);
+        sleep(500);
         holder.clamp();
 
         sleep(500);
@@ -141,11 +149,12 @@ public class FastBlueAuto extends AutoBaseOpMode {
         sleep(250);
         speed = 0.4;
         drive.strafeLeftWithPower(-1*speed);
-        sleep((long)((6/STRAFE_VEL)*2.5));
+        sleep((long)((3/STRAFE_VEL)*2.5));
+        drive.stop();
         speed=0.5;
         drive.forwardWithPower(-1*speed);
         placeHolder=0;
-        while (frontDistance.getDistance(DistanceUnit.INCH) < 40) {
+        while (frontDistance.getDistance(DistanceUnit.INCH) < 50) {
             placeHolder++;
         }
         drive.stop();
@@ -164,7 +173,7 @@ public class FastBlueAuto extends AutoBaseOpMode {
         }
         drive.stop();
         drive.forwardWithPower(-1*speed);
-        sleep((long) ((10 / FORWARD_VEL) * 2));
+        sleep((long) ((4 / FORWARD_VEL) * 2));
         drive.stop();
         drive.stop();
         speed=0.4;
@@ -186,11 +195,16 @@ public class FastBlueAuto extends AutoBaseOpMode {
         drive.forwardWithPower(speed);
         sleep((long) ((30 / FORWARD_VEL) * 2));
         drive.stop();
+        sleep(1000);
         drive.forwardWithPower(speed);
         speed=0.4;
         placeHolder=0;
-        while(frontDistance.getDistance(DistanceUnit.INCH)>20){
+        while(frontDistance.getDistance(DistanceUnit.INCH)>30){
             placeHolder++;
+        }
+        drive.stop();
+        if(1==1){
+            return;
         }
 
         drive.stop();
@@ -198,18 +212,12 @@ public class FastBlueAuto extends AutoBaseOpMode {
         //sleep(500);
         drive.strafeLeftWithPower(speed);
         placeHolder = 0;
-        while (sensorDistance.getDistance(DistanceUnit.INCH) > 4.5) {
+        while (sensorDistance.getDistance(DistanceUnit.INCH) > 3) {
             placeHolder++;
         }
         drive.stop();
         placeHolder=0;
         speed=0.25;
-        drive.forwardWithPower(speed);
-        if(pos==2){
-            while(backDistance.getDistance(DistanceUnit.INCH)<(frontVar+22)){
-                placeHolder++;
-            }
-        }
         speed=0.4;
         drive.stop();
         drive.stop();
