@@ -22,7 +22,7 @@ public class SkystoneAuton extends AutoBaseOpMode {
         camera.startStreaming(4032,3024, OpenCvCameraRotation.UPRIGHT);
         while(!isStarted()){
             position=detector.position;
-            if(position==0){
+            if(position==0) {
                 telemetry.addData("Position", "Left");
             }
             else if(position==1){

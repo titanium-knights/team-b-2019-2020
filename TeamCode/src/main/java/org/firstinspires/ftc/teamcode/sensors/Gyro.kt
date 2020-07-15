@@ -55,6 +55,7 @@ class BNO055IMUGyro(val imu: BNO055IMU, val parameters: BNO055IMU.Parameters): G
     }
 
     override fun calibrate() {}
+
     override val isCalibrated get() = imu.isGyroCalibrated
 
     /**
